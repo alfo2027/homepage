@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>윤봉봉 — Designer / Creative</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <!-- ponytail: 단일 파일, 빌드·의존성 없음. 규모 커지면 그때 분리 -->
+  <style>
+    :root {
+      --bg: #faf9f6;
+      --surface: #ffffff;
+      --fg: #1a1917;
+      --muted: #6b6862;
+      --accent: #2f6bff;
+      --line: rgba(26, 25, 23, 0.10);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+
+    /* Hero */
+    header {
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .eyebrow {
+      font-size: 0.82rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(2.6rem, 8vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+    h1 .thin { font-weight: 300; color: var(--muted); }
+    .lead {
+      margin-top: 28px;
+      max-width: 30ch;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      color: var(--muted);
+    }
+
+    /* About */
+    section { padding: 96px 0; border-top: 1px solid var(--line); }
+    .label {
+      font-size: 0.78rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px 64px;
+    }
+    .about-lead {
+      grid-column: 1 / -1;
+      font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+    }
+    .about-lead b { font-weight: 600; color: var(--fg); }
+    .about-col h3 {
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .about-col p, .about-col li { color: var(--muted); font-size: 1rem; }
+    .about-col ul { list-style: none; }
+    .about-col li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+
+    /* Work */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .card {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,25,23,0.10); }
+    .card .thumb {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, var(--accent), #8db2ff);
+    }
+    .card:nth-child(2) .thumb { background: linear-gradient(135deg, #ffb347, #ff7e5f); }
+    .card:nth-child(3) .thumb { background: linear-gradient(135deg, #43cea2, #185a9d); }
+    .card:nth-child(4) .thumb { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+    .card .body { padding: 22px 24px 26px; }
+    .card .tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .card h3 { font-size: 1.25rem; margin: 8px 0 6px; letter-spacing: -0.01em; }
+    .card p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Experience */
+    .exp { display: grid; gap: 0; }
+    .exp-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .exp-row:first-child { border-top: 1px solid var(--line); }
+    .exp-year { color: var(--muted); font-size: 0.9rem; }
+    .exp-role { font-size: 1.1rem; font-weight: 600; }
+    .exp-desc { color: var(--muted); font-size: 0.95rem; margin-top: 4px; }
+
+    /* Contact */
+    .contact-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: center; }
+    .contact-lead { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 300; letter-spacing: -0.02em; }
+    .contact-email {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 3px;
+    }
+    .contact-email:hover { color: var(--fg); border-color: var(--muted); }
+    .contact-img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #e7e5e0, #cfccc5);
+    }
+
+    @media (max-width: 620px) {
+      .contact-wrap { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    footer {
+      padding: 48px 0 64px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 620px) {
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Designer · Creative</p>
+      <h1>윤봉봉<br><span class="thin">디자인으로 이야기합니다.</span></h1>
+      <p class="lead">브랜드와 화면 사이의 결을 다듬는 디자이너입니다.</p>
+    </header>
+
+    <section id="about">
+      <p class="label">About</p>
+      <p class="about-lead">
+        저는 <b>보이지 않는 정리</b>가 좋은 디자인이라 믿습니다.
+        복잡한 것을 자연스럽게 느껴지도록 만드는 일을 합니다.
+      </p>
+
+      <div class="about-grid" style="margin-top:56px">
+        <div class="about-col">
+          <h3>하는 일</h3>
+          <p>브랜드 아이덴티티, UI/UX, 비주얼 디렉션. 개념을 잡는 것부터 픽셀을 다듬는 것까지 전 과정을 즐깁니다.</p>
+        </div>
+        <div class="about-col">
+          <h3>도구</h3>
+          <ul>
+            <li>Figma</li>
+            <li>Photoshop · Illustrator</li>
+            <li>Framer</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <p class="label">Selected Work</p>
+      <div class="work-grid">
+        <a class="card" href="project.html">
+          <div class="thumb"></div>
+          <div class="body">
+            <span class="tag">Branding</span>
+            <h3>프로젝트 제목</h3>
+            <p>브랜드 아이덴티티 리뉴얼. 로고·컬러·타이포 시스템 구축.</p>
+          </div>
+        </a>
+        <a class="card" href="project.html">
+          <div class="thumb"></div>
+          <div class="body">
+            <span class="tag">UI / UX</span>
+            <h3>프로젝트 제목</h3>
+            <p>모바일 앱 리디자인. 사용자 흐름 재설계와 디자인 시스템 정립.</p>
+          </div>
+        </a>
+        <a class="card" href="project.html">
+          <div class="thumb"></div>
+          <div class="body">
+            <span class="tag">Web</span>
+            <h3>프로젝트 제목</h3>
+            <p>랜딩 페이지 디자인 & 아트 디렉션.</p>
+          </div>
+        </a>
+        <a class="card" href="project.html">
+          <div class="thumb"></div>
+          <div class="body">
+            <span class="tag">Visual</span>
+            <h3>프로젝트 제목</h3>
+            <p>키 비주얼과 캠페인 그래픽 작업.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="experience">
+      <p class="label">Experience</p>
+      <div class="exp">
+        <div class="exp-row">
+          <div class="exp-year">2024 — 현재</div>
+          <div>
+            <div class="exp-role">직책 · 회사명</div>
+            <div class="exp-desc">담당 업무와 주요 성과를 한두 줄로 적으세요.</div>
+          </div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-year">2021 — 2024</div>
+          <div>
+            <div class="exp-role">직책 · 회사명</div>
+            <div class="exp-desc">담당 업무와 주요 성과를 한두 줄로 적으세요.</div>
+          </div>
+        </div>
+        <div class="exp-row">
+          <div class="exp-year">2019 — 2021</div>
+          <div>
+            <div class="exp-role">직책 · 회사명</div>
+            <div class="exp-desc">담당 업무와 주요 성과를 한두 줄로 적으세요.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="label">Contact</p>
+      <div class="contact-wrap">
+        <div>
+          <p class="contact-lead">새 프로젝트, 협업 언제든 환영합니다.</p>
+          <a class="contact-email" href="mailto:dbsalfo2027@gmail.com">dbsalfo2027@gmail.com</a>
+        </div>
+        <!-- ponytail: 임시 플레이스홀더 이미지. src를 실제 사진 파일(예: contact.jpg)로 교체 -->
+        <img class="contact-img" src="https://picsum.photos/seed/bongbong/640/800?grayscale" alt="윤봉봉" />
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 윤봉봉</span>
+      <span>
+        <a href="mailto:dbsalfo2027@gmail.com">Email</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/alfo2027" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </footer>
+  </div>
+</body>
+</html>

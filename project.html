@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>프로젝트 제목 — 윤봉봉</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <!-- ponytail: 작업물 상세 템플릿. 프로젝트마다 이 파일 복사해서 project-2.html 식으로 쓰기 -->
+  <style>
+    :root {
+      --bg: #faf9f6;
+      --surface: #ffffff;
+      --fg: #1a1917;
+      --muted: #6b6862;
+      --accent: #2f6bff;
+      --line: rgba(26, 25, 23, 0.10);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+
+    .back {
+      display: inline-block;
+      margin: 40px 0 0;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .back:hover { color: var(--accent); }
+
+    header { padding: 56px 0 48px; border-bottom: 1px solid var(--line); }
+    .tag { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 16px 0 24px;
+    }
+    .summary { max-width: 46ch; font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--muted); }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .meta dt { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .meta dd { font-size: 1rem; }
+
+    .hero-img {
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      margin: 48px 0;
+      background: linear-gradient(135deg, var(--accent), #8db2ff);
+    }
+
+    section { padding: 8px 0 40px; }
+    h2 { font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 16px; }
+    section p { color: var(--muted); font-size: 1.05rem; margin-bottom: 16px; }
+
+    .gallery { display: grid; gap: 24px; margin: 32px 0 64px; }
+    .gallery .shot { aspect-ratio: 16 / 10; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+    .gallery .shot:nth-child(1) { background: linear-gradient(135deg, #ffb347, #ff7e5f); }
+    .gallery .shot:nth-child(2) { background: linear-gradient(135deg, #43cea2, #185a9d); }
+
+    .next {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px 0 80px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .next a { color: var(--fg); text-decoration: none; font-size: 1.1rem; font-weight: 600; }
+    .next a:hover { color: var(--accent); }
+
+    @media (max-width: 620px) {
+      .meta { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html#work">← 목록으로</a>
+
+    <header>
+      <span class="tag">Branding</span>
+      <h1>프로젝트 제목</h1>
+      <p class="summary">이 프로젝트를 한 문장으로 요약하세요. 무엇을, 누구를 위해, 어떤 결과를 냈는지.</p>
+    </header>
+
+    <dl class="meta">
+      <div>
+        <dt>Role</dt>
+        <dd>브랜드 디자이너</dd>
+      </div>
+      <div>
+        <dt>Year</dt>
+        <dd>2024</dd>
+      </div>
+      <div>
+        <dt>Tools</dt>
+        <dd>Figma, Illustrator</dd>
+      </div>
+    </dl>
+
+    <div class="hero-img"></div>
+
+    <section>
+      <h2>개요</h2>
+      <p>프로젝트의 배경과 문제 정의를 적으세요. 어떤 상황에서 시작했고 무엇을 해결하려 했는지.</p>
+      <p>진행 과정, 핵심 결정, 협업 방식 등을 자유롭게 서술하세요.</p>
+    </section>
+
+    <section>
+      <h2>결과</h2>
+      <p>최종 결과물과 성과(수치가 있으면 더 좋아요)를 적으세요.</p>
+    </section>
+
+    <div class="gallery">
+      <div class="shot"></div>
+      <div class="shot"></div>
+    </div>
+
+    <div class="next">
+      <a href="index.html#work">← 다른 작업 보기</a>
+      <a href="project.html">다음 프로젝트 →</a>
+    </div>
+  </div>
+</body>
+</html>
