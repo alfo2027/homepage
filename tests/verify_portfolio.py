@@ -447,6 +447,19 @@ class PortfolioStructureTest(unittest.TestCase):
                 self.assertIn("project-pagination", page.classes)
                 self.assertTrue(any(href.startswith("index.html") for href in page.hrefs))
 
+    def test_project_images_are_capped_at_1920px_and_centered(self):
+        for path in PROJECT_PAGES:
+            with self.subTest(path=path.name):
+                source = path.read_text(encoding="utf-8")
+                compact = "".join(source.split())
+                self.assertIn("--project-image-max:1920px", compact)
+                self.assertIn(
+                    ".project-images.is-full-bleed{width:min(100vw,var(--project-image-max));"
+                    "margin-left:50%;transform:translateX(-50%)}",
+                    compact,
+                )
+                self.assertIn("width:100%", css_declarations(source, ".project-imagesimg"))
+
     def test_project_pages_start_with_images_below_full_width_sticky_back_bar(self):
         for path in PROJECT_PAGES:
             with self.subTest(path=path.name):
