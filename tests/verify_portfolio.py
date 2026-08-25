@@ -1,4 +1,5 @@
 from html.parser import HTMLParser
+import hashlib
 from pathlib import Path
 import re
 import struct
@@ -874,6 +875,17 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertIn(thumbnail, home)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertEqual(detail.count('<img draggable="false" src="assets/project-01/'), 9)
+
+    def test_first_project_cover_and_thumbnail_use_latest_supplied_pdf(self):
+        previous_hashes = {
+            "project-01-01.avif": "c8c2b17d020e73ced29230632d7f6d46de4ec2921a77fe50a8363c5654a1f36b",
+            "project-01-thumb.avif": "ea864d7c54459e1769c284ebc903fca2f51daaaa0bb147db4cb053aea039edce",
+        }
+        for filename, previous_hash in previous_hashes.items():
+            with self.subTest(filename=filename):
+                image_path = ROOT / "assets" / "project-01" / filename
+                current_hash = hashlib.sha256(image_path.read_bytes()).hexdigest()
+                self.assertNotEqual(current_hash, previous_hash)
 
     def test_first_project_images_fill_the_viewport_width(self):
         detail = (ROOT / "project-01.html").read_text(encoding="utf-8")
