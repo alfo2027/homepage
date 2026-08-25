@@ -88,6 +88,46 @@ def avif_dimensions(path):
 
 
 class PortfolioStructureTest(unittest.TestCase):
+    def test_pages_use_yoon_mirae_product_designer_titles(self):
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn("<title>윤미래 Product Designer</title>", home)
+        self.assertIn(
+            '<meta name="description" content="UI/UX · 프로덕트 디자이너 윤미래의 포트폴리오">',
+            home,
+        )
+        titles = [
+            "크립토 뉴스 분석 AI 애널리스트",
+            "블루밍비트 알파",
+            "플랜 구매 경험 개선",
+            "정기 선적 리포트",
+            "디자인 시스템 공통화",
+            "스케줄 데모 이용률 증대",
+            "디버 파트너스 앱 리디자인",
+            "디버 주문 웹 UX 개선",
+            "디버 배송 알림톡 UX 개선",
+            "디버 회원가입 프로세스 개선",
+            "그래픽 디자인 &amp; 3D 비주얼",
+        ]
+        for path, title in zip(PROJECT_PAGES, titles):
+            with self.subTest(path=path.name):
+                source = path.read_text(encoding="utf-8")
+                self.assertIn(
+                    f"<title>윤미래 Product Designer — {title}</title>", source
+                )
+
+    def test_all_portfolio_images_are_not_draggable(self):
+        image_count = 0
+        for path in [ROOT / "index.html", *PROJECT_PAGES]:
+            with self.subTest(path=path.name):
+                source = path.read_text(encoding="utf-8")
+                image_tags = re.findall(r"<img\b[^>]*>", source)
+                self.assertTrue(image_tags)
+                for image_tag in image_tags:
+                    self.assertIn('draggable="false"', image_tag)
+                self.assertIn("img{-webkit-user-drag:none}", "".join(source.split()))
+                image_count += len(image_tags)
+        self.assertEqual(image_count, 98)
+
     def test_home_has_required_sections_and_project_links(self):
         page = parse_page(ROOT / "index.html")
         self.assertTrue(
@@ -583,12 +623,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("플랜 구매 경험 개선", home)
-        self.assertIn("<title>플랜 구매 경험 개선</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 플랜 구매 경험 개선</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-03/'), 9)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-03/'), 9)
         self.assertEqual(detail.count('loading="lazy"'), 8)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -606,12 +646,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("정기 선적 리포트", home)
-        self.assertIn("<title>정기 선적 리포트</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 정기 선적 리포트</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-04/'), 9)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-04/'), 9)
         self.assertEqual(detail.count('loading="lazy"'), 8)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -629,12 +669,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("디자인 시스템 공통화", home)
-        self.assertIn("<title>디자인 시스템 공통화</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 디자인 시스템 공통화</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-05/'), 10)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-05/'), 10)
         self.assertEqual(detail.count('loading="lazy"'), 9)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -652,12 +692,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("스케줄 데모 이용률 증대", home)
-        self.assertIn("<title>스케줄 데모 이용률 증대</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 스케줄 데모 이용률 증대</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-06/'), 6)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-06/'), 6)
         self.assertEqual(detail.count('loading="lazy"'), 5)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -692,12 +732,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("디버 파트너스 앱 리디자인", home)
-        self.assertIn("<title>디버 파트너스 앱 리디자인</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 디버 파트너스 앱 리디자인</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-07/'), 7)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-07/'), 7)
         self.assertEqual(detail.count('loading="lazy"'), 6)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -715,12 +755,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("디버 주문 웹 UX 개선", home)
-        self.assertIn("<title>디버 주문 웹 UX 개선</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 디버 주문 웹 UX 개선</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-08/'), 7)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-08/'), 7)
         self.assertEqual(detail.count('loading="lazy"'), 6)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -738,12 +778,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("디버 배송 알림톡 UX 개선", home)
-        self.assertIn("<title>디버 배송 알림톡 UX 개선</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 디버 배송 알림톡 UX 개선</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-09/'), 7)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-09/'), 7)
         self.assertEqual(detail.count('loading="lazy"'), 6)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -761,12 +801,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("디버 회원가입 프로세스 개선", home)
-        self.assertIn("<title>디버 회원가입 프로세스 개선</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 디버 회원가입 프로세스 개선</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-10/'), 7)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-10/'), 7)
         self.assertEqual(detail.count('loading="lazy"'), 6)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -784,12 +824,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("그래픽 디자인 &amp; 3D 비주얼", home)
-        self.assertIn("<title>그래픽 디자인 &amp; 3D 비주얼</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 그래픽 디자인 &amp; 3D 비주얼</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-11/'), 4)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-11/'), 4)
         self.assertEqual(detail.count('loading="lazy"'), 3)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -807,12 +847,12 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn("블루밍비트 알파", home)
-        self.assertIn("<title>블루밍비트 알파</title>", detail)
+        self.assertIn("<title>윤미래 Product Designer — 블루밍비트 알파</title>", detail)
         for image_path in image_paths:
             self.assertTrue((ROOT / image_path).exists(), image_path)
             self.assertIn(image_path, detail)
             self.assertEqual(avif_dimensions(ROOT / image_path)[0], 3334)
-        self.assertEqual(detail.count('<img src="assets/project-02/'), 11)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-02/'), 11)
         self.assertEqual(detail.count('loading="lazy"'), 10)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
         self.assertIn(".project-imagesimg+img{margin-top:-1px}", "".join(detail.split()))
@@ -833,7 +873,7 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / thumbnail).exists(), thumbnail)
         self.assertIn(thumbnail, home)
         self.assertIn('class="project-images is-seamless is-full-bleed"', detail)
-        self.assertEqual(detail.count('<img src="assets/project-01/'), 9)
+        self.assertEqual(detail.count('<img draggable="false" src="assets/project-01/'), 9)
 
     def test_first_project_images_fill_the_viewport_width(self):
         detail = (ROOT / "project-01.html").read_text(encoding="utf-8")
