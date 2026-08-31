@@ -89,6 +89,33 @@ def avif_dimensions(path):
 
 
 class PortfolioStructureTest(unittest.TestCase):
+    def test_hero_combines_greeting_introduction_and_three_strengths(self):
+        source = (ROOT / "index.html").read_text(encoding="utf-8")
+        page = parse_page(ROOT / "index.html")
+
+        self.assertIn("about", page.ids)
+        self.assertIn('class="hero-layout"', source)
+        self.assertIn('class="hero-introduction"', source)
+        self.assertEqual(source.count('class="hero-strength"'), 3)
+        self.assertIn("안녕하세요.<br>디자이너 윤미래입니다.", source)
+        self.assertIn(
+            '<span class="hero-introduction-line">새로운 기술이나 기능을 탐구하는 것을 좋아합니다.</span>',
+            source,
+        )
+        self.assertIn(
+            '<span class="hero-introduction-line">최근에는 더 효율적으로 일하는 방법을 함께 고민하고 있습니다.</span>',
+            source,
+        )
+        self.assertIn("white-space:nowrap", css_declarations(source, ".hero-introduction-line"))
+        self.assertNotIn('<section class="section about"', source)
+        self.assertNotIn("UI/UX · Product Designer", source)
+        self.assertNotIn("Seoul, Korea", source)
+
+        hero_layout = css_declarations(source, ".hero-layout")
+        self.assertIn("grid-template-columns:1fr", hero_layout)
+        self.assertIn("gap:32px", hero_layout)
+        self.assertIn("max-width:100%", css_declarations(source, ".hero-side"))
+
     def test_pages_use_yoon_mirae_product_designer_titles(self):
         home = (ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn("<title>윤미래 Product Designer</title>", home)
@@ -197,61 +224,49 @@ class PortfolioStructureTest(unittest.TestCase):
         self.assertIn(".project-image-frame.project-image{", compact)
         self.assertIn("width:100%;height:100%;object-fit:cover", compact)
 
-    def test_main_sections_share_the_same_responsive_section_title(self):
+    def test_content_sections_share_the_same_responsive_section_title(self):
         page = parse_page(ROOT / "index.html")
         source = (ROOT / "index.html").read_text(encoding="utf-8")
         compact = "".join(source.split())
-        self.assertEqual(page.classes.count("section-label"), 4)
+        self.assertEqual(page.classes.count("section-label"), 3)
         self.assertNotIn("Selected projects", source)
         self.assertNotIn("[01]", source)
         self.assertIn(">Projects</h2>", source)
         self.assertIn(">Experience</h2>", source)
-        self.assertIn(">About</h2>", source)
+        self.assertNotIn(">About</h2>", source)
         self.assertIn("font-size:clamp(2rem,3.333vw,3rem)", compact)
 
-    def test_about_introduces_three_core_strengths_before_projects(self):
+    def test_hero_introduces_three_core_strengths_before_projects(self):
         source = (ROOT / "index.html").read_text(encoding="utf-8")
         compact = "".join(source.split())
         about_start = source.index('id="about"')
         projects_start = source.index('id="projects"')
         self.assertLess(about_start, projects_start)
-        self.assertEqual(source.count('class="about-strength"'), 3)
-        self.assertNotIn('class="about-intro"', source)
-        self.assertEqual(source.count('class="about-strength-number"'), 3)
-        self.assertEqual(source.count('class="about-strength-content"'), 3)
-        self.assertEqual(source.count('class="about-strength-title"'), 3)
-        self.assertEqual(source.count('class="about-strength-copy"'), 3)
+        self.assertEqual(source.count('class="hero-strength"'), 3)
+        self.assertEqual(source.count('class="hero-strength-number"'), 3)
+        self.assertEqual(source.count('class="hero-strength-title"'), 3)
+        self.assertEqual(source.count('class="hero-strength-copy"'), 3)
         self.assertIn("데이터 중심 서비스 &amp; LLM AI 검색 구축 경험", source)
         self.assertIn("글로벌 서비스 및 다국어 시스템 대응 경험", source)
         self.assertIn("디자인 시스템 구축 및 AI 기반 생산성 향상", source)
         self.assertIn("텍스트 베리어블(Variables) 기반으로", source)
         self.assertIn("Figma MCP 및 Claude AI를 연동한 디자인 QA", source)
-        self.assertNotIn(".about-header::after", source)
-        self.assertIn('class="about-divider"', source)
-        self.assertIn("grid-column:2", css_declarations(source, ".about-divider"))
-        self.assertIn("margin-top:var(--about-divider-space)", css_declarations(source, ".about-divider"))
-        self.assertIn("border-bottom:1pxsolidvar(--line)", css_declarations(source, ".about-divider"))
-        self.assertIn("padding-top:var(--about-divider-space)", css_declarations(source, ".about-strength:first-child"))
-        self.assertIn(".about{--about-divider-space:20px}", compact)
-        self.assertNotIn(".about-strength::after", source)
-        self.assertNotIn("border", css_declarations(source, ".about-strength"))
-        self.assertIn("grid-template-columns:minmax(180px,.7fr)minmax(0,1.3fr)", css_declarations(source, ".about-strength"))
-        self.assertIn("gap:8vw", css_declarations(source, ".about-strength"))
-        self.assertIn("padding:8px024px", css_declarations(source, ".about-strength"))
-        self.assertIn("grid-column:2", css_declarations(source, ".about-strength-content"))
-        self.assertIn("gap:0", css_declarations(source, ".about-strength-content"))
-        self.assertIn("font-size:20px", css_declarations(source, ".about-strength-title"))
-        self.assertIn("margin:0020px", css_declarations(source, ".about-strength-title"))
-        self.assertIn("font-size:16px", css_declarations(source, ".about-strength-copy"))
-        self.assertIn("font-weight:400", css_declarations(source, ".about-strength-copy"))
-        self.assertIn("line-height:1.6", css_declarations(source, ".about-strength-copy"))
-        self.assertIn("color:var(--muted)", css_declarations(source, ".about-strength-copy"))
-        self.assertIn("color:var(--fg)", css_declarations(source, ".about-strength-title"))
+        strengths_css = css_declarations(source, ".hero-strengths")
+        self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", strengths_css)
+        self.assertIn("gap:20px", strengths_css)
+        self.assertIn("border-top:1pxsolidvar(--line)", css_declarations(source, ".hero-strength"))
+        self.assertIn("font-size:20px", css_declarations(source, ".hero-strength-title"))
+        self.assertIn("margin:0012px", css_declarations(source, ".hero-strength-title"))
+        self.assertIn("font-size:16px", css_declarations(source, ".hero-strength-copy"))
+        self.assertIn("font-weight:400", css_declarations(source, ".hero-strength-copy"))
+        self.assertIn("line-height:1.6", css_declarations(source, ".hero-strength-copy"))
+        self.assertIn("color:var(--muted)", css_declarations(source, ".hero-strength-copy"))
+        self.assertIn("color:var(--fg)", css_declarations(source, ".hero-strength-title"))
         self.assertIn("word-break:keep-all", compact)
-        self.assertIn('class="about-header-content"', source)
-        self.assertIn('class="about-introduction"', source)
-        self.assertIn("새로운 기술이나 기능을 탐구하는 것을 좋아합니다.<br>", source)
-        number_css = css_declarations(source, ".about-strength-number")
+        self.assertIn('class="hero-layout"', source)
+        self.assertIn('class="hero-introduction"', source)
+        self.assertEqual(source.count('class="hero-introduction-line"'), 2)
+        number_css = css_declarations(source, ".hero-strength-number")
         self.assertIn("font-size:14px", number_css)
         self.assertIn("font-weight:500", number_css)
         self.assertIn("margin:008px", number_css)
@@ -376,18 +391,19 @@ class PortfolioStructureTest(unittest.TestCase):
         trigger_start = source.index('id="nav-trigger"')
         projects_start = source.index('id="projects"')
         hero_source = source[source.index('class="hero"'):hero_end]
-        self.assertIn('class="hero-main"', hero_source)
-        self.assertNotIn('class="hero-aside"', hero_source)
+        self.assertIn('class="hero-layout"', hero_source)
+        self.assertIn('class="hero-side"', hero_source)
+        self.assertIn('class="hero-strengths"', hero_source)
         self.assertNotIn('class="pill"', hero_source)
         self.assertIn("안녕하세요.<br>디자이너 윤미래입니다.", hero_source)
         self.assertNotIn("사용자의 맥락을 이해하고", source)
-        self.assertIn("justify-content:center", css_declarations(source, ".hero"))
-        self.assertIn("align-items:center", css_declarations(source, ".hero"))
+        self.assertIn("justify-content:space-between", css_declarations(source, ".hero"))
+        self.assertIn("flex-direction:column", css_declarations(source, ".hero"))
         self.assertIn(".heroh1{", compact)
-        self.assertIn("text-align:center", compact)
+        self.assertIn("text-align:left", compact)
         self.assertIn("line-height:1.3", source)
         self.assertIn(
-            "font-size:clamp(3.25rem,5.5vw,6rem)",
+            "font-size:clamp(3.25rem,5vw,5.5rem)",
             css_declarations(source, ".heroh1"),
         )
         self.assertIn(
@@ -470,10 +486,10 @@ class PortfolioStructureTest(unittest.TestCase):
         resume_url = "https://my.surfit.io/w/948478686"
         resume_links = [link for link in page.links if link["href"] == resume_url]
         self.assertEqual(len(resume_links), 1)
-        self.assertEqual(resume_links[0].get("class"), "about-resume-link")
+        self.assertEqual(resume_links[0].get("class"), "hero-resume-link")
         self.assertNotIn("resume-link-primary", source)
         self.assertNotIn("resume-link-secondary", source)
-        self.assertIn("text-decoration:none", css_declarations(source, ".about-resume-link"))
+        self.assertIn("text-decoration:none", css_declarations(source, ".hero-resume-link"))
         for link in resume_links:
             self.assertEqual(link.get("target"), "_blank")
             self.assertEqual(link.get("rel"), "noopener noreferrer")
