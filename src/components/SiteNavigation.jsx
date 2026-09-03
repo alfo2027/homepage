@@ -55,7 +55,7 @@ export default function SiteNavigation() {
         className={`site-nav nav-fixed${scrolled ? " is-visible" : ""}`}
         aria-label="주요 메뉴"
         aria-hidden={!scrolled}
-        inert={scrolled ? undefined : ""}
+        inert={scrolled ? undefined : true}
       >
         <NavigationContent />
       </nav>
@@ -63,7 +63,7 @@ export default function SiteNavigation() {
         className={`site-nav nav-inline${scrolled ? " is-hidden" : ""}`}
         aria-label="주요 메뉴"
         aria-hidden={scrolled}
-        inert={scrolled ? "" : undefined}
+        inert={scrolled ? true : undefined}
       >
         <NavigationContent />
       </nav>

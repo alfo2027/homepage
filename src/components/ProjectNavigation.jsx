@@ -31,8 +31,8 @@ export default function ProjectNavigation() {
 
   return (
     <>
-      <nav className={`project-nav project-nav-fixed${scrolled ? " is-visible" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={!scrolled} inert={scrolled ? undefined : ""}><ListLink /></nav>
-      <nav className={`project-nav project-nav-inline${scrolled ? " is-hidden" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={scrolled} inert={scrolled ? "" : undefined}><ListLink /></nav>
+      <nav className={`project-nav project-nav-fixed${scrolled ? " is-visible" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={!scrolled} inert={scrolled ? undefined : true}><ListLink /></nav>
+      <nav className={`project-nav project-nav-inline${scrolled ? " is-hidden" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={scrolled} inert={scrolled ? true : undefined}><ListLink /></nav>
     </>
   );
 }
