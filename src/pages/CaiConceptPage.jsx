@@ -44,7 +44,9 @@ export default function CaiConceptPage() {
     scroller?.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobileLayout || prefersReducedMotion) {
       return () => scroller?.removeEventListener("scroll", updateProgress);
     }
 
@@ -106,10 +108,10 @@ export default function CaiConceptPage() {
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
             <button type="button" data-cursor="link" className={activeView === "experience" ? "is-active" : ""} aria-current={activeView === "experience" ? "page" : undefined} onClick={() => { setActiveView("experience"); scrollRef.current?.scrollTo?.({ top: 0, behavior: "smooth" }); }}>Experience</button>
           </nav>
-          <div className="cai-profile">
-            <h1>윤미래</h1>
-            <p>새로운 기술이나 기능을 탐구하는 것을 좋아합니다.<br />최근에는 더 효율적으로 일하는 방법을 함께 고민하고 있습니다.</p>
-          </div>
+        </div>
+        <div className="cai-profile">
+          <h1>윤미래</h1>
+          <p>새로운 기술이나 기능을 탐구하는 것을 좋아합니다.<br />최근에는 더 효율적으로 일하는 방법을 함께 고민하고 있습니다.</p>
         </div>
         <div className="cai-side-bottom">
           <InteractiveOrb dark={false} progressRef={scrollProgressRef} />

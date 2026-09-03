@@ -37,6 +37,23 @@ describe("Cai-inspired concept page", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
     expect([...container.querySelectorAll("img")].every((image) => image.draggable === false)).toBe(true);
   });
+
+  test("keeps every project thumbnail visible when the mobile page uses document scrolling", () => {
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === "(max-width: 640px)",
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+
+    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const thumbnails = [...container.querySelectorAll(".cai-image-wrap")];
+
+    expect(thumbnails).toHaveLength(12);
+    expect(thumbnails.every((thumbnail) => thumbnail.style.opacity !== "0" && thumbnail.style.visibility !== "hidden")).toBe(true);
+    window.matchMedia = originalMatchMedia;
+  });
   test("scrolls the project area to the top when Home is clicked", () => {
     render(<CaiConceptPage />, { wrapper: MemoryRouter });
     const projectList = screen.getByLabelText("프로젝트 세로 목록");
