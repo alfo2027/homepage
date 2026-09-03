@@ -1,4 +1,5 @@
 .DS_Store
 .superpowers/
 assets/project-01/*.png
-
+node_modules/
+dist/
