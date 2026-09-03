@@ -98,8 +98,8 @@ export default function CaiConceptPage() {
           <a href="#cai-grid" className="cai-home" data-cursor="link">Home</a>
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
             <a href="#cai-grid" aria-current="page" data-cursor="link">Work</a>
-            <Link to="/" state={{ section: "about" }} data-cursor="link">About</Link>
-            <Link to="/" state={{ section: "experience" }} data-cursor="link">Experience</Link>
+            <Link to="/original" state={{ section: "about" }} data-cursor="link">About</Link>
+            <Link to="/original" state={{ section: "experience" }} data-cursor="link">Experience</Link>
           </nav>
           <div className="cai-profile">
             <h1>윤미래</h1>

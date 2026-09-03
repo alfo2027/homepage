@@ -25,6 +25,8 @@ describe("Cai-inspired concept page", () => {
     expect(screen.getAllByTestId("cai-project")[0]).not.toHaveAttribute("data-cursor");
     expect(screen.getAllByTestId("cai-project")[1]).toHaveAttribute("data-cursor", "project");
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("data-cursor", "link");
+    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/original");
+    expect(screen.getByRole("link", { name: "Experience" })).toHaveAttribute("href", "/original");
     expect(container.querySelector(".cai-project-grid")).toHaveClass("has-scroll-rhythm");
     expect(screen.getByRole("progressbar", { name: "프로젝트 스크롤 진행률" })).toBeInTheDocument();
     expect(container.querySelector(".cai-scroll-progress-fill")).toHaveStyle({ transform: "scaleY(0)" });

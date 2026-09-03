@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProjectPage from "./pages/ProjectPage";
@@ -12,9 +12,10 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<CaiConceptPage />} />
+        <Route path="/original" element={<HomePage />} />
         <Route path="/concepts/colabs" element={<ColabsConceptPage />} />
-        <Route path="/concepts/cai" element={<CaiConceptPage />} />
+        <Route path="/concepts/cai" element={<Navigate to="/" replace />} />
         <Route path="/projects/:slug" element={<ProjectPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

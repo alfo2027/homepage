@@ -220,6 +220,7 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 ## 결정 로그
 
+- 기본 홈페이지 전환: 웨스티 좌측 패널과 비대칭 프로젝트 그리드로 구성한 CAI 화면을 `/`에 배치하고 기존 홈은 `/original`에 보존
 - CAI 커서 인터랙션: 정밀 포인터에서 대상별 `VIEW ↗`·`↗`·`DRAG ↔` 커서와 프로젝트 제목 미세 이동을 적용하고 터치·모션 축소 환경은 제외
 
 변경 있을 때마다 최신순으로 위에 한 줄씩 추가.
