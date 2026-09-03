@@ -62,6 +62,7 @@ export default function InteractiveOrb({ dark, progressRef }) {
   return (
     <div
       className={`cai-orb${speaking ? " is-speaking" : ""}`}
+      data-cursor="drag"
       data-testid="interactive-orb"
       aria-label="스크롤과 드래그에 반응하는 웨스티 캐릭터"
       aria-describedby="cai-orb-introduction"

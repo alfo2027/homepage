@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
+import CustomCursor from "../components/CustomCursor";
 import "../concepts/cai.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -98,11 +99,12 @@ export default function CaiConceptPage() {
 
   return (
     <main ref={pageRef} className="cai-concept" data-testid="cai-concept">
+      <CustomCursor />
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
-          <a href="#cai-grid" className="cai-home" onClick={scrollHome}>Home</a>
+          <a href="#cai-grid" className="cai-home" data-cursor="link" onClick={scrollHome}>Home</a>
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
-            <button type="button" className={activeView === "experience" ? "is-active" : ""} aria-current={activeView === "experience" ? "page" : undefined} onClick={() => { setActiveView("experience"); scrollRef.current?.scrollTo?.({ top: 0, behavior: "smooth" }); }}>Experience</button>
+            <button type="button" data-cursor="link" className={activeView === "experience" ? "is-active" : ""} aria-current={activeView === "experience" ? "page" : undefined} onClick={() => { setActiveView("experience"); scrollRef.current?.scrollTo?.({ top: 0, behavior: "smooth" }); }}>Experience</button>
           </nav>
           <div className="cai-profile">
             <h1>윤미래</h1>
@@ -136,7 +138,7 @@ export default function CaiConceptPage() {
             return project.upcoming ? (
               <article className="cai-project is-upcoming" data-testid="cai-project" key={project.slug}>{card}</article>
             ) : (
-              <Link className="cai-project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`}>{card}</Link>
+              <Link className="cai-project" data-cursor="project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`}>{card}</Link>
             );
           })}
         </div>}

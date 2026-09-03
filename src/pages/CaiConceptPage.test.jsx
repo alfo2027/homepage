@@ -21,6 +21,11 @@ describe("Cai-inspired concept page", () => {
     expect(container.querySelector(".cai-side-right")).not.toBeInTheDocument();
     expect(container.querySelector(".cai-side-bottom > [data-testid='interactive-orb']")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
+    expect(screen.getByTestId("custom-cursor")).toBeInTheDocument();
+    expect(screen.getAllByTestId("cai-project")[0]).not.toHaveAttribute("data-cursor");
+    expect(screen.getAllByTestId("cai-project")[1]).toHaveAttribute("data-cursor", "project");
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("data-cursor", "link");
+    expect(screen.getByRole("button", { name: "Experience" })).toHaveAttribute("data-cursor", "link");
     expect(container.querySelector(".cai-project-grid")).toHaveClass("has-scroll-rhythm");
     expect(screen.getByRole("progressbar", { name: "프로젝트 스크롤 진행률" })).toBeInTheDocument();
     expect(container.querySelector(".cai-scroll-progress-fill")).toHaveStyle({ transform: "scaleY(0)" });
@@ -32,7 +37,6 @@ describe("Cai-inspired concept page", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
     expect([...container.querySelectorAll("img")].every((image) => image.draggable === false)).toBe(true);
   });
-
   test("scrolls the project area to the top when Home is clicked", () => {
     render(<CaiConceptPage />, { wrapper: MemoryRouter });
     const projectList = screen.getByLabelText("프로젝트 세로 목록");
