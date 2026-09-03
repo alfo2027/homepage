@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { detailProjects, getProjectBySlug, projects } from "./projects";
+import { detailProjects, getProjectBySlug, getRelatedProjects, projects } from "./projects";
 import { experiences } from "./experience";
 
 describe("project data", () => {
@@ -27,6 +27,21 @@ describe("project data", () => {
       expect(project.thumbnail).toMatch(/\.avif$/);
       expect(project.images.every(({ src }) => src.endsWith(".avif"))).toBe(true);
     }
+  });
+
+  test("prioritizes same-company work before filling from list order", () => {
+    expect(getRelatedProjects("plan-purchase").map(({ slug }) => slug)).toEqual([
+      "shipment-report",
+      "design-system",
+      "schedule-demo",
+      "analyst",
+    ]);
+    expect(getRelatedProjects("dever-partners").map(({ slug }) => slug)).toEqual([
+      "dever-order-web",
+      "dever-alimtalk",
+      "dever-signup",
+      "analyst",
+    ]);
   });
 });
 

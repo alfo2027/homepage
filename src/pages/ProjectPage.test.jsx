@@ -25,11 +25,16 @@ describe("project detail", () => {
     await waitFor(() => expect(document.title).toBe("윤미래 Product Designer - 크립토 뉴스 분석 AI 애널리스트"));
   });
 
-  test("wraps previous and next navigation across published projects", () => {
-    renderRoute("/projects/analyst");
+  test("shows four related projects as thumbnail links", () => {
+    const { container } = renderRoute("/projects/analyst");
 
-    expect(screen.getByRole("link", { name: /이전 그래픽 디자인 & 3D 비주얼/ })).toHaveAttribute("href", "/projects/graphic-visual");
-    expect(screen.getByRole("link", { name: /다음 블루밍비트 알파/ })).toHaveAttribute("href", "/projects/bloomingbit-alpha");
+    expect(screen.getByRole("heading", { name: "다른 프로젝트" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /블루밍비트 알파/ })).toHaveAttribute("href", "/projects/bloomingbit-alpha");
+    expect(screen.getByRole("link", { name: /플랜 구매 경험 개선/ })).toHaveAttribute("href", "/projects/plan-purchase");
+    expect(screen.getByRole("link", { name: /정기 선적 리포트/ })).toHaveAttribute("href", "/projects/shipment-report");
+    expect(screen.getByRole("link", { name: /디자인 시스템 공통화/ })).toHaveAttribute("href", "/projects/design-system");
+    expect(container.querySelectorAll(".project-related-card")).toHaveLength(4);
+    expect(container.querySelectorAll(".project-related-card img")).toHaveLength(4);
   });
 
   test("offers a projects-list link", () => {

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Chevron } from "../components/ProjectNavigation";
 import ProjectNavigation from "../components/ProjectNavigation";
-import { detailProjects, getProjectBySlug } from "../data/projects";
+import { getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
@@ -15,9 +14,7 @@ export default function ProjectPage() {
 
   if (!project) return <NotFoundPage />;
 
-  const currentIndex = detailProjects.indexOf(project);
-  const previous = detailProjects[(currentIndex - 1 + detailProjects.length) % detailProjects.length];
-  const next = detailProjects[(currentIndex + 1) % detailProjects.length];
+  const relatedProjects = getRelatedProjects(project.slug);
 
   return (
     <main className="project-shell">
@@ -37,16 +34,27 @@ export default function ProjectPage() {
           />
         ))}
       </section>
-      <nav className="project-pagination" aria-label="프로젝트 탐색">
-        <Link className="project-pagination-link" to={`/projects/${previous.slug}`} aria-label={`이전 ${previous.title}`}>
-          <span className="project-pagination-label"><Chevron />이전</span>
-          <strong className="project-pagination-title">{previous.title}</strong>
-        </Link>
-        <Link className="project-pagination-link is-next" to={`/projects/${next.slug}`} aria-label={`다음 ${next.title}`}>
-          <strong className="project-pagination-title">{next.title}</strong>
-          <span className="project-pagination-label">다음<Chevron direction="right" /></span>
-        </Link>
-      </nav>
+      <section className="project-related" aria-labelledby="project-related-title">
+        <h2 id="project-related-title">다른 프로젝트</h2>
+        <nav className="project-related-grid" aria-label="다른 프로젝트 탐색">
+          {relatedProjects.map((relatedProject) => (
+            <Link className="project-related-card" to={`/projects/${relatedProject.slug}`} key={relatedProject.slug}>
+              <span className="project-related-image">
+                <img
+                  draggable={false}
+                  src={relatedProject.thumbnail}
+                  alt=""
+                  width={relatedProject.thumbnailWidth}
+                  height={relatedProject.thumbnailHeight}
+                  loading="lazy"
+                />
+              </span>
+              <strong>{relatedProject.title}</strong>
+              <span>{relatedProject.type}</span>
+            </Link>
+          ))}
+        </nav>
+      </section>
     </main>
   );
 }
