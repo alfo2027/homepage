@@ -9,9 +9,11 @@
 ## 프로젝트
 
 - 디자이너/크리에이티브 포트폴리오
-- 정적 HTML. **빌드·프레임워크·의존성 없음** — 브라우저로 파일 직접 열기
-- `index.html` — 메인 (Hero / Projects / Experience / Contact)
-- `project.html` — 작업물 상세 템플릿
+- Vite + React 기반 SPA. `npm run dev`로 로컬 실행하고 `npm run build`로 빌드
+- React Router `HashRouter` 사용: 홈 `/#/`, 상세 `/#/projects/{slug}`
+- `src/pages/HomePage.jsx` — 메인 (Hero / Projects / Experience / Contact)
+- `src/pages/ProjectPage.jsx` — 프로젝트 상세
+- `src/data/` — 프로젝트와 경력 콘텐츠의 단일 데이터 소스
 - `DESIGN.md` — **디자인 시스템 (단일 진실 원천)**
 
 ## 디자인 작업 규칙 (중요)
@@ -30,6 +32,6 @@
 
 ## 코드 스타일
 
-- 단일 파일 유지, 불필요한 추상화·의존성 금지
-- 컬러·폰트는 `:root` CSS 변수로만 관리 (하드코딩 금지)
-- 새 페이지는 `project.html`처럼 같은 `:root` 변수 세트를 복붙해 일관성 유지
+- 컴포넌트는 화면 책임별로 작게 나누고, 콘텐츠는 `src/data/`에서 관리
+- 컬러·폰트는 `src/styles.css`의 `:root` CSS 변수로만 관리 (하드코딩 금지)
+- 새 페이지와 컴포넌트는 기존 디자인 토큰을 재사용해 일관성 유지

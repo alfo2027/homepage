@@ -94,10 +94,11 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 ### Hero
 
-- 히어로에는 대형 제목만 두고 영역의 가로·세로 중앙에 정렬한다.
+- 히어로에는 대형 제목, 2줄 소개, Resume 링크와 3개의 핵심 강점을 통합한다.
 - 제목 문구는 `안녕하세요. / 디자이너 윤미래입니다.`를 기본으로 한다.
 - 장식 이미지, 배지, 불필요한 버튼은 추가하지 않는다.
-- 이력서 링크는 Hero에 배치하지 않는다.
+- 소개문은 데스크톱에서 의도한 두 줄을 유지하고 모바일에서는 자연스럽게 줄바꿈한다.
+- 이력서 링크는 소개문 아래에 배치한다.
 
 ### About
 
@@ -211,6 +212,7 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 변경 있을 때마다 최신순으로 위에 한 줄씩 추가.
 
+- React SPA 전환: Vite·React Router HashRouter를 사용하고 프로젝트·경력 데이터를 단일 모듈로 관리하며 기존 시각 디자인을 유지
 - About 문장형 개편: 기존 포지셔닝 문장과 번호형 3열 구성을 제거하고, 검정 핵심 문장과 회색 설명이 이어지는 대형 문단 3개로 변경
 - 블루밍비트 알파 카드 보조 문구를 `LLM Search, B2B Crypto Terminal`로 변경
 - 프로젝트 썸네일 라운드 조정: 카드 이미지 프레임 모서리 반경을 4px로 변경

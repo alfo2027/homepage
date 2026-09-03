@@ -1,3 +1,7 @@
+import { HashRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import "./styles.css";
+
 export default function App() {
-  return <h1>안녕하세요. 디자이너 윤미래입니다.</h1>;
+  return <HashRouter><Routes><Route path="/" element={<HomePage />} /></Routes></HashRouter>;
 }
