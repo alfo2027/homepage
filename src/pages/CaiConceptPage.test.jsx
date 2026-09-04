@@ -157,6 +157,20 @@ describe("Cai-inspired concept page", () => {
     expect(gridStyle.padding).toBe("10px");
   });
 
+  test("lets the profile copy use the available sidebar width", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+    const profileParagraph = container.querySelector(".cai-profile-copy p");
+
+    expect(getComputedStyle(profileParagraph).maxWidth).toBe("100%");
+  });
+
+  test("adds deliberate line breaks for the wide profile layout", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+    const wideBreaks = container.querySelectorAll(".cai-profile-wide-break");
+
+    expect(wideBreaks).toHaveLength(3);
+  });
+
   test("keeps every project thumbnail visible when the mobile page uses document scrolling", () => {
     const originalMatchMedia = window.matchMedia;
     window.matchMedia = vi.fn().mockImplementation((query) => ({
