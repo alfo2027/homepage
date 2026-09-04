@@ -13,9 +13,11 @@
 /* Concept interactions */
 .cai-orb{position:relative;width:min(174px,calc(100% - 46px));outline:none;cursor:grab;user-select:none}
 .cai-orb:active{cursor:grabbing}
-.cai-orb-speech{position:absolute;z-index:20;top:24px;left:calc(100% + 14px);width:218px;padding:13px 15px;border:1px solid var(--cai-line);border-radius:12px;background:color-mix(in srgb,var(--cai-bg) 96%,transparent);box-shadow:0 10px 28px rgba(20,20,20,.08);color:var(--cai-muted);font-family:"Pretendard",sans-serif;font-size:12px;line-height:1.55;letter-spacing:-.015em;opacity:0;pointer-events:none;transform:translate(-8px,6px) scale(.96);transform-origin:left bottom;transition:opacity .22s ease,transform .32s cubic-bezier(.22,1,.36,1);backdrop-filter:blur(12px)}
-.cai-orb-speech::before{content:"";position:absolute;top:58px;left:-6px;width:10px;height:10px;border-bottom:1px solid var(--cai-line);border-left:1px solid var(--cai-line);background:var(--cai-bg);transform:rotate(45deg)}
-.cai-orb.is-speaking .cai-orb-speech{opacity:1;pointer-events:auto;transform:translate(0,0) scale(1)}
+.cai-orb-speech{position:absolute;z-index:20;top:auto;bottom:112px;left:calc(50% + 18px);width:min(240px,calc(100vw - 32px));padding:16px 18px;border:1px solid var(--cai-line);border-radius:18px;background:color-mix(in srgb,var(--cai-bg) 96%,transparent);box-shadow:0 12px 32px rgba(20,20,20,.1);color:var(--cai-fg);font-family:"Pretendard",sans-serif;font-size:14px;font-weight:500;line-height:1.55;letter-spacing:-.015em;text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,18px) scale(.94);transform-origin:center bottom;backdrop-filter:blur(12px)}
+.cai-orb-speech::before{content:"";position:absolute;top:auto;right:auto;bottom:-6px;left:calc(50% - 18px);width:10px;height:10px;border-right:1px solid var(--cai-line);border-bottom:1px solid var(--cai-line);background:var(--cai-bg);transform:translateX(-50%) rotate(45deg)}
+.cai-orb.is-speaking .cai-orb-speech{pointer-events:auto;animation:cai-orb-cloud 4.5s ease-in-out both}
+@keyframes cai-orb-cloud{0%{opacity:0;transform:translate(-50%,18px) scale(.94)}16%{opacity:1;transform:translate(-50%,0) scale(1)}46%{opacity:1;transform:translate(calc(-50% + 3px),-9px) scale(1)}70%{opacity:1;transform:translate(calc(-50% - 2px),-18px) scale(1.01)}100%{opacity:0;transform:translate(-50%,-38px) scale(1.02)}}
+@keyframes cai-orb-cloud-fade{0%,100%{opacity:0}18%,70%{opacity:1}}
 .cai-orb-stage{position:relative;height:126px;overflow:hidden;background:transparent}
 .cai-orb canvas{position:relative;z-index:2;display:block}
 .cai-orb-meta{display:flex;justify-content:space-between;gap:8px;padding-top:6px;color:var(--cai-muted);font-family:"Pretendard",sans-serif;font-size:8px;line-height:1;letter-spacing:.08em}
@@ -31,6 +33,7 @@
 .cai-image-wrap img{opacity:1;transform:none;transition:transform .3s cubic-bezier(.22,1,.36,1)}
 .cai-project:hover img,.cai-project:focus-visible img{filter:none;opacity:1;transform:scale(1.05)}
 @media(max-width:640px){.cai-side-top>.cai-side-menu{margin-top:0;margin-left:auto;flex-direction:row;align-items:center;gap:14px;font-size:13px}.cai-orb{display:block;width:100%}.cai-orb-stage{height:116px}.cai-orb-speech{top:auto;right:0;bottom:calc(100% + 10px);left:auto;width:min(218px,calc(100vw - 32px));transform-origin:right bottom}.cai-orb-speech::before{top:auto;right:36px;bottom:-6px;left:auto;transform:rotate(-45deg)}.cai-project{transform:none!important}.cai-image-wrap{opacity:1!important;visibility:visible!important;transform:none!important}.cai-image-wrap img{opacity:1}}
+@media(max-width:640px){.cai-orb-speech{top:auto;right:auto;bottom:112px;left:50%;width:min(240px,calc(100vw - 32px));transform-origin:center bottom}.cai-orb-speech::before{top:auto;right:auto;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg)}}
 
 .cai-side-menu button{width:max-content;padding:0;border:0;background:transparent;color:var(--cai-muted);font:inherit;cursor:pointer;transition:color .2s}
 .cai-side-menu button:hover,.cai-side-menu button.is-active{color:var(--cai-fg)}
@@ -80,6 +83,7 @@
 @media(max-width:640px){.cai-cursor{display:none!important}.cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:auto}}
 @media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:none}}
 @media(prefers-reduced-motion:reduce){.cai-cursor{display:none}.cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:auto}.cai-project{transform:none!important;transition:none}.cai-image-wrap img{transition:none}.cai-project:hover img,.cai-project:focus-visible img{transform:none}.cai-project-hover,.cai-project-hover strong{transition:none}.cai-project-hover strong{transform:none}}
+@media(prefers-reduced-motion:reduce){.cai-orb.is-speaking .cai-orb-speech{animation:cai-orb-cloud-fade 4.5s ease both;transform:translate(-50%,0)}}
 
 /* Sidebar composition */
 .cai-side-top>.cai-side-menu{margin:0;gap:7px}

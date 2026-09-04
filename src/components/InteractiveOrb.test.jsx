@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import InteractiveOrb from "./InteractiveOrb";
+import "../concepts/cai.css";
 
 const { mockUseGLTF } = vi.hoisted(() => {
   const loader = vi.fn(() => ({
@@ -77,6 +78,7 @@ describe("InteractiveOrb", () => {
     act(() => vi.advanceTimersByTime(1));
     expect(speech).toHaveAttribute("aria-hidden", "false");
     expect(speech).toHaveTextContent("오늘 좋은 일이 하나쯤 있었나요?");
+    expect(speech.closest(".cai-orb")).toHaveClass("is-speaking");
 
     act(() => vi.advanceTimersByTime(4500));
     expect(speech).toHaveAttribute("aria-hidden", "true");
@@ -84,5 +86,20 @@ describe("InteractiveOrb", () => {
     act(() => vi.advanceTimersByTime(12000));
     expect(speech).toHaveAttribute("aria-hidden", "false");
     expect(speech).toHaveTextContent("여기까지 와줘서 고마워요.");
+  });
+
+  test("anchors a readable cloud bubble above the Westie", () => {
+    const progressRef = { current: 0 };
+    const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
+    const speech = container.querySelector(".cai-orb-speech");
+    const speechStyle = getComputedStyle(speech);
+
+    expect(speechStyle.top).toBe("auto");
+    expect(speechStyle.bottom).toBe("112px");
+    expect(speechStyle.left).toBe("calc(50% + 18px)");
+    expect(speechStyle.fontSize).toBe("14px");
+    expect(speechStyle.fontWeight).toBe("500");
+    expect(speechStyle.borderRadius).toBe("18px");
+    expect(speechStyle.color).toBe("var(--cai-fg)");
   });
 });
