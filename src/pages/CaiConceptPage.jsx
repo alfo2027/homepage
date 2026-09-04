@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
+import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import CustomCursor from "../components/CustomCursor";
 import "../concepts/cai.css";
 
@@ -16,6 +17,14 @@ export default function CaiConceptPage() {
   const progressFillRef = useRef(null);
   const scrollProgressRef = useRef(0);
   const [activeProject, setActiveProject] = useState(0);
+  const [activeView, setActiveView] = useState("work");
+
+  const scrollHome = (event) => {
+    event.preventDefault();
+    setActiveView("work");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scrollRef.current?.scrollTo?.({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  };
 
   useLayoutEffect(() => {
     document.title = "윤미래 Product Designer";
@@ -36,7 +45,9 @@ export default function CaiConceptPage() {
     scroller?.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobileLayout || prefersReducedMotion) {
       return () => scroller?.removeEventListener("scroll", updateProgress);
     }
 
@@ -77,33 +88,33 @@ export default function CaiConceptPage() {
       <CustomCursor />
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
-          <a href="#cai-grid" className="cai-home" data-cursor="link">Home</a>
+          <a href="#cai-grid" className="cai-home" data-cursor="link" onClick={scrollHome}>Home</a>
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
-            <a href="#cai-grid" aria-current="page" data-cursor="link">Work</a>
-            <Link to="/original" state={{ section: "about" }} data-cursor="link">About</Link>
-            <Link to="/original" state={{ section: "experience" }} data-cursor="link">Experience</Link>
+            <button type="button" data-cursor="link" className={activeView === "experience" ? "is-active" : ""} aria-current={activeView === "experience" ? "page" : undefined} onClick={() => { setActiveView("experience"); scrollRef.current?.scrollTo?.({ top: 0, behavior: "smooth" }); }}>Experience</button>
           </nav>
-          <div className="cai-profile">
-            <h1>윤미래</h1>
-            <div className="cai-profile-copy">
-              <p>책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.</p>
-              <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.</p>
-              <p>디자인도 그렇습니다. 충분히 들여다본 뒤 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
-            </div>
+        </div>
+        <div className="cai-profile">
+          <h1>윤미래</h1>
+          <div className="cai-profile-copy">
+            <p>책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.</p>
+            <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.</p>
+            <p>디자인도 그렇습니다. 충분히 들여다본 뒤 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
           </div>
-          <InteractiveOrb dark={dark} progressRef={scrollProgressRef} />
         </div>
         <div className="cai-side-bottom">
-          <button
-            type="button"
-            className="cai-theme-toggle"
-            data-cursor="link"
-            onClick={() => setDark((value) => !value)}
-            aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
-          >
-            <span aria-hidden="true" />
-          </button>
-          <p>{String(activeProject + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</p>
+          <InteractiveOrb dark={dark} progressRef={scrollProgressRef} />
+          <div className="cai-side-controls">
+            <button
+              type="button"
+              className="cai-theme-toggle"
+              data-cursor="link"
+              onClick={() => setDark((value) => !value)}
+              aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
+            >
+              <span aria-hidden="true" />
+            </button>
+            <p>{String(activeProject + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</p>
+          </div>
         </div>
         <div className="cai-scroll-progress" role="progressbar" aria-label="프로젝트 스크롤 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span ref={progressFillRef} className="cai-scroll-progress-fill" style={{ transform: "scaleY(0)" }} />
@@ -111,7 +122,7 @@ export default function CaiConceptPage() {
       </aside>
 
       <section ref={scrollRef} className="cai-grid-scroll" id="cai-grid" aria-label="프로젝트 세로 목록">
-        <div className="cai-project-grid is-gallery-index">
+        {activeView === "experience" ? <CaiExperiencePanel /> : <div className="cai-project-grid is-gallery-index">
           {projects.map((project, index) => {
             const card = (
               <>
@@ -131,7 +142,7 @@ export default function CaiConceptPage() {
               <Link className="cai-project" data-cursor="project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`}>{card}</Link>
             );
           })}
-        </div>
+        </div>}
       </section>
 
     </main>

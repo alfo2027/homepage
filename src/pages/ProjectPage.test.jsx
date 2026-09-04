@@ -25,6 +25,23 @@ describe("project detail", () => {
     await waitFor(() => expect(document.title).toBe("윤미래 Product Designer - 크립토 뉴스 분석 AI 애널리스트"));
   });
 
+  test("introduces the analyst project with only a title and one narrative", () => {
+    const { container } = renderRoute("/projects/analyst");
+    const introduction = container.querySelector(".project-intro");
+    const images = container.querySelector(".project-images");
+
+    expect(introduction).toBeInTheDocument();
+    expect(introduction.compareDocumentPosition(images) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
+    expect(introduction.querySelectorAll("p")).toHaveLength(1);
+    expect(introduction.querySelector("p")).toHaveTextContent(/한국경제신문이 운영하는 크립토 뉴스·데이터 플랫폼/);
+    expect(introduction.querySelector("p")).toHaveTextContent(/초단기·중기·장기 관점을 구조화하고/);
+    expect(screen.queryByText("회사 소개")).not.toBeInTheDocument();
+    expect(screen.queryByText("프로젝트 소개")).not.toBeInTheDocument();
+    expect(screen.queryByText("ROLE")).not.toBeInTheDocument();
+    expect(screen.queryByText(/BLOOMINGBIT · PRODUCT DESIGN/)).not.toBeInTheDocument();
+  });
+
   test("shows four related projects as thumbnail links", () => {
     const { container } = renderRoute("/projects/analyst");
 
