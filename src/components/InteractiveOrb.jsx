@@ -145,7 +145,7 @@ export default function InteractiveOrb({ dark, progressRef }) {
 
     const hideMessage = () => {
       setSpeaking(false);
-      schedule(showMessage, randomDelay(12000, 20000));
+      schedule(showMessage, randomDelay(8000, 13000));
     };
 
     const showMessage = () => {
@@ -164,7 +164,7 @@ export default function InteractiveOrb({ dark, progressRef }) {
       }
     };
 
-    schedule(showMessage, randomDelay(5000, 8000));
+    schedule(showMessage, randomDelay(3000, 5000));
     document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {

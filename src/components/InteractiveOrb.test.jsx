@@ -72,7 +72,7 @@ describe("InteractiveOrb", () => {
     expect(speech).toHaveAttribute("aria-live", "polite");
     expect(speech).toHaveAttribute("aria-hidden", "true");
 
-    act(() => vi.advanceTimersByTime(4999));
+    act(() => vi.advanceTimersByTime(2999));
     expect(speech).toHaveAttribute("aria-hidden", "true");
 
     act(() => vi.advanceTimersByTime(1));
@@ -83,7 +83,7 @@ describe("InteractiveOrb", () => {
     act(() => vi.advanceTimersByTime(4500));
     expect(speech).toHaveAttribute("aria-hidden", "true");
 
-    act(() => vi.advanceTimersByTime(12000));
+    act(() => vi.advanceTimersByTime(8000));
     expect(speech).toHaveAttribute("aria-hidden", "false");
     expect(speech).toHaveTextContent("여기까지 와줘서 고마워요.");
   });
@@ -95,11 +95,11 @@ describe("InteractiveOrb", () => {
     const speechStyle = getComputedStyle(speech);
 
     expect(speechStyle.top).toBe("auto");
-    expect(speechStyle.bottom).toBe("112px");
+    expect(speechStyle.bottom).toBe("128px");
     expect(speechStyle.left).toBe("calc(50% + 18px)");
     expect(speechStyle.fontSize).toBe("14px");
-    expect(speechStyle.fontWeight).toBe("500");
-    expect(speechStyle.borderRadius).toBe("18px");
+    expect(speechStyle.fontWeight).toBe("400");
+    expect(speechStyle.borderRadius).toBe("999px");
     expect(speechStyle.color).toBe("var(--cai-fg)");
   });
 });
