@@ -108,7 +108,7 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("matches the home menu typography without a detail theme control", () => {
+  test("matches the home menu typography and destinations without a detail theme control", () => {
     renderRoute("/projects/analyst");
     const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
     const projects = screen.getByRole("link", { name: "Projects" });
@@ -120,7 +120,7 @@ describe("project detail", () => {
     expect(navigation.querySelector(".project-menu")).toContainElement(about);
     expect(projects).toHaveAttribute("href", "/");
     expect(home).toHaveAttribute("href", "/");
-    expect(about).toHaveAttribute("href", "/");
+    expect(about).toHaveAttribute("href", "/about");
     expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
     expect(getComputedStyle(navigation).top).toBe("24px");
@@ -139,7 +139,6 @@ describe("project detail", () => {
     expect(getComputedStyle(navigation).position).toBe("fixed");
     expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");
-
   });
 
   test("renders a useful fallback for an unknown project", () => {

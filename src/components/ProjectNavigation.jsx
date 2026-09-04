@@ -16,7 +16,7 @@ export default function ProjectNavigation() {
       </Link>
       <div className="project-menu">
         <Link to="/" state={{ view: "work" }}>Home</Link>
-        <Link to="/" state={{ view: "experience" }}>About</Link>
+        <Link to="/about">About</Link>
       </div>
     </nav>
   );
