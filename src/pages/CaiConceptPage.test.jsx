@@ -38,6 +38,20 @@ describe("Cai-inspired concept page", () => {
     expect([...container.querySelectorAll("img")].every((image) => image.draggable === false)).toBe(true);
   });
 
+  test("uses Pretendard with enlarged project titles and descriptions", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const pageStyle = getComputedStyle(screen.getByTestId("cai-concept"));
+    const firstProject = screen.getAllByTestId("cai-project")[0];
+
+    expect(pageStyle.fontFamily).toContain("Pretendard");
+    expect(getComputedStyle(firstProject.querySelector("h2")).fontSize).toBe("24px");
+    expect(getComputedStyle(firstProject.querySelector(".cai-project-copy p")).fontSize).toBe("18px");
+
+    fireEvent.click(screen.getByRole("button", { name: "Experience" }));
+    expect(getComputedStyle(screen.getByRole("heading", { name: "Experience" })).fontFamily).toContain("Pretendard");
+    expect(getComputedStyle(screen.getByText("블루밍비트(Bloomingbit)")).fontFamily).toContain("Pretendard");
+  });
+
   test("keeps every project thumbnail visible when the mobile page uses document scrolling", () => {
     const originalMatchMedia = window.matchMedia;
     window.matchMedia = vi.fn().mockImplementation((query) => ({

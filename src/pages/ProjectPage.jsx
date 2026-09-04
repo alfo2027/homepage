@@ -19,6 +19,12 @@ export default function ProjectPage() {
   return (
     <main className="project-shell">
       <ProjectNavigation />
+      {project.intro && (
+        <header className="project-intro">
+          <h1>{project.intro.headline}</h1>
+          <p>{project.intro.description}</p>
+        </header>
+      )}
       <section className="project-images" aria-label={project.detailLabel}>
         {project.images.map((image, index) => (
           <img
