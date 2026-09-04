@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import NotFoundPage from "./NotFoundPage";
@@ -108,20 +108,27 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("keeps one background-free navigation floating over the project", () => {
+  test("matches the home navigation labels, destinations, and theme control", () => {
     const { container } = renderRoute("/projects/analyst");
     const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
+    const home = screen.getByRole("link", { name: "Home" });
+    const about = screen.getByRole("link", { name: "About" });
+    const theme = screen.getByRole("button", { name: "다크 모드로 전환" });
 
-    expect(container.querySelectorAll(".project-back")).toHaveLength(1);
-    expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: "Experience" })).toHaveAttribute("href", "/");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Projects" })).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Experience" })).color).toBe("var(--portfolio-fg)");
+    expect([...navigation.children].map((item) => item.textContent)).toEqual(["Home", "About", ""]);
+    expect(home).toHaveAttribute("href", "/");
+    expect(about).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("link", { name: "Projects" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
+    expect(getComputedStyle(home).color).toBe("var(--portfolio-fg)");
+    expect(getComputedStyle(about).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(navigation).position).toBe("fixed");
     expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");
+
+    fireEvent.click(theme);
+    expect(container.querySelector(".portfolio-app")).toHaveClass("is-dark");
+    expect(theme).toHaveAccessibleName("라이트 모드로 전환");
   });
 
   test("renders a useful fallback for an unknown project", () => {
