@@ -88,6 +88,12 @@ describe("Cai-inspired concept page", () => {
 
     expect(getComputedStyle(firstThumbnail).filter).toBe("none");
     expect(getComputedStyle(firstThumbnail).transform).toBe("none");
+
+    const styleRules = [...document.styleSheets]
+      .flatMap((sheet) => [...sheet.cssRules])
+      .map((rule) => rule.cssText)
+      .join("\n");
+    expect(styleRules).toContain("transform: scale(1.03)");
   });
 
   test("keeps the thumbnail metadata still during hover interactions", () => {
@@ -112,6 +118,22 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(analystOverlay).placeItems).toBe("center");
     expect(getComputedStyle(analystOverlay).backgroundColor).toBe("rgba(0, 0, 0, 0.55)");
     expect(getComputedStyle(analystOverlay).backdropFilter).toBe("blur(4px)");
+  });
+
+  test("uses the newly supplied artwork for the four matching project thumbnails", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+
+    const expectedThumbnails = {
+      analyst: "/assets/project-01/project-01-thumb.avif",
+      "bloomingbit-alpha": "/assets/project-02/project-02-thumb.avif",
+      "dever-partners": "/assets/project-07/project-07-thumb.avif",
+      "graphic-visual": "/assets/project-11/project-11-thumb.avif",
+    };
+
+    Object.entries(expectedThumbnails).forEach(([slug, thumbnail]) => {
+      const card = document.querySelector(`a[href="/projects/${slug}"]`);
+      expect(card?.querySelector("img")).toHaveAttribute("src", thumbnail);
+    });
   });
 
   test("moves desktop gallery columns at different scroll speeds", () => {

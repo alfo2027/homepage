@@ -93,7 +93,7 @@ describe("project detail", () => {
     expect(screen.getByRole("heading", { name: "Related Works" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /블루밍비트 알파/ })).toHaveAttribute("href", "/projects/bloomingbit-alpha");
     expect(container.querySelectorAll(".project-related-card")).toHaveLength(1);
-    expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-03.avif");
+    expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-thumb.avif");
     expect(getComputedStyle(container.querySelector(".project-related h2")).fontSize).toBe("var(--portfolio-type-15)");
     expect(getComputedStyle(container.querySelector(".project-related-grid")).gridTemplateColumns).toBe("repeat(4,minmax(0,1fr))");
     expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("4/3");

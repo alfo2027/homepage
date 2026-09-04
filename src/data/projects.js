@@ -36,8 +36,8 @@ export const projects = [
     thumbnail: asset("assets/project-01/project-01-thumb.avif"),
     thumbnailAlt: "크립토 뉴스 분석 AI 애널리스트 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 773,
-    galleryThumbnail: galleryAsset(1, 2),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-01/project-01-thumb.avif"),
     detailLabel: "크립토 뉴스 분석 AI 애널리스트 포트폴리오",
     intro: {
       headline: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트",
@@ -57,8 +57,8 @@ export const projects = [
     thumbnail: asset("assets/project-02/project-02-thumb.avif"),
     thumbnailAlt: "블루밍비트 알파 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(2, 3),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-02/project-02-thumb.avif"),
     detailLabel: "블루밍비트 알파 포트폴리오",
     intro: {
       headline: "전문가의 리서치를 확장하는 AI 크립토 터미널",
@@ -150,8 +150,8 @@ export const projects = [
     thumbnail: asset("assets/project-07/project-07-thumb.avif"),
     thumbnailAlt: "디버 파트너스 앱 리디자인 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(7, 4),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-07/project-07-thumb.avif"),
     detailLabel: "디버 파트너스 앱 리디자인 포트폴리오",
     intro: {
       headline: "배송 기사의 실제 업무 흐름에서 다시 만든 파트너스 앱",
@@ -222,8 +222,8 @@ export const projects = [
     thumbnail: asset("assets/project-11/project-11-thumb.avif"),
     thumbnailAlt: "그래픽 디자인과 3D 비주얼 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(11, 4),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-11/project-11-thumb.avif"),
     detailLabel: "그래픽 디자인과 3D 비주얼 포트폴리오",
     intro: {
       headline: "브랜드의 인상을 확장하는 그래픽과 3D 비주얼",
