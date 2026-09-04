@@ -140,6 +140,11 @@ export default function CaiConceptPage() {
                 <div className="cai-image-wrap">
                   <img draggable={false} src={project.galleryThumbnail ?? project.thumbnail} alt={project.thumbnailAlt} width={project.thumbnailWidth} height={project.thumbnailHeight} loading={index < 4 ? "eager" : "lazy"} />
                   {project.upcoming && <span>UPCOMING</span>}
+                  {project.intro?.headline && (
+                    <span className="cai-project-hover" aria-hidden="true">
+                      <strong>{project.intro.headline}</strong>
+                    </span>
+                  )}
                 </div>
                 <div className="cai-project-copy">
                   <h2>{project.title}</h2>

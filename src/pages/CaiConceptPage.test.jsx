@@ -80,6 +80,29 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(firstThumbnail).filter).toBe("none");
   });
 
+  test("keeps the thumbnail metadata still during hover interactions", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+    const projectCopy = container.querySelector(".cai-project-copy");
+
+    expect(getComputedStyle(projectCopy).transition).toBe("none");
+    expect(getComputedStyle(projectCopy).transform).toBe("none");
+  });
+
+  test("places each detail headline in a centered thumbnail hover overlay", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+    const cards = screen.getAllByTestId("cai-project");
+    const analystOverlay = cards[1].querySelector(".cai-project-hover");
+
+    expect(cards[0].querySelector(".cai-project-hover")).not.toBeInTheDocument();
+    expect(analystOverlay).toBeInTheDocument();
+    expect(cards[1].querySelector(".cai-image-wrap")).toContainElement(analystOverlay);
+    expect(analystOverlay).toHaveTextContent("크립토 시장을 더 빠르게 이해하는 AI 애널리스트");
+    expect(analystOverlay).toHaveAttribute("aria-hidden", "true");
+    expect(getComputedStyle(analystOverlay).display).toBe("grid");
+    expect(getComputedStyle(analystOverlay).placeItems).toBe("center");
+    expect(getComputedStyle(analystOverlay).backgroundColor).toBe("rgba(0, 0, 0, 0.4)");
+  });
+
   test("moves desktop gallery columns at different scroll speeds", () => {
     const originalMatchMedia = window.matchMedia;
     window.matchMedia = vi.fn().mockImplementation((query) => ({

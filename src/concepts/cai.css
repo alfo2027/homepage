@@ -59,8 +59,11 @@
 @media(max-width:900px){.cai-experience-strengths{grid-template-columns:1fr}.cai-career-item{grid-template-columns:1fr;gap:48px}}
 @media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:48px 16px 36px}.cai-experience-header{margin-bottom:72px}.cai-experience-strengths{margin-bottom:100px}.cai-experience-footer{justify-content:flex-start;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.cai-experience{animation:none}}
-.cai-project-copy{transition:transform .4s cubic-bezier(.22,1,.36,1)}
-.cai-project:hover .cai-project-copy{transform:translateX(4px)}
+.cai-project-copy{transition:none}
+.cai-image-wrap>.cai-project-hover{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.4);color:#f4f4f1;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.cai-project-hover strong{max-width:22ch;font-size:clamp(16px,1.35vw,20px);font-weight:500;line-height:1.45;letter-spacing:-.025em;word-break:keep-all;opacity:0;transform:translateY(8px);transition:opacity .25s ease,transform .25s cubic-bezier(.22,1,.36,1)}
+.cai-project:hover .cai-project-hover,.cai-project:focus-visible .cai-project-hover{opacity:1}
+.cai-project:hover .cai-project-hover strong,.cai-project:focus-visible .cai-project-hover strong{opacity:1;transform:none}
 
 @media(hover:hover) and (pointer:fine){
   .cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:none}
@@ -76,7 +79,8 @@
 @media(hover:none),(pointer:coarse){.cai-cursor{display:none}}
 
 @media(max-width:640px){.cai-cursor{display:none!important}.cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:auto}}
-@media(prefers-reduced-motion:reduce){.cai-cursor{display:none}.cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:auto}.cai-project{transform:none!important;transition:none}.cai-project-copy{transition:none}.cai-project:hover .cai-project-copy{transform:none}}
+@media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:none}}
+@media(prefers-reduced-motion:reduce){.cai-cursor{display:none}.cai-concept,.cai-concept a,.cai-concept button,.cai-concept [data-cursor]{cursor:auto}.cai-project{transform:none!important;transition:none}.cai-project-hover,.cai-project-hover strong{transition:none}.cai-project-hover strong{transform:none}}
 
 /* Sidebar composition */
 .cai-side-top>.cai-side-menu{margin:0;gap:7px}
