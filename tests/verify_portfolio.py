@@ -51,7 +51,18 @@ class SpaPortfolioTest(unittest.TestCase):
 
     def test_design_tokens_and_responsive_gutters_are_preserved(self):
         css = re.sub(r"\s+", "", self.read("src/styles.css"))
-        for token in ("--bg:#fff", "--surface:#f5f5f7", "--fg:#1d1d1f", "--muted:#6e6e73", "--line:#eee"):
+        for token in (
+            "--portfolio-bg:#f7f7f5",
+            "--portfolio-surface:#eeeeeb",
+            "--portfolio-fg:#121212",
+            "--portfolio-muted:#777",
+            "--portfolio-line:#d9d9d5",
+            "--bg:var(--portfolio-bg)",
+            "--surface:var(--portfolio-surface)",
+            "--fg:var(--portfolio-fg)",
+            "--muted:var(--portfolio-muted)",
+            "--line:var(--portfolio-line)",
+        ):
             self.assertIn(token, css)
         self.assertIn("--page-gutter:80px", css)
         self.assertIn("--page-gutter:48px", css)
