@@ -245,7 +245,6 @@ export const getRelatedProjects = (slug, limit = 4) => {
 
   const candidates = detailProjects.filter(({ slug: candidateSlug }) => candidateSlug !== slug);
   const sameCompany = candidates.filter(({ company }) => company === current.company);
-  const remaining = candidates.filter(({ company }) => company !== current.company);
 
-  return [...sameCompany, ...remaining].slice(0, limit);
+  return sameCompany.slice(0, Math.min(limit, 4));
 };

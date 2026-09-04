@@ -38,19 +38,21 @@ describe("project data", () => {
     }
   });
 
-  test("prioritizes same-company work before filling from list order", () => {
+  test("returns only published work from the same company", () => {
     expect(getRelatedProjects("plan-purchase").map(({ slug }) => slug)).toEqual([
       "shipment-report",
       "design-system",
       "schedule-demo",
-      "analyst",
     ]);
     expect(getRelatedProjects("dever-partners").map(({ slug }) => slug)).toEqual([
       "dever-order-web",
       "dever-alimtalk",
       "dever-signup",
-      "analyst",
     ]);
+    expect(getRelatedProjects("analyst").map(({ slug }) => slug)).toEqual([
+      "bloomingbit-alpha",
+    ]);
+    expect(getRelatedProjects("graphic-visual")).toEqual([]);
   });
 });
 

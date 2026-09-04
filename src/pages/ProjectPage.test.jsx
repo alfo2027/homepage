@@ -87,18 +87,25 @@ describe("project detail", () => {
     expect(getComputedStyle(narrative).textAlign).toBe("left");
   });
 
-  test("shows four related projects as thumbnail links", () => {
+  test("shows only the available same-company work in a restrained gallery", () => {
     const { container } = renderRoute("/projects/analyst");
 
-    expect(screen.getByRole("heading", { name: "다른 프로젝트" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Related Works" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /블루밍비트 알파/ })).toHaveAttribute("href", "/projects/bloomingbit-alpha");
-    expect(screen.getByRole("link", { name: /플랜 구매 경험 개선/ })).toHaveAttribute("href", "/projects/plan-purchase");
-    expect(screen.getByRole("link", { name: /정기 선적 리포트/ })).toHaveAttribute("href", "/projects/shipment-report");
-    expect(screen.getByRole("link", { name: /디자인 시스템 공통화/ })).toHaveAttribute("href", "/projects/design-system");
-    expect(container.querySelectorAll(".project-related-card")).toHaveLength(4);
-    expect(container.querySelectorAll(".project-related-card img")).toHaveLength(4);
+    expect(container.querySelectorAll(".project-related-card")).toHaveLength(1);
+    expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-03.avif");
+    expect(getComputedStyle(container.querySelector(".project-related h2")).fontSize).toBe("var(--portfolio-type-15)");
+    expect(getComputedStyle(container.querySelector(".project-related-grid")).gridTemplateColumns).toBe("repeat(4,minmax(0,1fr))");
+    expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("4/3");
     expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("var(--portfolio-type-15)");
     expect(getComputedStyle(container.querySelector(".project-related-card > span:last-child")).fontSize).toBe("var(--portfolio-type-13)");
+  });
+
+  test("omits Related Works when there is no same-company project", () => {
+    const { container } = renderRoute("/projects/graphic-visual");
+
+    expect(screen.queryByRole("heading", { name: "Related Works" })).not.toBeInTheDocument();
+    expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
   test("keeps one background-free navigation floating over the project", () => {

@@ -49,27 +49,29 @@ export default function ProjectPage() {
           ))}
         </section>
       </div>
-      <section className="project-related" aria-labelledby="project-related-title">
-        <h2 id="project-related-title">다른 프로젝트</h2>
-        <nav className="project-related-grid" aria-label="다른 프로젝트 탐색">
-          {relatedProjects.map((relatedProject) => (
-            <Link className="project-related-card" to={`/projects/${relatedProject.slug}`} key={relatedProject.slug}>
-              <span className="project-related-image">
-                <img
-                  draggable={false}
-                  src={relatedProject.thumbnail}
-                  alt=""
-                  width={relatedProject.thumbnailWidth}
-                  height={relatedProject.thumbnailHeight}
-                  loading="lazy"
-                />
-              </span>
-              <strong>{relatedProject.title}</strong>
-              <span>{relatedProject.type}</span>
-            </Link>
-          ))}
-        </nav>
-      </section>
+      {relatedProjects.length > 0 && (
+        <section className="project-related" aria-labelledby="project-related-title">
+          <h2 id="project-related-title">Related Works</h2>
+          <nav className="project-related-grid" aria-label="관련 프로젝트 탐색">
+            {relatedProjects.map((relatedProject) => (
+              <Link className="project-related-card" to={`/projects/${relatedProject.slug}`} key={relatedProject.slug}>
+                <span className="project-related-image">
+                  <img
+                    draggable={false}
+                    src={relatedProject.galleryThumbnail ?? relatedProject.thumbnail}
+                    alt=""
+                    width={relatedProject.thumbnailWidth}
+                    height={relatedProject.thumbnailHeight}
+                    loading="lazy"
+                  />
+                </span>
+                <strong>{relatedProject.title}</strong>
+                <span>{relatedProject.type}</span>
+              </Link>
+            ))}
+          </nav>
+        </section>
+      )}
     </main>
   );
 }
