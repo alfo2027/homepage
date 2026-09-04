@@ -62,14 +62,6 @@ function SimplifiedWestie({ dark, progressRef }) {
         <Fur dark={dark} shade />
       </mesh>
       <group ref={headRef} name="WestieHead">
-        <mesh position={[-0.56, 0.67, -0.03]} rotation={[0, 0, -0.16]} scale={[0.62, 1, 0.48]}>
-          <coneGeometry args={[0.42, 0.78, 4]} />
-          <Fur dark={dark} shade />
-        </mesh>
-        <mesh position={[0.56, 0.67, -0.03]} rotation={[0, 0, 0.16]} scale={[0.62, 1, 0.48]}>
-          <coneGeometry args={[0.42, 0.78, 4]} />
-          <Fur dark={dark} shade />
-        </mesh>
         <mesh position={[0, 0.05, 0]} scale={[0.98, 0.9, 0.82]}>
           <sphereGeometry args={[0.72, 36, 28]} />
           <Fur dark={dark} />

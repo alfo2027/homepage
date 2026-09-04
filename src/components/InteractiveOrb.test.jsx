@@ -43,6 +43,7 @@ describe("InteractiveOrb", () => {
     expect(container.querySelector('[name="WestieHead"]')).toBeInTheDocument();
     expect(container.querySelector('[name="WestieMuzzle"]')).toBeInTheDocument();
     expect(container.querySelectorAll('[name="WestieEye"]')).toHaveLength(2);
+    expect(container.querySelectorAll("conegeometry")).toHaveLength(0);
     expect(mockUseGLTF).not.toHaveBeenCalled();
   });
 
