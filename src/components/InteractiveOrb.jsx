@@ -44,33 +44,19 @@ function Fur({ dark, shade = false }) {
 function SimplifiedWestie({ dark, progressRef }) {
   const dogRef = useRef(null);
   const headRef = useRef(null);
-  const dragRef = useRef({ active: false, x: 0, rotation: 0 });
 
   useFrame((state) => {
     if (!dogRef.current || !headRef.current) return;
     const time = state.clock.elapsedTime;
     const progress = progressRef.current || 0;
-    dogRef.current.rotation.y = dragRef.current.rotation + state.pointer.x * 0.08;
+    dogRef.current.rotation.y = state.pointer.x * 0.08;
     dogRef.current.position.y = 0.08 + Math.sin(time * 2 + progress * 16) * 0.025;
     headRef.current.rotation.z = state.pointer.x * -0.08 + Math.sin(time * 1.2) * 0.025;
     headRef.current.rotation.x = state.pointer.y * 0.035;
   });
 
-  const startDrag = (event) => {
-    event.stopPropagation();
-    event.target.setPointerCapture?.(event.pointerId);
-    dragRef.current.active = true;
-    dragRef.current.x = event.clientX;
-  };
-  const moveDrag = (event) => {
-    if (!dragRef.current.active) return;
-    dragRef.current.rotation += (event.clientX - dragRef.current.x) * 0.009;
-    dragRef.current.x = event.clientX;
-  };
-  const endDrag = () => { dragRef.current.active = false; };
-
   return (
-    <group ref={dogRef} scale={0.92} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerLeave={endDrag}>
+    <group ref={dogRef} scale={0.92}>
       <mesh position={[0, -1.08, 0]} scale={[0.78, 1.05, 0.58]}>
         <sphereGeometry args={[0.78, 32, 24]} />
         <Fur dark={dark} shade />
@@ -128,6 +114,12 @@ function SimplifiedWestie({ dark, progressRef }) {
 export default function InteractiveOrb({ dark, progressRef }) {
   const [speaking, setSpeaking] = useState(false);
   const [message, setMessage] = useState("");
+  const [speechCycle, setSpeechCycle] = useState(0);
+  const [reacting, setReacting] = useState(false);
+  const [surprise, setSurprise] = useState("");
+  const triggerSpeechRef = useRef(null);
+  const reactionTimerRef = useRef(null);
+  const clickLockedRef = useRef(false);
 
   useEffect(() => {
     let timer;
@@ -149,11 +141,15 @@ export default function InteractiveOrb({ dark, progressRef }) {
     };
 
     const showMessage = () => {
+      window.clearTimeout(timer);
       if (messageQueue.length === 0) messageQueue = shuffledMessages();
       setMessage(messageQueue.shift());
+      setSpeechCycle((cycle) => cycle + 1);
       setSpeaking(true);
       schedule(hideMessage, 4500);
     };
+
+    triggerSpeechRef.current = showMessage;
 
     const handleVisibility = () => {
       if (document.hidden) {
@@ -169,15 +165,39 @@ export default function InteractiveOrb({ dark, progressRef }) {
 
     return () => {
       window.clearTimeout(timer);
+      triggerSpeechRef.current = null;
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
 
+  useEffect(() => () => window.clearTimeout(reactionTimerRef.current), []);
+
+  const greet = () => {
+    if (clickLockedRef.current) return;
+    clickLockedRef.current = true;
+    setReacting(true);
+    setSurprise(Math.random() < 0.22 ? (Math.random() < 0.5 ? "♥" : "✦") : "");
+    triggerSpeechRef.current?.();
+    window.clearTimeout(reactionTimerRef.current);
+    reactionTimerRef.current = window.setTimeout(() => {
+      setReacting(false);
+      setSurprise("");
+      clickLockedRef.current = false;
+    }, 700);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    greet();
+  };
+
   return (
-    <div className={`cai-orb${speaking ? " is-speaking" : ""}`} data-cursor="drag" data-testid="interactive-orb" aria-label="스크롤과 드래그에 반응하는 웨스티 캐릭터" aria-describedby="cai-orb-introduction" tabIndex="0">
-      <div id="cai-orb-introduction" className="cai-orb-speech" role="status" aria-live="polite" aria-atomic="true" aria-hidden={!speaking}>
+    <div className={`cai-orb${speaking ? " is-speaking" : ""}${reacting ? " is-reacting" : ""}`} data-cursor="pointer" data-testid="interactive-orb" aria-label="클릭하면 인사하는 웨스티 캐릭터" aria-describedby="cai-orb-introduction" role="button" tabIndex="0" onClick={greet} onKeyDown={handleKeyDown}>
+      <div id="cai-orb-introduction" className={`cai-orb-speech speech-cycle-${speechCycle % 2}`} role="status" aria-live="polite" aria-atomic="true" aria-hidden={!speaking}>
         {message}
       </div>
+      {surprise && <span className="cai-orb-surprise" aria-hidden="true">{surprise}</span>}
       <div className="cai-orb-stage">
         <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.08, 4.1], fov: 34 }}>
           <ambientLight intensity={dark ? 1.3 : 2.1} />

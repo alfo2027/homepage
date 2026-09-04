@@ -36,7 +36,7 @@ describe("InteractiveOrb", () => {
     const progressRef = { current: 0 };
     const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
 
-    expect(screen.getByLabelText("스크롤과 드래그에 반응하는 웨스티 캐릭터")).toBeInTheDocument();
+    expect(screen.getByLabelText("클릭하면 인사하는 웨스티 캐릭터")).toBeInTheDocument();
     expect(screen.queryByText("PET / DRAG")).not.toBeInTheDocument();
     expect(container.querySelector(".cai-orb-meta")).not.toBeInTheDocument();
     expect(container.querySelector(".cai-orb-stage")).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("InteractiveOrb", () => {
     const progressRef = { current: 0 };
     render(<InteractiveOrb dark={false} progressRef={progressRef} />);
 
-    const character = screen.getByLabelText("스크롤과 드래그에 반응하는 웨스티 캐릭터");
+    const character = screen.getByLabelText("클릭하면 인사하는 웨스티 캐릭터");
     const speech = screen.getByRole("status", { hidden: true });
     expect(speech).toHaveAttribute("aria-hidden", "true");
 
@@ -60,6 +60,26 @@ describe("InteractiveOrb", () => {
     fireEvent.focus(character);
     expect(speech).toHaveAttribute("aria-hidden", "true");
     expect(screen.queryByText("안녕하세요!")).not.toBeInTheDocument();
+  });
+
+  test("greets immediately with a small surprise when clicked", () => {
+    vi.useFakeTimers();
+    vi.spyOn(Math, "random").mockReturnValue(0);
+    const progressRef = { current: 0 };
+    const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
+
+    const character = screen.getByLabelText("클릭하면 인사하는 웨스티 캐릭터");
+    const speech = screen.getByRole("status", { hidden: true });
+    fireEvent.click(character);
+
+    expect(speech).toHaveAttribute("aria-hidden", "false");
+    expect(speech).not.toHaveTextContent("");
+    expect(character).toHaveClass("is-reacting");
+    expect(container.querySelector(".cai-orb-surprise")).toBeInTheDocument();
+    expect(character).toHaveAttribute("data-cursor", "pointer");
+
+    act(() => vi.advanceTimersByTime(700));
+    expect(character).not.toHaveClass("is-reacting");
   });
 
   test("speaks a shuffled message after a gentle random delay", () => {
