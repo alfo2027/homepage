@@ -78,7 +78,10 @@ describe("InteractiveOrb", () => {
     expect(container.querySelector(".cai-orb-surprise")).toBeInTheDocument();
     expect(character).toHaveAttribute("data-cursor", "pointer");
 
-    act(() => vi.advanceTimersByTime(700));
+    act(() => vi.advanceTimersByTime(749));
+    expect(character).toHaveClass("is-reacting");
+
+    act(() => vi.advanceTimersByTime(1));
     expect(character).not.toHaveClass("is-reacting");
   });
 
@@ -108,7 +111,7 @@ describe("InteractiveOrb", () => {
     expect(speech).toHaveTextContent("여기까지 와줘서 고마워요.");
   });
 
-  test("anchors a readable cloud bubble above the Westie", () => {
+  test("anchors a readable dark cloud bubble above the Westie", () => {
     const progressRef = { current: 0 };
     const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
     const speech = container.querySelector(".cai-orb-speech");
@@ -120,6 +123,7 @@ describe("InteractiveOrb", () => {
     expect(speechStyle.fontSize).toBe("14px");
     expect(speechStyle.fontWeight).toBe("400");
     expect(speechStyle.borderRadius).toBe("999px");
-    expect(speechStyle.color).toBe("var(--cai-fg)");
+    expect(speechStyle.backgroundColor).toBe("rgba(38, 38, 35, 0.9)");
+    expect(speechStyle.color).toBe("rgb(247, 246, 242)");
   });
 });

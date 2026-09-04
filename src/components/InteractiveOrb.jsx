@@ -183,7 +183,7 @@ export default function InteractiveOrb({ dark, progressRef }) {
       setReacting(false);
       setSurprise("");
       clickLockedRef.current = false;
-    }, 700);
+    }, 750);
   };
 
   const handleKeyDown = (event) => {
