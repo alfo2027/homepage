@@ -78,6 +78,7 @@ describe("Cai-inspired concept page", () => {
     const firstThumbnail = container.querySelector(".cai-image-wrap img");
 
     expect(getComputedStyle(firstThumbnail).filter).toBe("none");
+    expect(getComputedStyle(firstThumbnail).transform).toBe("none");
   });
 
   test("keeps the thumbnail metadata still during hover interactions", () => {
@@ -100,7 +101,8 @@ describe("Cai-inspired concept page", () => {
     expect(analystOverlay).toHaveAttribute("aria-hidden", "true");
     expect(getComputedStyle(analystOverlay).display).toBe("grid");
     expect(getComputedStyle(analystOverlay).placeItems).toBe("center");
-    expect(getComputedStyle(analystOverlay).backgroundColor).toBe("rgba(0, 0, 0, 0.4)");
+    expect(getComputedStyle(analystOverlay).backgroundColor).toBe("rgba(0, 0, 0, 0.55)");
+    expect(getComputedStyle(analystOverlay).backdropFilter).toBe("blur(4px)");
   });
 
   test("moves desktop gallery columns at different scroll speeds", () => {
