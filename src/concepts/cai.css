@@ -6,6 +6,9 @@
 @media(prefers-reduced-motion:reduce){.cai-concept,.cai-side,.cai-image-wrap img,.cai-orb-speech{transition:none}}
 
 .cai-profile-copy{display:grid;gap:10px}
+.cai-profile-copy p{max-width:100%}
+.cai-profile-wide-break{display:none}
+@media(min-width:861px){.cai-profile-wide-break{display:initial}}
 
 /* Concept interactions */
 .cai-orb{position:relative;width:min(174px,calc(100% - 46px));outline:none;cursor:grab;user-select:none}

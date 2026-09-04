@@ -106,9 +106,9 @@ export default function CaiConceptPage() {
         <div className="cai-profile">
           <h1>YOON</h1>
           <div className="cai-profile-copy">
-            <p>책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.</p>
-            <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.</p>
-            <p>디자인도 그렇습니다. 충분히 들여다본 뒤 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
+            <p>책과 전시, 감도 높은 공간과 물건들에서<br className="cai-profile-wide-break" /> 새로운 영감을 얻습니다.</p>
+            <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼,<br className="cai-profile-wide-break" /> 깨끗하게 비워진 공간도 좋아합니다.</p>
+            <p>디자인도 그렇습니다. 충분히 들여다본 뒤<br className="cai-profile-wide-break" /> 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
           </div>
           <a className="cai-profile-email" href="mailto:alfo2027@naver.com" data-cursor="link">alfo2027@naver.com <span aria-hidden="true">↗</span></a>
         </div>
