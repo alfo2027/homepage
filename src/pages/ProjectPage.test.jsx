@@ -65,6 +65,8 @@ describe("project detail", () => {
     expect(getComputedStyle(introduction).display).toBe("grid");
     expect(getComputedStyle(introduction).gridTemplateColumns).toBe("repeat(2,minmax(0,1fr))");
     expect(getComputedStyle(introduction).columnGap).toBe("80px");
+    expect(getComputedStyle(introduction).minHeight).toBe("0px");
+    expect(getComputedStyle(introduction).paddingBottom).toBe("72px");
     expect(getComputedStyle(title).fontSize).toBe("18px");
     expect([...title.querySelectorAll("span")].map((line) => line.textContent)).toEqual([
       "크립토 시장을 더 빠르게",
