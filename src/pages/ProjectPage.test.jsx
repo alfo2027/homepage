@@ -108,18 +108,25 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("matches the home navigation labels, destinations, and theme control", () => {
+  test("keeps the project back link while matching the home menu and theme control", () => {
     const { container } = renderRoute("/projects/analyst");
     const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
+    const projects = screen.getByRole("link", { name: "Projects" });
     const home = screen.getByRole("link", { name: "Home" });
     const about = screen.getByRole("link", { name: "About" });
     const theme = screen.getByRole("button", { name: "다크 모드로 전환" });
 
-    expect([...navigation.children].map((item) => item.textContent)).toEqual(["Home", "About", ""]);
+    expect(navigation.querySelector(".project-back")).toBe(projects);
+    expect(navigation.querySelector(".project-menu")).toContainElement(home);
+    expect(navigation.querySelector(".project-menu")).toContainElement(about);
+    expect(navigation.querySelector(".project-menu")).toContainElement(theme);
+    expect(projects).toHaveAttribute("href", "/");
     expect(home).toHaveAttribute("href", "/");
     expect(about).toHaveAttribute("href", "/");
-    expect(screen.queryByRole("link", { name: "Projects" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
+    expect(getComputedStyle(about).marginLeft).toBe("16px");
+    expect(getComputedStyle(theme).marginLeft).toBe("12px");
+    expect(getComputedStyle(projects).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(home).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(about).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(navigation).position).toBe("fixed");
