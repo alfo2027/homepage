@@ -3,11 +3,12 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 import CaiConceptPage from "./CaiConceptPage";
 import { ProjectTransitionProvider } from "../components/ProjectTransition";
+import { PortfolioThemeProvider } from "../components/PortfolioTheme";
 
 vi.mock("../components/InteractiveOrb", () => ({ default: () => <div data-testid="interactive-orb" /> }));
 
 function TestRouter({ children }) {
-  return <MemoryRouter><ProjectTransitionProvider>{children}</ProjectTransitionProvider></MemoryRouter>;
+  return <MemoryRouter><PortfolioThemeProvider><ProjectTransitionProvider>{children}</ProjectTransitionProvider></PortfolioThemeProvider></MemoryRouter>;
 }
 
 describe("Cai-inspired concept page", () => {
@@ -58,11 +59,12 @@ describe("Cai-inspired concept page", () => {
   });
 
   test("switches the gallery between light and dark themes with the dot toggle", () => {
-    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
 
     fireEvent.click(screen.getByRole("button", { name: "다크 모드로 전환" }));
 
     expect(screen.getByTestId("cai-concept")).toHaveClass("is-dark");
+    expect(container.querySelector(".portfolio-app")).toHaveClass("is-dark");
     expect(screen.getByRole("button", { name: "라이트 모드로 전환" })).toBeInTheDocument();
   });
 
@@ -76,9 +78,9 @@ describe("Cai-inspired concept page", () => {
     const pageStyle = getComputedStyle(screen.getByTestId("cai-concept"));
     const firstProject = screen.getAllByTestId("cai-project")[0];
 
-    expect(pageStyle.fontFamily).toContain("Pretendard");
-    expect(getComputedStyle(firstProject.querySelector("h2")).fontSize).toBe("15px");
-    expect(getComputedStyle(firstProject.querySelector(".cai-project-copy p")).fontSize).toBe("13px");
+    expect(pageStyle.fontFamily).toBe("var(--portfolio-font)");
+    expect(getComputedStyle(firstProject.querySelector("h2")).fontSize).toBe("var(--portfolio-type-15)");
+    expect(getComputedStyle(firstProject.querySelector(".cai-project-copy p")).fontSize).toBe("var(--portfolio-type-13)");
 
     fireEvent.click(screen.getByRole("button", { name: "About" }));
     expect(getComputedStyle(screen.getByRole("heading", { name: "About" })).fontFamily).toContain("Pretendard");
@@ -89,7 +91,7 @@ describe("Cai-inspired concept page", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const gridStyle = getComputedStyle(container.querySelector(".cai-project-grid"));
 
-    expect(gridStyle.gap).toBe("80px 10px");
+    expect(gridStyle.gap).toBe("var(--portfolio-space-8) var(--portfolio-space-1)");
     expect(gridStyle.padding).toBe("10px");
   });
 
@@ -136,7 +138,9 @@ describe("Cai-inspired concept page", () => {
   test("opens About directly from a project detail navigation link", () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: "/", state: { view: "experience" } }]}>
-        <ProjectTransitionProvider><CaiConceptPage /></ProjectTransitionProvider>
+        <PortfolioThemeProvider>
+          <ProjectTransitionProvider><CaiConceptPage /></ProjectTransitionProvider>
+        </PortfolioThemeProvider>
       </MemoryRouter>,
     );
 

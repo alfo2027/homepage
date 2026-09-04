@@ -7,6 +7,7 @@ import InteractiveOrb from "../components/InteractiveOrb";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import CustomCursor from "../components/CustomCursor";
 import { useProjectTransition } from "../components/ProjectTransition";
+import { usePortfolioTheme } from "../components/PortfolioTheme";
 import "../concepts/cai.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function CaiConceptPage() {
   const location = useLocation();
   const { isTransitioning, startProjectTransition } = useProjectTransition();
-  const [dark, setDark] = useState(false);
+  const { dark, toggleTheme } = usePortfolioTheme();
   const pageRef = useRef(null);
   const scrollRef = useRef(null);
   const progressFillRef = useRef(null);
@@ -95,7 +96,7 @@ export default function CaiConceptPage() {
               type="button"
               className="cai-theme-toggle"
               data-cursor="link"
-              onClick={() => setDark((value) => !value)}
+              onClick={toggleTheme}
               aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
             >
               <span aria-hidden="true" />

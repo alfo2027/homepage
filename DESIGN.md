@@ -46,8 +46,8 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 | 섹션 제목 | 600 | `clamp(2rem, 3.333vw, 3rem)` | 최대 48px, Projects·Experience 공통 |
 | Experience 강조문 | 500 | `clamp(2.4rem, 4vw, 4.6rem)` | `1.08`, 자간 `-0.055em` |
 | About 강점 제목·본문 | 500~650 | `17px` | 제목은 검정, 설명은 회색 |
-| 프로젝트 제목 | 600 | `1.0625rem` | 17px, 행간 `1.3` |
-| 프로젝트 타입 | 400 | `0.875rem` | 14px, `--muted` |
+| 프로젝트 제목 | 500~600 | `15px` | 행간 `1.3` |
+| 프로젝트 타입 | 400 | `13px` | `--portfolio-muted` |
 | 본문 | 400 | `1rem` | 기본 행간 `1.45` |
 | 작은 라벨·메타 | 500~600 | `0.8~0.9rem` | 필요할 때만 사용 |
 
@@ -58,22 +58,24 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 ```css
 :root {
-  --bg:     #ffffff;  /* 기본 배경 */
-  --surface:#f5f5f7;  /* 보조 섹션·이미지 배경 */
-  --fg:     #1d1d1f;  /* 본문 텍스트 */
-  --muted:  #6e6e73;  /* 보조 텍스트 */
-  --line:   #eeeeee;  /* 모든 구분선 및 GNB 테두리 */
+  --portfolio-bg:      #f7f7f5;
+  --portfolio-surface: #eeeeeb;
+  --portfolio-fg:      #121212;
+  --portfolio-muted:   #777777;
+  --portfolio-line:    #d9d9d5;
 }
 ```
 
 - 새로운 UI 포인트 컬러를 임의로 추가하지 않는다.
-- `--fg`는 제목·주요 링크, `--muted`는 설명·프로젝트 타입·메타 정보에 사용한다.
-- `--surface`는 Contact와 이미지 placeholder 등 보조 면에만 제한적으로 사용한다.
+- `--portfolio-fg`는 제목·주요 링크, `--portfolio-muted`는 설명·프로젝트 타입·메타 정보에 사용한다.
+- 다크모드는 배경 `#101010`, 전경 `#f0f0ec`, 보조 텍스트 `#999`, 구분선 `#353535`를 사용한다.
+- 기존 `--bg`, `--fg`, `--muted`, `--line`, `--cai-*`는 공통 토큰의 호환 별칭으로만 사용한다.
 - 프로젝트 이미지의 원래 색상은 유지한다.
 - 텍스트와 배경의 대비는 WCAG AA 이상을 확보한다.
 
 ### 레이아웃 토큰
 
+- 기본 간격 단위는 10px이며 주요 위계에는 20px·40px·80px을 사용한다.
 - 메인 콘텐츠 폭: 최대 1600px. 좌우 여백은 데스크톱 80px, 태블릿 48px, 모바일 16px로 단계적으로 줄인다
 - 데스크톱 섹션 사이 간격은 160px로 통일하기 위해 인접 섹션의 위·아래 패딩을 각각 80px로 사용
 - 모바일은 인접 섹션의 위·아래 패딩을 각각 60px로 줄여 총 120px 간격을 사용
@@ -91,9 +93,9 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 - 스크롤 후에는 상단 중앙에 최대 1040px, 22px 라운드의 플로팅 GNB로 전환한다.
 - 배경은 반투명 흰색과 blur를 사용하며 그림자는 추가하지 않는다.
 - 메뉴 순서는 `About → Projects → Experience → Contact`로 유지한다.
-- CAI 콘셉트의 좌측 메뉴에서는 `Work`와 `About`을 중복 표기하지 않고 `Experience`만 제공한다.
+- CAI 콘셉트의 좌측 메뉴는 `Home → About → 테마 점` 순서로 제공한다.
 - CAI 콘셉트의 `Home`은 별도 페이지로 이동하지 않고 우측 프로젝트 스크롤 영역을 최상단으로 이동시킨다.
-- CAI 콘셉트의 `Experience`는 좌측 사이드바와 캐릭터를 유지한 채 우측 프로젝트 영역만 경력 화면으로 교체하며, `Home`을 누르면 프로젝트 목록으로 복귀한다.
+- CAI 콘셉트의 `About`은 좌측 사이드바와 캐릭터를 유지한 채 우측 프로젝트 영역만 경력 화면으로 교체하며, `Home`을 누르면 프로젝트 목록으로 복귀한다.
 - CAI Experience 화면은 상단에 3개 핵심 역량을 배치하고, 하단에는 회사별 기간·소개와 프로젝트 상세를 2열 에디토리얼 구조로 제공한다.
 - 프로젝트 상세 상단의 돌아가기 명칭은 `Projects`를 사용하고, 오른쪽에 `Home · Experience` 메뉴를 배치한다. 메뉴는 스크롤 상태와 관계없이 항상 상단에 고정하며 배경·테두리·블러·전환 효과를 사용하지 않는다.
 - 상세 내비게이션의 모든 텍스트와 아이콘은 검정색으로 통일한다.
@@ -170,6 +172,9 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 ### 프로젝트 상세
 
+- 상세 페이지는 메인과 같은 공통 배경·전경·보조 텍스트·구분선·Pretendard를 자동 상속한다.
+- 메인에서 다크모드를 선택한 뒤 상세로 이동하면 주변 UI의 다크모드가 같은 방문 흐름 동안 유지된다.
+- 상세 인트로는 제목 17px, 설명 13px을 사용하고 관련 프로젝트는 제목 15px, 타입 13px을 사용한다.
 - 별도의 문제 정의·과정·결과 UI를 만들지 않는다.
 - 사용자가 제공한 Figma/PDF 포트폴리오 이미지를 위에서 아래로 연속 배치한다.
 - 이미지는 AVIF로 변환하고 원본 비율과 충분한 해상도를 유지한다.
@@ -230,6 +235,7 @@ font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic N
 
 ## 결정 로그
 
+- 통합 디자인 기반: 메인·상세·신규 화면이 공통 컬러·13/15/17px 타이포·10px 기반 간격과 세션 단위 라이트/다크 상태를 앱 루트에서 자동 상속
 - 웨스티 프로젝트 그리드: 썸네일 영역 바깥 여백 10px, 카드 가로 간격 10px·세로 간격 80px를 적용하고, 모바일 1열·기본 2열·1920px 이상 3열로 전환
 - 웨스티 프로젝트 카드 타이포: 프로젝트 제목은 15px, 보조 텍스트는 13px로 데스크톱·모바일에서 동일하게 적용
 - 웨스티 캐릭터 단순화: 기존 GLB를 둥근 기본 도형으로 만든 장난감형 3D 웨스티로 교체하고, 프레임·배경·그림자 없이 사이드바 하단에서 머리와 앞가슴만 보이도록 크롭

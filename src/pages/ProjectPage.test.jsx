@@ -4,17 +4,20 @@ import { describe, expect, test } from "vitest";
 import NotFoundPage from "./NotFoundPage";
 import ProjectPage from "./ProjectPage";
 import { ProjectTransitionProvider } from "../components/ProjectTransition";
+import { PortfolioThemeProvider } from "../components/PortfolioTheme";
 import "../styles.css";
 
 function renderRoute(path) {
   return render(
     <MemoryRouter initialEntries={[path]}>
-      <ProjectTransitionProvider>
-        <Routes>
-          <Route path="/projects/:slug" element={<ProjectPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </ProjectTransitionProvider>
+      <PortfolioThemeProvider>
+        <ProjectTransitionProvider>
+          <Routes>
+            <Route path="/projects/:slug" element={<ProjectPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </ProjectTransitionProvider>
+      </PortfolioThemeProvider>
     </MemoryRouter>,
   );
 }
@@ -61,19 +64,25 @@ describe("project detail", () => {
     const introduction = container.querySelector(".project-intro");
     const title = introduction.querySelector("h1");
     const narrative = introduction.querySelector("p");
+    const appStyle = getComputedStyle(container.querySelector(".portfolio-app"));
 
     expect(getComputedStyle(introduction).display).toBe("grid");
     expect(getComputedStyle(introduction).gridTemplateColumns).toBe("repeat(2,minmax(0,1fr))");
-    expect(getComputedStyle(introduction).columnGap).toBe("80px");
+    expect(appStyle.getPropertyValue("--portfolio-bg")).toBe("#f7f7f5");
+    expect(appStyle.getPropertyValue("--portfolio-type-13")).toBe("13px");
+    expect(appStyle.getPropertyValue("--portfolio-type-17")).toBe("17px");
+    expect(getComputedStyle(introduction).columnGap).toBe("var(--portfolio-space-8)");
     expect(getComputedStyle(introduction).minHeight).toBe("0px");
     expect(getComputedStyle(introduction).paddingBottom).toBe("72px");
-    expect(getComputedStyle(title).fontSize).toBe("18px");
+    expect(getComputedStyle(container.querySelector(".project-shell")).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(container.querySelector(".project-shell")).fontFamily).toBe("var(--portfolio-font)");
+    expect(getComputedStyle(title).fontSize).toBe("var(--portfolio-type-17)");
     expect([...title.querySelectorAll("span")].map((line) => line.textContent)).toEqual([
       "크립토 시장을 더 빠르게",
       "이해하는 AI 애널리스트",
     ]);
     expect(getComputedStyle(title).textAlign).toBe("left");
-    expect(getComputedStyle(narrative).fontSize).toBe("14px");
+    expect(getComputedStyle(narrative).fontSize).toBe("var(--portfolio-type-13)");
     expect(getComputedStyle(narrative).color).not.toBe(getComputedStyle(title).color);
     expect(getComputedStyle(narrative).textAlign).toBe("left");
   });
@@ -88,6 +97,8 @@ describe("project detail", () => {
     expect(screen.getByRole("link", { name: /디자인 시스템 공통화/ })).toHaveAttribute("href", "/projects/design-system");
     expect(container.querySelectorAll(".project-related-card")).toHaveLength(4);
     expect(container.querySelectorAll(".project-related-card img")).toHaveLength(4);
+    expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("var(--portfolio-type-15)");
+    expect(getComputedStyle(container.querySelector(".project-related-card > span:last-child")).fontSize).toBe("var(--portfolio-type-13)");
   });
 
   test("keeps one background-free navigation floating over the project", () => {
@@ -98,9 +109,9 @@ describe("project detail", () => {
     expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Experience" })).toHaveAttribute("href", "/");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Projects" })).color).toBe("var(--fg)");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe("var(--fg)");
-    expect(getComputedStyle(screen.getByRole("link", { name: "Experience" })).color).toBe("var(--fg)");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Projects" })).color).toBe("var(--portfolio-fg)");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe("var(--portfolio-fg)");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Experience" })).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(navigation).position).toBe("fixed");
     expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");

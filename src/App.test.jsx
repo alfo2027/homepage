@@ -21,6 +21,29 @@ test("keeps the previous homepage available at the original route", () => {
   expect(screen.getByRole("heading", { name: "Projects" })).toBeInTheDocument();
 });
 
+test("keeps the selected dark theme when navigating from home to a project detail", async () => {
+  const originalMatchMedia = window.matchMedia;
+  window.matchMedia = vi.fn().mockImplementation((query) => ({
+    matches: query === "(prefers-reduced-motion: reduce)",
+    media: query,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
+  window.location.hash = "#/";
+  const { container } = render(<App />);
+
+  fireEvent.click(screen.getByRole("button", { name: "다크 모드로 전환" }));
+  fireEvent.click(screen.getByRole("link", { name: /크립토 뉴스 분석 AI 애널리스트/ }));
+
+  expect(await screen.findByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
+  const appRoot = container.querySelector(".portfolio-app");
+  expect(appRoot).toHaveClass("is-dark");
+  expect(getComputedStyle(appRoot).getPropertyValue("--portfolio-bg")).toBe("#101010");
+  expect(container.querySelector(".project-shell")).toBeInTheDocument();
+  expect(getComputedStyle(screen.getByRole("link", { name: "Projects" })).color).toBe("var(--portfolio-fg)");
+  window.matchMedia = originalMatchMedia;
+});
+
 test("expands the selected thumbnail before revealing its project detail", async () => {
   vi.useFakeTimers();
   const rectSpy = vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function getRect() {

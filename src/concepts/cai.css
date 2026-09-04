@@ -91,3 +91,9 @@
 .cai-orb{width:min(174px,100%)}
 
 @media(max-width:640px){.cai-side{display:flex;min-height:100svh;gap:0}.cai-side-top{width:100%}.cai-profile{margin-top:48px}.cai-profile-email{font-size:12px}.cai-side-bottom{width:100%;margin-top:auto}.cai-side-top>.cai-side-menu{gap:12px}.cai-side-menu .cai-theme-toggle{width:20px;height:20px;margin:0}.cai-side-menu .cai-theme-toggle span{width:7px;height:7px}}
+
+/* Shared portfolio token aliases */
+.cai-concept{--cai-bg:var(--portfolio-bg);--cai-fg:var(--portfolio-fg);--cai-muted:var(--portfolio-muted);--cai-line:var(--portfolio-line);background:transparent;font-family:var(--portfolio-font)}
+.cai-project-grid{gap:var(--portfolio-space-8) var(--portfolio-space-1);padding:10px}
+.cai-project-copy h2{font-size:var(--portfolio-type-15)}
+.cai-project-copy p{font-size:var(--portfolio-type-13)}
