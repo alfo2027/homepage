@@ -28,7 +28,6 @@ describe("Cai-inspired concept page", () => {
     expect([...sideMenu.children].map((item) => item.getAttribute("aria-label") ?? item.textContent)).toEqual([
       "Home",
       "About",
-      "다크 모드로 전환",
     ]);
     expect(screen.queryByRole("link", { name: "Work" })).not.toBeInTheDocument();
     expect(container.querySelector(".cai-side-top > .cai-side-menu")).toBeInTheDocument();
@@ -36,16 +35,16 @@ describe("Cai-inspired concept page", () => {
     expect(container.querySelector(".cai-side-top + .cai-profile")).toContainElement(screen.getByRole("heading", { name: "YOON" }));
     expect(container.querySelector(".cai-side-bottom > [data-testid='interactive-orb']")).toBeInTheDocument();
     expect(screen.queryByText(/^\d{2} \/ \d{2}$/)).not.toBeInTheDocument();
-    expect(sideMenu).toContainElement(screen.getByRole("button", { name: "다크 모드로 전환" }));
+    expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
     const primaryTextColor = getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color;
     expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe(primaryTextColor);
-    expect(getComputedStyle(screen.getByRole("button", { name: "About" })).color).toBe(primaryTextColor);
-    expect(getComputedStyle(screen.getByRole("button", { name: "다크 모드로 전환" }).querySelector("span")).width).toBe("8px");
+    expect(getComputedStyle(screen.getByRole("link", { name: "About" })).color).toBe(primaryTextColor);
     expect(screen.getByTestId("custom-cursor")).toBeInTheDocument();
     expect(screen.getAllByTestId("cai-project")[0]).not.toHaveAttribute("data-cursor");
     expect(screen.getAllByTestId("cai-project")[1]).toHaveAttribute("data-cursor", "project");
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("data-cursor", "link");
-    expect(screen.getByRole("button", { name: "About" })).toHaveAttribute("data-cursor", "link");
+    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("data-cursor", "link");
+    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
     const emailLink = screen.getByRole("link", { name: "alfo2027@naver.com" });
     expect(emailLink).toHaveAttribute("href", "mailto:alfo2027@naver.com");
     expect(container.querySelector(".cai-profile-copy + .cai-profile-email")).toBe(emailLink);
@@ -58,14 +57,14 @@ describe("Cai-inspired concept page", () => {
     expect(screen.queryByText("Available for thoughtful collaborations.")).not.toBeInTheDocument();
   });
 
-  test("switches the gallery between light and dark themes with the dot toggle", () => {
-    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+  test("keeps the sidebar navigation free of an active underline", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const styleRules = [...document.styleSheets]
+      .flatMap((sheet) => [...sheet.cssRules])
+      .map((rule) => rule.cssText)
+      .join("\n");
 
-    fireEvent.click(screen.getByRole("button", { name: "다크 모드로 전환" }));
-
-    expect(screen.getByTestId("cai-concept")).toHaveClass("is-dark");
-    expect(container.querySelector(".portfolio-app")).toHaveClass("is-dark");
-    expect(screen.getByRole("button", { name: "라이트 모드로 전환" })).toBeInTheDocument();
+    expect(styleRules).not.toContain('.cai-side-menu a[aria-current="page"]::after');
   });
 
   test("keeps every image non-draggable", () => {
@@ -144,7 +143,7 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(firstProject.querySelector("h2")).fontSize).toBe("var(--portfolio-type-15)");
     expect(getComputedStyle(firstProject.querySelector(".cai-project-copy p")).fontSize).toBe("var(--portfolio-type-13)");
 
-    fireEvent.click(screen.getByRole("button", { name: "About" }));
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
     expect(getComputedStyle(screen.getByRole("heading", { name: "About" })).fontFamily).toContain("Pretendard");
     expect(getComputedStyle(screen.getByText("블루밍비트(Bloomingbit)")).fontFamily).toContain("Pretendard");
   });
@@ -207,7 +206,7 @@ describe("Cai-inspired concept page", () => {
   test("changes only the right area to the About view", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
 
-    fireEvent.click(screen.getByRole("button", { name: "About" }));
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
 
     expect(screen.getByTestId("interactive-orb")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
@@ -220,10 +219,8 @@ describe("Cai-inspired concept page", () => {
 
   test("opens About directly from a project detail navigation link", () => {
     render(
-      <MemoryRouter initialEntries={[{ pathname: "/", state: { view: "experience" } }]}>
-        <PortfolioThemeProvider>
-          <ProjectTransitionProvider><CaiConceptPage /></ProjectTransitionProvider>
-        </PortfolioThemeProvider>
+      <MemoryRouter initialEntries={["/about"]}>
+        <PortfolioThemeProvider><ProjectTransitionProvider><CaiConceptPage /></ProjectTransitionProvider></PortfolioThemeProvider>
       </MemoryRouter>,
     );
 
@@ -236,7 +233,7 @@ describe("Cai-inspired concept page", () => {
     const rightPanel = screen.getByLabelText("프로젝트 세로 목록");
     rightPanel.scrollTo = vi.fn();
 
-    fireEvent.click(screen.getByRole("button", { name: "About" }));
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
     fireEvent.click(screen.getByRole("link", { name: "Home" }));
 
     expect(screen.getAllByTestId("cai-project")).toHaveLength(12);

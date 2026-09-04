@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,7 +7,6 @@ import InteractiveOrb from "../components/InteractiveOrb";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import CustomCursor from "../components/CustomCursor";
 import { useProjectTransition } from "../components/ProjectTransition";
-import { usePortfolioTheme } from "../components/PortfolioTheme";
 import "../concepts/cai.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,22 +14,20 @@ gsap.registerPlugin(ScrollTrigger);
 export default function CaiConceptPage() {
   const location = useLocation();
   const { isTransitioning, startProjectTransition } = useProjectTransition();
-  const { dark, toggleTheme } = usePortfolioTheme();
+  const isAbout = location.pathname === "/about";
   const pageRef = useRef(null);
   const scrollRef = useRef(null);
   const progressFillRef = useRef(null);
   const scrollProgressRef = useRef(0);
-  const [activeView, setActiveView] = useState(location.state?.view === "experience" ? "experience" : "work");
 
-  const scrollHome = (event) => {
-    event.preventDefault();
-    setActiveView("work");
+  const scrollViewTop = (event, targetPath) => {
+    if (location.pathname === targetPath) event.preventDefault();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     scrollRef.current?.scrollTo?.({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   };
 
   useLayoutEffect(() => {
-    document.title = "윤미래 Product Designer";
+    document.title = isAbout ? "윤미래 Product Designer - About" : "윤미래 Product Designer";
     const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -94,25 +91,16 @@ export default function CaiConceptPage() {
       scroller?.removeEventListener("scroll", updateProgress);
       context.revert();
     };
-  }, []);
+  }, [isAbout]);
 
   return (
-    <main ref={pageRef} className={`cai-concept${dark ? " is-dark" : ""}${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
+    <main ref={pageRef} className={`cai-concept${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
       <CustomCursor />
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
-            <a href="#cai-grid" className="cai-home" data-cursor="link" onClick={scrollHome}>Home</a>
-            <button type="button" data-cursor="link" className={activeView === "experience" ? "is-active" : ""} aria-current={activeView === "experience" ? "page" : undefined} onClick={() => { setActiveView("experience"); scrollRef.current?.scrollTo?.({ top: 0, behavior: "smooth" }); }}>About</button>
-            <button
-              type="button"
-              className="cai-theme-toggle"
-              data-cursor="link"
-              onClick={toggleTheme}
-              aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
-            >
-              <span aria-hidden="true" />
-            </button>
+            <Link to="/" className="cai-home" data-cursor="link" aria-current={!isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/")}>Home</Link>
+            <Link to="/about" data-cursor="link" aria-current={isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/about")}>About</Link>
           </nav>
         </div>
         <div className="cai-profile">
@@ -125,7 +113,7 @@ export default function CaiConceptPage() {
           <a className="cai-profile-email" href="mailto:alfo2027@naver.com" data-cursor="link">alfo2027@naver.com <span aria-hidden="true">↗</span></a>
         </div>
         <div className="cai-side-bottom">
-          <InteractiveOrb dark={dark} progressRef={scrollProgressRef} />
+          <InteractiveOrb progressRef={scrollProgressRef} />
         </div>
         <div className="cai-scroll-progress" role="progressbar" aria-label="프로젝트 스크롤 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span ref={progressFillRef} className="cai-scroll-progress-fill" style={{ transform: "scaleY(0)" }} />
@@ -133,7 +121,7 @@ export default function CaiConceptPage() {
       </aside>
 
       <section ref={scrollRef} className="cai-grid-scroll" id="cai-grid" aria-label="프로젝트 세로 목록">
-        {activeView === "experience" ? <CaiExperiencePanel /> : <div className="cai-project-grid is-gallery-index">
+        {isAbout ? <CaiExperiencePanel /> : <div className="cai-project-grid is-gallery-index">
           {projects.map((project, index) => {
             const card = (
               <>
