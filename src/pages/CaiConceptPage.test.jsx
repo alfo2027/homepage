@@ -2,12 +2,17 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 import CaiConceptPage from "./CaiConceptPage";
+import { ProjectTransitionProvider } from "../components/ProjectTransition";
 
 vi.mock("../components/InteractiveOrb", () => ({ default: () => <div data-testid="interactive-orb" /> }));
 
+function TestRouter({ children }) {
+  return <MemoryRouter><ProjectTransitionProvider>{children}</ProjectTransitionProvider></MemoryRouter>;
+}
+
 describe("Cai-inspired concept page", () => {
   test("renders the vertical work index with all navigation in the left sidebar", () => {
-    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
 
     expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
     expect(document.title).toBe("윤미래 Product Designer");
@@ -53,7 +58,7 @@ describe("Cai-inspired concept page", () => {
   });
 
   test("switches the gallery between light and dark themes with the dot toggle", () => {
-    render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    render(<CaiConceptPage />, { wrapper: TestRouter });
 
     fireEvent.click(screen.getByRole("button", { name: "다크 모드로 전환" }));
 
@@ -62,12 +67,12 @@ describe("Cai-inspired concept page", () => {
   });
 
   test("keeps every image non-draggable", () => {
-    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     expect([...container.querySelectorAll("img")].every((image) => image.draggable === false)).toBe(true);
   });
 
   test("uses Pretendard with compact project titles and descriptions", () => {
-    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const pageStyle = getComputedStyle(screen.getByTestId("cai-concept"));
     const firstProject = screen.getAllByTestId("cai-project")[0];
 
@@ -81,7 +86,7 @@ describe("Cai-inspired concept page", () => {
   });
 
   test("keeps the project gallery spacing uniformly compact", () => {
-    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const gridStyle = getComputedStyle(container.querySelector(".cai-project-grid"));
 
     expect(gridStyle.gap).toBe("80px 10px");
@@ -97,7 +102,7 @@ describe("Cai-inspired concept page", () => {
       removeEventListener: vi.fn(),
     }));
 
-    const { container } = render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const thumbnails = [...container.querySelectorAll(".cai-image-wrap")];
 
     expect(thumbnails).toHaveLength(12);
@@ -105,7 +110,7 @@ describe("Cai-inspired concept page", () => {
     window.matchMedia = originalMatchMedia;
   });
   test("scrolls the project area to the top when Home is clicked", () => {
-    render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    render(<CaiConceptPage />, { wrapper: TestRouter });
     const projectList = screen.getByLabelText("프로젝트 세로 목록");
     projectList.scrollTo = vi.fn();
 
@@ -115,7 +120,7 @@ describe("Cai-inspired concept page", () => {
   });
 
   test("changes only the right area to the About view", () => {
-    render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    render(<CaiConceptPage />, { wrapper: TestRouter });
 
     fireEvent.click(screen.getByRole("button", { name: "About" }));
 
@@ -128,8 +133,19 @@ describe("Cai-inspired concept page", () => {
     expect(screen.queryAllByTestId("cai-project")).toHaveLength(0);
   });
 
+  test("opens About directly from a project detail navigation link", () => {
+    render(
+      <MemoryRouter initialEntries={[{ pathname: "/", state: { view: "experience" } }]}>
+        <ProjectTransitionProvider><CaiConceptPage /></ProjectTransitionProvider>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
+    expect(screen.queryAllByTestId("cai-project")).toHaveLength(0);
+  });
+
   test("returns from About to the project list through Home", () => {
-    render(<CaiConceptPage />, { wrapper: MemoryRouter });
+    render(<CaiConceptPage />, { wrapper: TestRouter });
     const rightPanel = screen.getByLabelText("프로젝트 세로 목록");
     rightPanel.scrollTo = vi.fn();
 

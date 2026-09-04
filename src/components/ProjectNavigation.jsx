@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Chevron({ direction = "left" }) {
@@ -11,28 +10,28 @@ function Chevron({ direction = "left" }) {
 
 function ListLink() {
   return (
-    <Link className="project-back" to="/" state={{ section: "projects" }} aria-label="목록으로">
-      <Chevron /><span>목록으로</span>
+    <Link className="project-back" to="/" state={{ view: "work" }} aria-label="Projects">
+      <Chevron /><span>Projects</span>
     </Link>
+  );
+}
+
+function NavigationContent() {
+  return (
+    <>
+      <ListLink />
+      <div className="project-menu">
+        <Link to="/" state={{ view: "work" }}>Home</Link>
+        <Link to="/" state={{ view: "experience" }}>Experience</Link>
+      </div>
+    </>
   );
 }
 
 export { Chevron };
 
 export default function ProjectNavigation() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 0);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-
   return (
-    <>
-      <nav className={`project-nav project-nav-fixed${scrolled ? " is-visible" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={!scrolled} inert={scrolled ? undefined : true}><ListLink /></nav>
-      <nav className={`project-nav project-nav-inline${scrolled ? " is-hidden" : ""}`} aria-label="프로젝트 목록으로" aria-hidden={scrolled} inert={scrolled ? true : undefined}><ListLink /></nav>
-    </>
+    <nav className="project-nav" aria-label="상세 페이지 메뉴"><NavigationContent /></nav>
   );
 }

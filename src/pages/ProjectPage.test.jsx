@@ -3,14 +3,18 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import NotFoundPage from "./NotFoundPage";
 import ProjectPage from "./ProjectPage";
+import { ProjectTransitionProvider } from "../components/ProjectTransition";
+import "../styles.css";
 
 function renderRoute(path) {
   return render(
     <MemoryRouter initialEntries={[path]}>
-      <Routes>
-        <Route path="/projects/:slug" element={<ProjectPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <ProjectTransitionProvider>
+        <Routes>
+          <Route path="/projects/:slug" element={<ProjectPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </ProjectTransitionProvider>
     </MemoryRouter>,
   );
 }
@@ -23,6 +27,16 @@ describe("project detail", () => {
     expect(images).toHaveLength(9);
     expect(images.every((image) => image.draggable === false)).toBe(true);
     await waitFor(() => expect(document.title).toBe("윤미래 Product Designer - 크립토 뉴스 분석 AI 애널리스트"));
+  });
+
+  test("keeps full-bleed project images centered on a non-animated viewport", () => {
+    const { container } = renderRoute("/projects/analyst");
+    const viewport = container.querySelector(".project-images-viewport");
+    const images = container.querySelector(".project-images");
+
+    expect(viewport).toContainElement(images);
+    expect(getComputedStyle(viewport).transform).toBe("translateX(-50%)");
+    expect(images.querySelector("img")).toHaveAttribute("data-project-transition-target");
   });
 
   test("introduces the analyst project with only a title and one narrative", () => {
@@ -42,6 +56,28 @@ describe("project detail", () => {
     expect(screen.queryByText(/BLOOMINGBIT · PRODUCT DESIGN/)).not.toBeInTheDocument();
   });
 
+  test("places the project title and narrative in a restrained two-column introduction", () => {
+    const { container } = renderRoute("/projects/analyst");
+    const introduction = container.querySelector(".project-intro");
+    const title = introduction.querySelector("h1");
+    const narrative = introduction.querySelector("p");
+
+    expect(getComputedStyle(introduction).display).toBe("grid");
+    expect(getComputedStyle(introduction).gridTemplateColumns).toBe("repeat(2,minmax(0,1fr))");
+    expect(getComputedStyle(introduction).columnGap).toBe("80px");
+    expect(getComputedStyle(introduction).minHeight).toBe("0px");
+    expect(getComputedStyle(introduction).paddingBottom).toBe("72px");
+    expect(getComputedStyle(title).fontSize).toBe("18px");
+    expect([...title.querySelectorAll("span")].map((line) => line.textContent)).toEqual([
+      "크립토 시장을 더 빠르게",
+      "이해하는 AI 애널리스트",
+    ]);
+    expect(getComputedStyle(title).textAlign).toBe("left");
+    expect(getComputedStyle(narrative).fontSize).toBe("14px");
+    expect(getComputedStyle(narrative).color).not.toBe(getComputedStyle(title).color);
+    expect(getComputedStyle(narrative).textAlign).toBe("left");
+  });
+
   test("shows four related projects as thumbnail links", () => {
     const { container } = renderRoute("/projects/analyst");
 
@@ -54,10 +90,20 @@ describe("project detail", () => {
     expect(container.querySelectorAll(".project-related-card img")).toHaveLength(4);
   });
 
-  test("offers a projects-list link", () => {
+  test("keeps one background-free navigation floating over the project", () => {
     const { container } = renderRoute("/projects/analyst");
-    expect(container.querySelectorAll(".project-back")).toHaveLength(2);
-    expect(screen.getByRole("link", { name: "목록으로" })).toBeInTheDocument();
+    const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
+
+    expect(container.querySelectorAll(".project-back")).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Experience" })).toHaveAttribute("href", "/");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Projects" })).color).toBe("var(--fg)");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe("var(--fg)");
+    expect(getComputedStyle(screen.getByRole("link", { name: "Experience" })).color).toBe("var(--fg)");
+    expect(getComputedStyle(navigation).position).toBe("fixed");
+    expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");
   });
 
   test("renders a useful fallback for an unknown project", () => {
