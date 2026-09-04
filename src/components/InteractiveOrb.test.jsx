@@ -75,7 +75,7 @@ describe("InteractiveOrb", () => {
     expect(speech).toHaveAttribute("aria-hidden", "false");
     expect(speech).not.toHaveTextContent("");
     expect(character).toHaveClass("is-reacting");
-    expect(container.querySelector(".cai-orb-surprise")).toBeInTheDocument();
+    expect(container.querySelector(".cai-orb-surprise")).toHaveClass("is-heart");
     expect(character).toHaveAttribute("data-cursor", "pointer");
 
     act(() => vi.advanceTimersByTime(749));
@@ -120,6 +120,8 @@ describe("InteractiveOrb", () => {
     expect(speechStyle.top).toBe("auto");
     expect(speechStyle.bottom).toBe("128px");
     expect(speechStyle.left).toBe("calc(50% + 18px)");
+    expect(speechStyle.width).toBe("220px");
+    expect(speechStyle.textWrap).toBe("balance");
     expect(speechStyle.fontSize).toBe("14px");
     expect(speechStyle.fontWeight).toBe("400");
     expect(speechStyle.borderRadius).toBe("999px");

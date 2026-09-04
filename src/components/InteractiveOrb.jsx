@@ -197,7 +197,7 @@ export default function InteractiveOrb({ dark, progressRef }) {
       <div id="cai-orb-introduction" className={`cai-orb-speech speech-cycle-${speechCycle % 2}`} role="status" aria-live="polite" aria-atomic="true" aria-hidden={!speaking}>
         {message}
       </div>
-      {surprise && <span className="cai-orb-surprise" aria-hidden="true">{surprise}</span>}
+      {surprise && <span className={`cai-orb-surprise ${surprise === "♥" ? "is-heart" : "is-sparkle"}`} aria-hidden="true">{surprise}</span>}
       <div className="cai-orb-stage">
         <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.08, 4.1], fov: 34 }}>
           <ambientLight intensity={dark ? 1.3 : 2.1} />
