@@ -1,22 +1,25 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import CustomCursor from "../components/CustomCursor";
+import { useProjectTransition } from "../components/ProjectTransition";
 import "../concepts/cai.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CaiConceptPage() {
+  const location = useLocation();
+  const { isTransitioning, startProjectTransition } = useProjectTransition();
   const pageRef = useRef(null);
   const scrollRef = useRef(null);
   const progressFillRef = useRef(null);
   const scrollProgressRef = useRef(0);
   const [activeProject, setActiveProject] = useState(0);
-  const [activeView, setActiveView] = useState("work");
+  const [activeView, setActiveView] = useState(location.state?.view === "experience" ? "experience" : "work");
 
   const scrollHome = (event) => {
     event.preventDefault();
@@ -100,7 +103,7 @@ export default function CaiConceptPage() {
   }, []);
 
   return (
-    <main ref={pageRef} className="cai-concept" data-testid="cai-concept">
+    <main ref={pageRef} className={`cai-concept${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
       <CustomCursor />
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
@@ -140,7 +143,7 @@ export default function CaiConceptPage() {
             return project.upcoming ? (
               <article className="cai-project is-upcoming" data-testid="cai-project" key={project.slug}>{card}</article>
             ) : (
-              <Link className="cai-project" data-cursor="project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`}>{card}</Link>
+              <Link className="cai-project" data-cursor="project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`} onClick={(event) => startProjectTransition(event, project)}>{card}</Link>
             );
           })}
         </div>}

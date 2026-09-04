@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ProjectNavigation from "../components/ProjectNavigation";
 import { getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
   const { slug } = useParams();
+  const location = useLocation();
   const project = getProjectBySlug(slug);
 
   useEffect(() => {
@@ -17,11 +18,13 @@ export default function ProjectPage() {
   const relatedProjects = getRelatedProjects(project.slug);
 
   return (
-    <main className="project-shell">
+    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}`}>
       <ProjectNavigation />
       {project.intro && (
         <header className="project-intro">
-          <h1>{project.intro.headline}</h1>
+          <h1 aria-label={project.intro.headline}>
+            {(project.intro.headlineLines ?? [project.intro.headline]).map((line) => <span key={line}>{line}</span>)}
+          </h1>
           <p>{project.intro.description}</p>
         </header>
       )}
