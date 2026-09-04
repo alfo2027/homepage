@@ -1,5 +1,8 @@
 const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 
+const galleryAsset = (number, image = 1) =>
+  asset(`assets/project-${String(number).padStart(2, "0")}/project-${String(number).padStart(2, "0")}-${String(image).padStart(2, "0")}.avif`);
+
 const imageSet = (number, title, dimensions) =>
   dimensions.map(([width, height], index) => ({
     src: asset(
@@ -34,6 +37,7 @@ export const projects = [
     thumbnailAlt: "크립토 뉴스 분석 AI 애널리스트 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 773,
+    galleryThumbnail: galleryAsset(1, 2),
     detailLabel: "크립토 뉴스 분석 AI 애널리스트 포트폴리오",
     images: imageSet(1, "AI 애널리스트", [
       [3334, 2147], [3334, 1875], [3334, 1875], [3334, 1067],
@@ -49,6 +53,7 @@ export const projects = [
     thumbnailAlt: "블루밍비트 알파 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 675,
+    galleryThumbnail: galleryAsset(2, 3),
     detailLabel: "블루밍비트 알파 포트폴리오",
     images: imageSet(2, "블루밍비트 알파", [
       [3334, 1875], [3334, 856], [3334, 2704], [3334, 1875], [3334, 952],
@@ -64,6 +69,7 @@ export const projects = [
     thumbnailAlt: "플랜 구매 경험 개선 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 674,
+    galleryThumbnail: galleryAsset(3, 5),
     detailLabel: "플랜 구매 경험 개선 포트폴리오",
     images: imageSet(3, "플랜 구매 경험 개선", [[3334,1873],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872]]),
   },
@@ -76,6 +82,7 @@ export const projects = [
     thumbnailAlt: "정기 선적 리포트 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 674,
+    galleryThumbnail: galleryAsset(4, 5),
     detailLabel: "정기 선적 리포트 포트폴리오",
     images: imageSet(4, "정기 선적 리포트", [[3334,1873],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872]]),
   },
@@ -88,6 +95,7 @@ export const projects = [
     thumbnailAlt: "디자인 시스템 공통화 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 674,
+    galleryThumbnail: galleryAsset(5, 5),
     detailLabel: "디자인 시스템 공통화 포트폴리오",
     images: imageSet(5, "디자인 시스템 공통화", [[3334,1873],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872]]),
   },
@@ -100,6 +108,7 @@ export const projects = [
     thumbnailAlt: "스케줄 데모 이용률 증대 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 674,
+    galleryThumbnail: galleryAsset(6, 1),
     detailLabel: "스케줄 데모 이용률 증대 포트폴리오",
     images: imageSet(6, "스케줄 데모 이용률 증대", [[3334,1873],[3334,1872],[3334,1872],[3334,1872],[3334,1872],[3334,1872]]),
   },
@@ -112,6 +121,7 @@ export const projects = [
     thumbnailAlt: "디버 파트너스 앱 리디자인 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 675,
+    galleryThumbnail: galleryAsset(7, 4),
     detailLabel: "디버 파트너스 앱 리디자인 포트폴리오",
     images: imageSet(7, "디버 파트너스 앱 리디자인", Array(7).fill([3334,1876])),
   },
@@ -124,6 +134,7 @@ export const projects = [
     thumbnailAlt: "디버 주문 웹 UX 개선 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 675,
+    galleryThumbnail: galleryAsset(8, 3),
     detailLabel: "디버 주문 웹 UX 개선 포트폴리오",
     images: imageSet(8, "디버 주문 웹 UX 개선", Array(7).fill([3334,1876])),
   },
@@ -136,6 +147,7 @@ export const projects = [
     thumbnailAlt: "디버 배송 알림톡 UX 개선 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 675,
+    galleryThumbnail: galleryAsset(9, 3),
     detailLabel: "디버 배송 알림톡 UX 개선 포트폴리오",
     images: imageSet(9, "디버 배송 알림톡 UX 개선", Array(7).fill([3334,1876])),
   },
@@ -148,6 +160,7 @@ export const projects = [
     thumbnailAlt: "디버 회원가입 프로세스 개선 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 675,
+    galleryThumbnail: galleryAsset(10, 1),
     detailLabel: "디버 회원가입 프로세스 개선 포트폴리오",
     images: imageSet(10, "디버 회원가입 프로세스 개선", Array(7).fill([3334,1876])),
   },
@@ -160,6 +173,7 @@ export const projects = [
     thumbnailAlt: "그래픽 디자인과 3D 비주얼 프로젝트 표지",
     thumbnailWidth: 1200,
     thumbnailHeight: 674,
+    galleryThumbnail: galleryAsset(11, 4),
     detailLabel: "그래픽 디자인과 3D 비주얼 포트폴리오",
     images: imageSet(11, "그래픽 디자인과 3D 비주얼", Array(4).fill([3334,1873])),
   },

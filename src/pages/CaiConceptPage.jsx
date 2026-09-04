@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
 import CustomCursor from "../components/CustomCursor";
-import RiveThemeToggle from "../components/RiveThemeToggle";
 import "../concepts/cai.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,7 +18,7 @@ export default function CaiConceptPage() {
   const [activeProject, setActiveProject] = useState(0);
 
   useLayoutEffect(() => {
-    document.title = "윤미래 Product Designer — Concept 02";
+    document.title = "윤미래 Product Designer";
 
     const updateProgress = () => {
       const scroller = scrollRef.current;
@@ -65,23 +64,6 @@ export default function CaiConceptPage() {
         });
       });
 
-      [
-        [".cai-project:nth-child(odd)", 76],
-        [".cai-project:nth-child(even)", -76],
-      ].forEach(([selector, y]) => {
-        gsap.to(selector, {
-          y,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".cai-project-grid",
-            scroller: scrollRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.8,
-          },
-        });
-      });
-
     }, pageRef);
 
     return () => {
@@ -103,12 +85,24 @@ export default function CaiConceptPage() {
           </nav>
           <div className="cai-profile">
             <h1>윤미래</h1>
-            <p>새로운 기술이나 기능을 탐구하는 것을 좋아합니다.<br />최근에는 더 효율적으로 일하는 방법을 함께 고민하고 있습니다.</p>
+            <div className="cai-profile-copy">
+              <p>책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.</p>
+              <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.</p>
+              <p>디자인도 그렇습니다. 충분히 들여다본 뒤 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
+            </div>
           </div>
           <InteractiveOrb dark={dark} progressRef={scrollProgressRef} />
         </div>
         <div className="cai-side-bottom">
-          <RiveThemeToggle dark={dark} onToggle={() => setDark((value) => !value)} />
+          <button
+            type="button"
+            className="cai-theme-toggle"
+            data-cursor="link"
+            onClick={() => setDark((value) => !value)}
+            aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
+          >
+            <span aria-hidden="true" />
+          </button>
           <p>{String(activeProject + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</p>
         </div>
         <div className="cai-scroll-progress" role="progressbar" aria-label="프로젝트 스크롤 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -117,12 +111,12 @@ export default function CaiConceptPage() {
       </aside>
 
       <section ref={scrollRef} className="cai-grid-scroll" id="cai-grid" aria-label="프로젝트 세로 목록">
-        <div className="cai-project-grid has-scroll-rhythm">
+        <div className="cai-project-grid is-gallery-index">
           {projects.map((project, index) => {
             const card = (
               <>
                 <div className="cai-image-wrap">
-                  <img draggable={false} src={project.thumbnail} alt={project.thumbnailAlt} width={project.thumbnailWidth} height={project.thumbnailHeight} loading={index < 4 ? "eager" : "lazy"} />
+                  <img draggable={false} src={project.galleryThumbnail ?? project.thumbnail} alt={project.thumbnailAlt} width={project.thumbnailWidth} height={project.thumbnailHeight} loading={index < 4 ? "eager" : "lazy"} />
                   {project.upcoming && <span>UPCOMING</span>}
                 </div>
                 <div className="cai-project-copy">
