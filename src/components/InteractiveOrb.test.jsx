@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, test, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import InteractiveOrb from "./InteractiveOrb";
 
 const { mockUseGLTF } = vi.hoisted(() => {
@@ -26,6 +26,11 @@ vi.mock("@react-three/drei", () => ({
 }));
 
 describe("InteractiveOrb", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
   test("presents the interactive Westie character", () => {
     const progressRef = { current: 0 };
     const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
@@ -40,7 +45,7 @@ describe("InteractiveOrb", () => {
     expect(mockUseGLTF).not.toHaveBeenCalled();
   });
 
-  test("reveals the character introduction on hover", () => {
+  test("does not reveal the old introduction on hover or focus", () => {
     const progressRef = { current: 0 };
     render(<InteractiveOrb dark={false} progressRef={progressRef} />);
 
@@ -49,26 +54,35 @@ describe("InteractiveOrb", () => {
     expect(speech).toHaveAttribute("aria-hidden", "true");
 
     fireEvent.mouseEnter(character);
-    expect(speech).toHaveAttribute("aria-hidden", "false");
-
-    fireEvent.mouseLeave(character);
     expect(speech).toHaveAttribute("aria-hidden", "true");
+
+    fireEvent.focus(character);
+    expect(speech).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryByText("안녕하세요!")).not.toBeInTheDocument();
   });
 
-  test("reveals the introduction on keyboard focus and describes the character", () => {
+  test("speaks a shuffled message after a gentle random delay", () => {
+    vi.useFakeTimers();
+    vi.spyOn(Math, "random").mockReturnValue(0);
     const progressRef = { current: 0 };
     render(<InteractiveOrb dark={false} progressRef={progressRef} />);
 
-    const character = screen.getByLabelText("스크롤과 드래그에 반응하는 웨스티 캐릭터");
     const speech = screen.getByRole("status", { hidden: true });
-
-    expect(character).toHaveAttribute("aria-describedby", "cai-orb-introduction");
-    expect(speech).toHaveAttribute("id", "cai-orb-introduction");
-
-    fireEvent.focus(character);
-    expect(speech).toHaveAttribute("aria-hidden", "false");
-
-    fireEvent.blur(character);
+    expect(speech).toHaveAttribute("aria-live", "polite");
     expect(speech).toHaveAttribute("aria-hidden", "true");
+
+    act(() => vi.advanceTimersByTime(4999));
+    expect(speech).toHaveAttribute("aria-hidden", "true");
+
+    act(() => vi.advanceTimersByTime(1));
+    expect(speech).toHaveAttribute("aria-hidden", "false");
+    expect(speech).toHaveTextContent("오늘 좋은 일이 하나쯤 있었나요?");
+
+    act(() => vi.advanceTimersByTime(4500));
+    expect(speech).toHaveAttribute("aria-hidden", "true");
+
+    act(() => vi.advanceTimersByTime(12000));
+    expect(speech).toHaveAttribute("aria-hidden", "false");
+    expect(speech).toHaveTextContent("여기까지 와줘서 고마워요.");
   });
 });

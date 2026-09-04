@@ -15,7 +15,6 @@
 .cai-orb:active{cursor:grabbing}
 .cai-orb-speech{position:absolute;z-index:20;top:24px;left:calc(100% + 14px);width:218px;padding:13px 15px;border:1px solid var(--cai-line);border-radius:12px;background:color-mix(in srgb,var(--cai-bg) 96%,transparent);box-shadow:0 10px 28px rgba(20,20,20,.08);color:var(--cai-muted);font-family:"Pretendard",sans-serif;font-size:12px;line-height:1.55;letter-spacing:-.015em;opacity:0;pointer-events:none;transform:translate(-8px,6px) scale(.96);transform-origin:left bottom;transition:opacity .22s ease,transform .32s cubic-bezier(.22,1,.36,1);backdrop-filter:blur(12px)}
 .cai-orb-speech::before{content:"";position:absolute;top:58px;left:-6px;width:10px;height:10px;border-bottom:1px solid var(--cai-line);border-left:1px solid var(--cai-line);background:var(--cai-bg);transform:rotate(45deg)}
-.cai-orb-speech span{display:block;margin-bottom:3px;color:var(--cai-fg);font-weight:600}
 .cai-orb.is-speaking .cai-orb-speech{opacity:1;pointer-events:auto;transform:translate(0,0) scale(1)}
 .cai-orb-stage{position:relative;height:126px;overflow:hidden;background:transparent}
 .cai-orb canvas{position:relative;z-index:2;display:block}
