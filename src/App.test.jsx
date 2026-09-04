@@ -23,6 +23,12 @@ test("keeps the previous homepage available at the original route", () => {
 
 test("expands the selected thumbnail before revealing its project detail", async () => {
   vi.useFakeTimers();
+  const rectSpy = vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function getRect() {
+    if (this.matches?.("[data-project-transition-target]")) {
+      return { top: 420, left: 0, width: 1000, height: 644, right: 1000, bottom: 1064, x: 0, y: 420, toJSON() {} };
+    }
+    return { top: 120, left: 360, width: 420, height: 315, right: 780, bottom: 435, x: 360, y: 120, toJSON() {} };
+  });
   window.location.hash = "#/";
   render(<App />);
 
@@ -33,8 +39,15 @@ test("expands the selected thumbnail before revealing its project detail", async
 
   await act(async () => vi.advanceTimersByTime(500));
   expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
+  expect(screen.getByTestId("project-transition-cover")).toHaveStyle({
+    top: "420px",
+    left: "0px",
+    width: "1000px",
+    height: "644px",
+  });
 
-  await act(async () => vi.advanceTimersByTime(400));
+  await act(async () => vi.advanceTimersByTime(900));
   expect(screen.queryByTestId("project-transition-cover")).not.toBeInTheDocument();
+  rectSpy.mockRestore();
   vi.useRealTimers();
 });

@@ -1,9 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ProjectTransitionContext = createContext(null);
-const EXPAND_DURATION = 480;
-const REVEAL_DURATION = 380;
+const NAVIGATION_DELAY = 80;
+const LAND_DURATION = 620;
+const FADE_DURATION = 180;
 
 function isPlainLeftClick(event) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -14,6 +15,30 @@ export function ProjectTransitionProvider({ children }) {
   const timersRef = useRef([]);
   const [overlay, setOverlay] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => () => timersRef.current.forEach(window.clearTimeout), []);
+
+  const registerProjectTarget = useCallback((target) => {
+    if (!target || !isTransitioning) return;
+    const targetRect = target.getBoundingClientRect();
+
+    setOverlay((current) => current && {
+      ...current,
+      phase: "landing",
+      rect: {
+        top: targetRect.top,
+        left: targetRect.left,
+        width: targetRect.width,
+        height: targetRect.height,
+      },
+    });
+
+    timersRef.current.push(window.setTimeout(() => {
+      setIsTransitioning(false);
+      setOverlay((current) => current && { ...current, phase: "fading" });
+      timersRef.current.push(window.setTimeout(() => setOverlay(null), FADE_DURATION));
+    }, LAND_DURATION));
+  }, [isTransitioning]);
 
   const startProjectTransition = useCallback((event, project) => {
     if (event.defaultPrevented || !isPlainLeftClick(event) || isTransitioning) return;
@@ -32,21 +57,16 @@ export function ProjectTransitionProvider({ children }) {
       rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
     });
 
-    requestAnimationFrame(() => setOverlay((current) => current && { ...current, phase: "expanding" }));
     timersRef.current.push(window.setTimeout(() => {
       navigate(`/projects/${project.slug}`, { state: { projectTransition: true } });
-      requestAnimationFrame(() => setOverlay((current) => current && { ...current, phase: "revealing" }));
-      timersRef.current.push(window.setTimeout(() => {
-        setOverlay(null);
-        setIsTransitioning(false);
-      }, REVEAL_DURATION));
-    }, EXPAND_DURATION));
+    }, NAVIGATION_DELAY));
   }, [isTransitioning, navigate]);
 
-  const value = useMemo(() => ({ isTransitioning, startProjectTransition }), [isTransitioning, startProjectTransition]);
-  const overlayStyle = overlay?.phase === "start"
-    ? overlay.rect
-    : { top: overlay?.phase === "revealing" ? "-100vh" : 0, left: 0, width: "100vw", height: "100vh" };
+  const value = useMemo(
+    () => ({ isTransitioning, registerProjectTarget, startProjectTransition }),
+    [isTransitioning, registerProjectTarget, startProjectTransition],
+  );
+  const overlayStyle = overlay?.rect;
 
   return (
     <ProjectTransitionContext.Provider value={value}>

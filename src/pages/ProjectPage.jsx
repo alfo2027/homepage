@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ProjectNavigation from "../components/ProjectNavigation";
+import { useProjectTransition } from "../components/ProjectTransition";
 import { getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
   const { slug } = useParams();
   const location = useLocation();
+  const { isTransitioning, registerProjectTarget } = useProjectTransition();
   const project = getProjectBySlug(slug);
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function ProjectPage() {
   const relatedProjects = getRelatedProjects(project.slug);
 
   return (
-    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}`}>
+    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}${isTransitioning ? " is-transition-active" : ""}`}>
       <ProjectNavigation />
       {project.intro && (
         <header className="project-intro">
@@ -28,21 +30,25 @@ export default function ProjectPage() {
           <p>{project.intro.description}</p>
         </header>
       )}
-      <section className="project-images" aria-label={project.detailLabel}>
-        {project.images.map((image, index) => (
-          <img
-            key={image.src}
-            draggable={false}
-            src={image.src}
-            alt={image.alt}
-            width={image.width}
-            height={image.height}
-            decoding="async"
-            loading={index === 0 ? "eager" : "lazy"}
-            fetchPriority={index === 0 ? "high" : undefined}
-          />
-        ))}
-      </section>
+      <div className="project-images-viewport">
+        <section className="project-images" aria-label={project.detailLabel}>
+          {project.images.map((image, index) => (
+            <img
+              key={image.src}
+              draggable={false}
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              decoding="async"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : undefined}
+              data-project-transition-target={index === 0 ? "" : undefined}
+              ref={index === 0 ? registerProjectTarget : undefined}
+            />
+          ))}
+        </section>
+      </div>
       <section className="project-related" aria-labelledby="project-related-title">
         <h2 id="project-related-title">다른 프로젝트</h2>
         <nav className="project-related-grid" aria-label="다른 프로젝트 탐색">
