@@ -31,6 +31,8 @@ export default function CaiConceptPage() {
 
   useLayoutEffect(() => {
     document.title = "윤미래 Product Designer";
+    const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const updateProgress = () => {
       const scroller = scrollRef.current;
@@ -42,14 +44,24 @@ export default function CaiConceptPage() {
         progressFillRef.current.style.transform = `scaleY(${progress})`;
         progressFillRef.current.parentElement?.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
       }
+      if (!isMobileLayout && !prefersReducedMotion) {
+        const columnCount = window.matchMedia("(min-width: 1920px)").matches ? 3 : 2;
+        const columnTravel = columnCount === 3 ? [-18, -56, -90] : [-16, -72];
+        pageRef.current?.querySelectorAll(".cai-project").forEach((card, index) => {
+          if (progress === 0) {
+            card.style.removeProperty("transform");
+            return;
+          }
+          const offset = columnTravel[index % columnCount] * progress;
+          card.style.transform = `translate3d(0, ${offset}px, 0)`;
+        });
+      }
     };
 
     const scroller = scrollRef.current;
     scroller?.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
 
-    const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (isMobileLayout || prefersReducedMotion) {
       return () => scroller?.removeEventListener("scroll", updateProgress);
     }

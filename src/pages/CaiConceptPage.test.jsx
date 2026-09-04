@@ -73,6 +73,68 @@ describe("Cai-inspired concept page", () => {
     expect([...container.querySelectorAll("img")].every((image) => image.draggable === false)).toBe(true);
   });
 
+  test("shows project thumbnails in their original colors", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+    const firstThumbnail = container.querySelector(".cai-image-wrap img");
+
+    expect(getComputedStyle(firstThumbnail).filter).toBe("none");
+  });
+
+  test("moves desktop gallery columns at different scroll speeds", () => {
+    const originalMatchMedia = window.matchMedia;
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+
+    try {
+      render(<CaiConceptPage />, { wrapper: TestRouter });
+      const projectList = screen.getByLabelText("프로젝트 세로 목록");
+      const cards = screen.getAllByTestId("cai-project");
+      Object.defineProperty(projectList, "scrollHeight", { configurable: true, value: 2000 });
+      Object.defineProperty(projectList, "clientHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(projectList, "scrollTop", { configurable: true, value: 500 });
+
+      fireEvent.scroll(projectList);
+
+      expect(cards[0]).toHaveStyle({ transform: "translate3d(0, -8px, 0)" });
+      expect(cards[1]).toHaveStyle({ transform: "translate3d(0, -36px, 0)" });
+    } finally {
+      window.matchMedia = originalMatchMedia;
+    }
+  });
+
+  test("recalculates column motion when the gallery crosses the large-monitor breakpoint", () => {
+    const originalMatchMedia = window.matchMedia;
+    let largeMonitor = false;
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: query === "(min-width: 1920px)" ? largeMonitor : false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+
+    try {
+      render(<CaiConceptPage />, { wrapper: TestRouter });
+      const projectList = screen.getByLabelText("프로젝트 세로 목록");
+      const cards = screen.getAllByTestId("cai-project");
+      Object.defineProperty(projectList, "scrollHeight", { configurable: true, value: 2000 });
+      Object.defineProperty(projectList, "clientHeight", { configurable: true, value: 1000 });
+      Object.defineProperty(projectList, "scrollTop", { configurable: true, value: 500 });
+      largeMonitor = true;
+
+      fireEvent.scroll(projectList);
+
+      expect(cards[0]).toHaveStyle({ transform: "translate3d(0, -9px, 0)" });
+      expect(cards[1]).toHaveStyle({ transform: "translate3d(0, -28px, 0)" });
+      expect(cards[2]).toHaveStyle({ transform: "translate3d(0, -45px, 0)" });
+    } finally {
+      window.matchMedia = originalMatchMedia;
+    }
+  });
+
   test("uses Pretendard with compact project titles and descriptions", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const pageStyle = getComputedStyle(screen.getByTestId("cai-concept"));
@@ -106,9 +168,16 @@ describe("Cai-inspired concept page", () => {
 
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const thumbnails = [...container.querySelectorAll(".cai-image-wrap")];
+    const projectList = screen.getByLabelText("프로젝트 세로 목록");
+    const cards = screen.getAllByTestId("cai-project");
+    Object.defineProperty(projectList, "scrollHeight", { configurable: true, value: 2000 });
+    Object.defineProperty(projectList, "clientHeight", { configurable: true, value: 1000 });
+    Object.defineProperty(projectList, "scrollTop", { configurable: true, value: 500 });
+    fireEvent.scroll(projectList);
 
     expect(thumbnails).toHaveLength(12);
     expect(thumbnails.every((thumbnail) => thumbnail.style.opacity !== "0" && thumbnail.style.visibility !== "hidden")).toBe(true);
+    expect(cards.every((card) => !card.style.transform)).toBe(true);
     window.matchMedia = originalMatchMedia;
   });
   test("scrolls the project area to the top when Home is clicked", () => {
