@@ -35,10 +35,8 @@
 .project-related-card>span:last-child{color:var(--portfolio-muted);font-size:var(--portfolio-type-13)}
 @media(max-width:720px){.project-intro h1{font-size:var(--portfolio-type-17)}.project-intro p{font-size:var(--portfolio-type-13)}.project-related-card strong{font-size:var(--portfolio-type-15)}.project-related-card>span:last-child{font-size:var(--portfolio-type-13)}}
 
-/* Theme control extends the original project navigation without changing its spacing. */
-.project-back,.project-menu a{transition:opacity .2s}
+/* Project navigation shares the home menu's typography and interaction. */
+.project-back,.project-menu a{font-size:15px;font-weight:400;line-height:1.25;transition:opacity .2s}
 .project-back:hover,.project-menu a:hover{opacity:.58}
-.project-theme-toggle{display:grid;width:20px;height:20px;margin:0;place-items:center;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}
-.project-theme-toggle span{display:block;width:8px;height:8px;border-radius:50%;background:var(--portfolio-fg);transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s}
-.project-theme-toggle:hover span{transform:scale(1.3)}
-@media(max-width:720px){.project-theme-toggle{width:18px;height:18px}.project-theme-toggle span{width:7px;height:7px}}
+.project-menu{gap:16px}
+@media(max-width:720px){.project-back,.project-menu a{font-size:13px}.project-menu{gap:12px}}

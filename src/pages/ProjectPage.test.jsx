@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import NotFoundPage from "./NotFoundPage";
@@ -108,29 +108,31 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("keeps the original spacious project navigation with the home menu and theme control", () => {
-    const { container } = renderRoute("/projects/analyst");
+  test("matches the home menu typography without a detail theme control", () => {
+    renderRoute("/projects/analyst");
     const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
     const projects = screen.getByRole("link", { name: "Projects" });
     const home = screen.getByRole("link", { name: "Home" });
     const about = screen.getByRole("link", { name: "About" });
-    const theme = screen.getByRole("button", { name: "다크 모드로 전환" });
 
     expect(navigation.querySelector(".project-back")).toBe(projects);
     expect(navigation.querySelector(".project-menu")).toContainElement(home);
     expect(navigation.querySelector(".project-menu")).toContainElement(about);
-    expect(navigation.querySelector(".project-menu")).toContainElement(theme);
     expect(projects).toHaveAttribute("href", "/");
     expect(home).toHaveAttribute("href", "/");
     expect(about).toHaveAttribute("href", "/");
     expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
     expect(getComputedStyle(navigation).top).toBe("24px");
     expect(getComputedStyle(navigation).left).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
     expect(getComputedStyle(navigation).right).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
-    expect(getComputedStyle(navigation.querySelector(".project-menu")).gap).toBe("30px");
-    expect(getComputedStyle(projects).fontSize).toBe("14.08px");
-    expect(getComputedStyle(home).fontSize).toBe("14.08px");
-    expect(getComputedStyle(theme).marginLeft).toBe("0px");
+    expect(getComputedStyle(navigation.querySelector(".project-menu")).gap).toBe("16px");
+    expect(getComputedStyle(projects).fontSize).toBe("15px");
+    expect(getComputedStyle(projects).fontWeight).toBe("400");
+    expect(getComputedStyle(home).fontSize).toBe("15px");
+    expect(getComputedStyle(home).fontWeight).toBe("400");
+    expect(getComputedStyle(about).fontSize).toBe("15px");
+    expect(getComputedStyle(about).fontWeight).toBe("400");
     expect(getComputedStyle(projects).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(home).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(about).color).toBe("var(--portfolio-fg)");
@@ -138,9 +140,6 @@ describe("project detail", () => {
     expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");
 
-    fireEvent.click(theme);
-    expect(container.querySelector(".portfolio-app")).toHaveClass("is-dark");
-    expect(theme).toHaveAccessibleName("라이트 모드로 전환");
   });
 
   test("renders a useful fallback for an unknown project", () => {
