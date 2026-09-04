@@ -6,7 +6,7 @@ export default function CaiExperiencePanel() {
     <div className="cai-experience" data-testid="cai-experience">
       <header className="cai-experience-header">
         <span>PROFILE / EXPERIENCE</span>
-        <h2>Experience</h2>
+        <h2>About</h2>
       </header>
 
       <section className="cai-experience-strengths" aria-label="핵심 역량">

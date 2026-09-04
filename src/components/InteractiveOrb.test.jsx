@@ -31,10 +31,13 @@ describe("InteractiveOrb", () => {
     const { container } = render(<InteractiveOrb dark={false} progressRef={progressRef} />);
 
     expect(screen.getByLabelText("스크롤과 드래그에 반응하는 웨스티 캐릭터")).toBeInTheDocument();
-    expect(screen.getByText("PET / DRAG")).toBeInTheDocument();
-    expect(container.querySelector(".cai-orb-status")).toHaveTextContent("HELLO, WESTIE");
+    expect(screen.queryByText("PET / DRAG")).not.toBeInTheDocument();
+    expect(container.querySelector(".cai-orb-meta")).not.toBeInTheDocument();
     expect(container.querySelector(".cai-orb-stage")).toBeInTheDocument();
-    expect(mockUseGLTF).toHaveBeenCalledWith(expect.stringMatching(/\/assets\/models\/westie\.glb$/));
+    expect(container.querySelector('[name="WestieHead"]')).toBeInTheDocument();
+    expect(container.querySelector('[name="WestieMuzzle"]')).toBeInTheDocument();
+    expect(container.querySelectorAll('[name="WestieEye"]')).toHaveLength(2);
+    expect(mockUseGLTF).not.toHaveBeenCalled();
   });
 
   test("reveals the character introduction on hover", () => {

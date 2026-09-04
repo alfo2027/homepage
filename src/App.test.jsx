@@ -10,7 +10,7 @@ test("renders the Westie portfolio at the default route", () => {
   render(<App />);
 
   expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "윤미래" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "YOON" })).toBeInTheDocument();
 });
 
 test("keeps the previous homepage available at the original route", () => {
