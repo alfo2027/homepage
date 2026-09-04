@@ -108,7 +108,7 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("keeps the project back link while matching the home menu and theme control", () => {
+  test("keeps the original spacious project navigation with the home menu and theme control", () => {
     const { container } = renderRoute("/projects/analyst");
     const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
     const projects = screen.getByRole("link", { name: "Projects" });
@@ -124,8 +124,13 @@ describe("project detail", () => {
     expect(home).toHaveAttribute("href", "/");
     expect(about).toHaveAttribute("href", "/");
     expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
-    expect(getComputedStyle(about).marginLeft).toBe("16px");
-    expect(getComputedStyle(theme).marginLeft).toBe("12px");
+    expect(getComputedStyle(navigation).top).toBe("24px");
+    expect(getComputedStyle(navigation).left).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
+    expect(getComputedStyle(navigation).right).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
+    expect(getComputedStyle(navigation.querySelector(".project-menu")).gap).toBe("30px");
+    expect(getComputedStyle(projects).fontSize).toBe("14.08px");
+    expect(getComputedStyle(home).fontSize).toBe("14.08px");
+    expect(getComputedStyle(theme).marginLeft).toBe("0px");
     expect(getComputedStyle(projects).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(home).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(about).color).toBe("var(--portfolio-fg)");
