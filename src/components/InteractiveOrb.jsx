@@ -93,7 +93,7 @@ function SimplifiedWestie({ dark, progressRef }) {
 export default function InteractiveOrb({ dark, progressRef }) {
   const [speaking, setSpeaking] = useState(false);
   return (
-    <div className={`cai-orb${speaking ? " is-speaking" : ""}`} data-cursor="drag" data-testid="interactive-orb" aria-label="스크롤과 드래그에 반응하는 웨스티 캐릭터" aria-describedby="cai-orb-introduction" tabIndex="0" onMouseEnter={() => setSpeaking(true)} onMouseLeave={() => setSpeaking(false)} onFocus={() => setSpeaking(true)} onBlur={() => setSpeaking(false)}>
+    <div className={`cai-orb${speaking ? " is-speaking" : ""}`} data-testid="interactive-orb" aria-label="스크롤과 드래그에 반응하는 웨스티 캐릭터" aria-describedby="cai-orb-introduction" tabIndex="0" onMouseEnter={() => setSpeaking(true)} onMouseLeave={() => setSpeaking(false)} onFocus={() => setSpeaking(true)} onBlur={() => setSpeaking(false)}>
       <div id="cai-orb-introduction" className="cai-orb-speech" role="status" aria-hidden={!speaking}>
         <span>안녕하세요!</span>
         새로운 기술과 기능을 탐구하는<br />디자이너 윤미래입니다.

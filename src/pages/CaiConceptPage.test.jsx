@@ -39,11 +39,10 @@ describe("Cai-inspired concept page", () => {
     const primaryTextColor = getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color;
     expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe(primaryTextColor);
     expect(getComputedStyle(screen.getByRole("link", { name: "About" })).color).toBe(primaryTextColor);
-    expect(screen.getByTestId("custom-cursor")).toBeInTheDocument();
-    expect(screen.getAllByTestId("cai-project")[0]).not.toHaveAttribute("data-cursor");
-    expect(screen.getAllByTestId("cai-project")[1]).toHaveAttribute("data-cursor", "project");
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("data-cursor", "link");
-    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("data-cursor", "link");
+    expect(screen.queryByTestId("custom-cursor")).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("cai-project").every((card) => !card.hasAttribute("data-cursor"))).toBe(true);
+    expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("data-cursor");
+    expect(screen.getByRole("link", { name: "About" })).not.toHaveAttribute("data-cursor");
     expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
     const emailLink = screen.getByRole("link", { name: "alfo2027@naver.com" });
     expect(emailLink).toHaveAttribute("href", "mailto:alfo2027@naver.com");
@@ -65,6 +64,17 @@ describe("Cai-inspired concept page", () => {
       .join("\n");
 
     expect(styleRules).not.toContain('.cai-side-menu a[aria-current="page"]::after');
+  });
+
+  test("uses native cursors throughout the page", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const styleRules = [...document.styleSheets]
+      .flatMap((sheet) => [...sheet.cssRules])
+      .map((rule) => rule.cssText)
+      .join("\n");
+
+    expect(styleRules).not.toContain(".cai-cursor");
+    expect(styleRules).not.toContain("cursor: grab");
   });
 
   test("keeps every image non-draggable", () => {

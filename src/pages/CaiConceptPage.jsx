@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
-import CustomCursor from "../components/CustomCursor";
 import { useProjectTransition } from "../components/ProjectTransition";
 import "../concepts/cai.css";
 
@@ -95,12 +94,11 @@ export default function CaiConceptPage() {
 
   return (
     <main ref={pageRef} className={`cai-concept${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
-      <CustomCursor />
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
-            <Link to="/" className="cai-home" data-cursor="link" aria-current={!isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/")}>Home</Link>
-            <Link to="/about" data-cursor="link" aria-current={isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/about")}>About</Link>
+            <Link to="/" className="cai-home" aria-current={!isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/")}>Home</Link>
+            <Link to="/about" aria-current={isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/about")}>About</Link>
           </nav>
         </div>
         <div className="cai-profile">
@@ -110,7 +108,7 @@ export default function CaiConceptPage() {
             <p>작고 감각적인 것들을 발견해 채우는 즐거움만큼,<br className="cai-profile-wide-break" /> 깨끗하게 비워진 공간도 좋아합니다.</p>
             <p>디자인도 그렇습니다. 충분히 들여다본 뒤<br className="cai-profile-wide-break" /> 꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
           </div>
-          <a className="cai-profile-email" href="mailto:alfo2027@naver.com" data-cursor="link">alfo2027@naver.com <span aria-hidden="true">↗</span></a>
+          <a className="cai-profile-email" href="mailto:alfo2027@naver.com">alfo2027@naver.com <span aria-hidden="true">↗</span></a>
         </div>
         <div className="cai-side-bottom">
           <InteractiveOrb progressRef={scrollProgressRef} />
@@ -138,7 +136,7 @@ export default function CaiConceptPage() {
             return project.upcoming ? (
               <article className="cai-project is-upcoming" data-testid="cai-project" key={project.slug}>{card}</article>
             ) : (
-              <Link className="cai-project" data-cursor="project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`} onClick={(event) => startProjectTransition(event, project)}>{card}</Link>
+              <Link className="cai-project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`} onClick={(event) => startProjectTransition(event, project)}>{card}</Link>
             );
           })}
         </div>}
