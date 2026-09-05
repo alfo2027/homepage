@@ -36,7 +36,7 @@ describe("Cai-inspired concept page", () => {
     expect(container.querySelector(".cai-side-bottom > [data-testid='interactive-orb']")).toBeInTheDocument();
     expect(screen.queryByText(/^\d{2} \/ \d{2}$/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
-    const primaryTextColor = getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color;
+    const primaryTextColor = getComputedStyle(screen.getByTestId("cai-concept")).color;
     expect(getComputedStyle(screen.getByRole("link", { name: "Home" })).color).toBe(primaryTextColor);
     expect(getComputedStyle(screen.getByRole("link", { name: "About" })).color).toBe(primaryTextColor);
     expect(screen.queryByTestId("custom-cursor")).not.toBeInTheDocument();
@@ -44,10 +44,13 @@ describe("Cai-inspired concept page", () => {
     expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("data-cursor");
     expect(screen.getByRole("link", { name: "About" })).not.toHaveAttribute("data-cursor");
     expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
-    const emailLink = screen.getByRole("link", { name: "alfo2027@naver.com" });
+    const emailLink = screen.getByRole("link", { name: "Email" });
     expect(emailLink).toHaveAttribute("href", "mailto:alfo2027@naver.com");
     expect(container.querySelector(".cai-profile-copy + .cai-profile-email")).toBe(emailLink);
     expect(emailLink.querySelector("span")).toHaveAttribute("aria-hidden", "true");
+    expect(getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color).toBe(
+      getComputedStyle(container.querySelector(".cai-profile-copy p")).color,
+    );
     expect(container.querySelector(".cai-project-grid")).toHaveClass("is-gallery-index");
     expect(screen.getAllByTestId("cai-project").every((card) => !card.style.transform)).toBe(true);
     expect(screen.getByRole("progressbar", { name: "프로젝트 스크롤 진행률" })).toBeInTheDocument();
@@ -196,6 +199,18 @@ describe("Cai-inspired concept page", () => {
     const profileParagraph = container.querySelector(".cai-profile-copy p");
 
     expect(getComputedStyle(profileParagraph).maxWidth).toBe("100%");
+  });
+
+  test("keeps the profile introduction readable at 14px on mobile", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const mobileProfileRule = [...document.styleSheets]
+      .flatMap((sheet) => [...sheet.cssRules])
+      .filter((rule) => rule.conditionText?.replaceAll(" ", "").includes("max-width:640px"))
+      .flatMap((rule) => [...rule.cssRules])
+      .filter((rule) => rule.selectorText === ".cai-profile p")
+      .at(-1);
+
+    expect(mobileProfileRule?.style.fontSize).toBe("14px");
   });
 
   test("adds deliberate line breaks for the wide profile layout", () => {
