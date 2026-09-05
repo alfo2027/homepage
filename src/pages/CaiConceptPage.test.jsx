@@ -118,15 +118,25 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(analystOverlay).placeItems).toBe("center");
     expect(getComputedStyle(analystOverlay).backgroundColor).toBe("rgba(0, 0, 0, 0.55)");
     expect(getComputedStyle(analystOverlay).backdropFilter).toBe("blur(4px)");
+    expect(getComputedStyle(analystOverlay.querySelector("strong")).fontSize).toBe(
+      getComputedStyle(cards[1].querySelector(".cai-project-copy h2")).fontSize,
+    );
   });
 
-  test("uses the newly supplied artwork for the four matching project thumbnails", () => {
+  test("uses the supplied artwork for every matching project thumbnail", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
 
     const expectedThumbnails = {
       analyst: "/assets/project-01/project-01-thumb.avif",
       "bloomingbit-alpha": "/assets/project-02/project-02-thumb.avif",
+      "plan-purchase": "/assets/project-03/project-03-thumb.avif",
+      "shipment-report": "/assets/project-04/project-04-thumb.avif",
+      "design-system": "/assets/project-05/project-05-thumb.avif",
+      "schedule-demo": "/assets/project-06/project-06-thumb.avif",
       "dever-partners": "/assets/project-07/project-07-thumb.avif",
+      "dever-order-web": "/assets/project-08/project-08-thumb.avif",
+      "dever-alimtalk": "/assets/project-09/project-09-thumb.avif",
+      "dever-signup": "/assets/project-10/project-10-thumb.avif",
       "graphic-visual": "/assets/project-11/project-11-thumb.avif",
     };
 
@@ -134,6 +144,11 @@ describe("Cai-inspired concept page", () => {
       const card = document.querySelector(`a[href="/projects/${slug}"]`);
       expect(card?.querySelector("img")).toHaveAttribute("src", thumbnail);
     });
+
+    expect(screen.getAllByTestId("cai-project")[0].querySelector("img")).toHaveAttribute(
+      "src",
+      "/assets/project-12/project-12-thumb.avif",
+    );
   });
 
   test("moves desktop gallery columns at different scroll speeds", () => {
