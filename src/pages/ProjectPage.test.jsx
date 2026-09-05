@@ -91,14 +91,46 @@ describe("project detail", () => {
     const { container } = renderRoute("/projects/analyst");
 
     expect(screen.getByRole("heading", { name: "Related Works" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /블루밍비트 알파/ })).toHaveAttribute("href", "/projects/bloomingbit-alpha");
+    expect(container.querySelector(".project-related-card")).toHaveAttribute("href", "/projects/bloomingbit-alpha");
     expect(container.querySelectorAll(".project-related-card")).toHaveLength(1);
-    expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-03.avif");
+    expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-thumb.avif");
     expect(getComputedStyle(container.querySelector(".project-related h2")).fontSize).toBe("var(--portfolio-type-15)");
+    expect(getComputedStyle(container.querySelector(".project-related h2")).fontWeight).toBe("400");
+    expect(getComputedStyle(container.querySelector(".project-related h2")).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(container.querySelector(".project-related-grid")).gridTemplateColumns).toBe("repeat(4,minmax(0,1fr))");
     expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("4/3");
     expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("var(--portfolio-type-15)");
     expect(getComputedStyle(container.querySelector(".project-related-card > span:last-child")).fontSize).toBe("var(--portfolio-type-13)");
+  });
+
+  test("shows previous and next project links before Related Works", () => {
+    const { container } = renderRoute("/projects/analyst");
+    const pagination = screen.getByRole("navigation", { name: "이전 및 다음 프로젝트" });
+    const related = container.querySelector(".project-related");
+
+    expect(pagination.compareDocumentPosition(related) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    const previousLink = pagination.querySelector(".project-pagination-link:not(.is-next)");
+    const nextLink = pagination.querySelector(".project-pagination-link.is-next");
+    expect(previousLink).toHaveTextContent("Previous");
+    expect(previousLink).not.toHaveTextContent("이전 프로젝트");
+    expect(previousLink).toHaveTextContent("그래픽 디자인 & 3D 비주얼");
+    expect(previousLink).toHaveAttribute("href", "/projects/graphic-visual");
+    expect(nextLink).toHaveTextContent("Next");
+    expect(nextLink).not.toHaveTextContent("다음 프로젝트");
+    expect(nextLink).toHaveTextContent("블루밍비트 알파");
+    expect(nextLink).toHaveAttribute("href", "/projects/bloomingbit-alpha");
+    expect(previousLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
+    expect(nextLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
+    expect(getComputedStyle(previousLink).flexDirection).toBe("column");
+    expect(getComputedStyle(pagination).borderTopWidth).toBe("0px");
+    expect(getComputedStyle(pagination).paddingBottom).toBe("40px");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).fontSize).toBe("15px");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).color).toBe("var(--portfolio-fg)");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).fontSize).toBe("13px");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).color).toBe("var(--portfolio-muted)");
+    expect(getComputedStyle(related).borderTopWidth).toBe("1px");
+    expect(getComputedStyle(related).borderTopColor).toBe("rgba(18, 18, 18, 0.12)");
+    expect(getComputedStyle(related).paddingTop).toBe("32px");
   });
 
   test("omits Related Works when there is no same-company project", () => {

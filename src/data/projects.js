@@ -25,7 +25,7 @@ export const projects = [
     thumbnail: asset("assets/project-12/project-12-thumb.avif"),
     thumbnailAlt: "AI 에이전트 연결 경험 개선 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 735,
+    thumbnailHeight: 900,
     upcoming: true,
   },
   {
@@ -36,8 +36,8 @@ export const projects = [
     thumbnail: asset("assets/project-01/project-01-thumb.avif"),
     thumbnailAlt: "크립토 뉴스 분석 AI 애널리스트 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 773,
-    galleryThumbnail: galleryAsset(1, 2),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-01/project-01-thumb.avif"),
     detailLabel: "크립토 뉴스 분석 AI 애널리스트 포트폴리오",
     intro: {
       headline: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트",
@@ -57,8 +57,8 @@ export const projects = [
     thumbnail: asset("assets/project-02/project-02-thumb.avif"),
     thumbnailAlt: "블루밍비트 알파 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(2, 3),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-02/project-02-thumb.avif"),
     detailLabel: "블루밍비트 알파 포트폴리오",
     intro: {
       headline: "전문가의 리서치를 확장하는 AI 크립토 터미널",
@@ -78,8 +78,8 @@ export const projects = [
     thumbnail: asset("assets/project-03/project-03-thumb.avif"),
     thumbnailAlt: "플랜 구매 경험 개선 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(3, 5),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-03/project-03-thumb.avif"),
     detailLabel: "플랜 구매 경험 개선 포트폴리오",
     intro: {
       headline: "선택의 부담을 줄이고 전환으로 이어지는 구매 경험",
@@ -96,8 +96,8 @@ export const projects = [
     thumbnail: asset("assets/project-04/project-04-thumb.avif"),
     thumbnailAlt: "정기 선적 리포트 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(4, 5),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-04/project-04-thumb.avif"),
     detailLabel: "정기 선적 리포트 포트폴리오",
     intro: {
       headline: "복잡한 선적 현황을 먼저 전달하는 정기 리포트",
@@ -114,8 +114,8 @@ export const projects = [
     thumbnail: asset("assets/project-05/project-05-thumb.avif"),
     thumbnailAlt: "디자인 시스템 공통화 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(5, 5),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-05/project-05-thumb.avif"),
     detailLabel: "디자인 시스템 공통화 포트폴리오",
     intro: {
       headline: "다국어 제품을 일관되게 확장하는 디자인 시스템",
@@ -132,8 +132,8 @@ export const projects = [
     thumbnail: asset("assets/project-06/project-06-thumb.avif"),
     thumbnailAlt: "스케줄 데모 이용률 증대 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(6, 1),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-06/project-06-thumb.avif"),
     detailLabel: "스케줄 데모 이용률 증대 포트폴리오",
     intro: {
       headline: "필요한 순간 자연스럽게 발견되는 컨설팅 데모",
@@ -150,8 +150,8 @@ export const projects = [
     thumbnail: asset("assets/project-07/project-07-thumb.avif"),
     thumbnailAlt: "디버 파트너스 앱 리디자인 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(7, 4),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-07/project-07-thumb.avif"),
     detailLabel: "디버 파트너스 앱 리디자인 포트폴리오",
     intro: {
       headline: "배송 기사의 실제 업무 흐름에서 다시 만든 파트너스 앱",
@@ -168,8 +168,8 @@ export const projects = [
     thumbnail: asset("assets/project-08/project-08-thumb.avif"),
     thumbnailAlt: "디버 주문 웹 UX 개선 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(8, 3),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-08/project-08-thumb.avif"),
     detailLabel: "디버 주문 웹 UX 개선 포트폴리오",
     intro: {
       headline: "데이터로 다시 설계한 더 빠르고 명확한 배송 주문",
@@ -186,8 +186,8 @@ export const projects = [
     thumbnail: asset("assets/project-09/project-09-thumb.avif"),
     thumbnailAlt: "디버 배송 알림톡 UX 개선 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(9, 3),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-09/project-09-thumb.avif"),
     detailLabel: "디버 배송 알림톡 UX 개선 포트폴리오",
     intro: {
       headline: "메시지 안에서 배송 흐름을 끝까지 이어주는 경험",
@@ -204,8 +204,8 @@ export const projects = [
     thumbnail: asset("assets/project-10/project-10-thumb.avif"),
     thumbnailAlt: "디버 회원가입 프로세스 개선 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 675,
-    galleryThumbnail: galleryAsset(10, 1),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-10/project-10-thumb.avif"),
     detailLabel: "디버 회원가입 프로세스 개선 포트폴리오",
     intro: {
       headline: "첫 가입의 망설임을 줄이는 단계별 온보딩",
@@ -222,8 +222,8 @@ export const projects = [
     thumbnail: asset("assets/project-11/project-11-thumb.avif"),
     thumbnailAlt: "그래픽 디자인과 3D 비주얼 프로젝트 표지",
     thumbnailWidth: 1200,
-    thumbnailHeight: 674,
-    galleryThumbnail: galleryAsset(11, 4),
+    thumbnailHeight: 900,
+    galleryThumbnail: asset("assets/project-11/project-11-thumb.avif"),
     detailLabel: "그래픽 디자인과 3D 비주얼 포트폴리오",
     intro: {
       headline: "브랜드의 인상을 확장하는 그래픽과 3D 비주얼",
@@ -238,6 +238,16 @@ export const detailProjects = projects.filter(({ upcoming }) => !upcoming);
 
 export const getProjectBySlug = (slug) =>
   detailProjects.find((project) => project.slug === slug);
+
+export const getAdjacentProjects = (slug) => {
+  const index = detailProjects.findIndex((project) => project.slug === slug);
+  if (index < 0) return { previousProject: null, nextProject: null };
+
+  return {
+    previousProject: detailProjects[(index - 1 + detailProjects.length) % detailProjects.length],
+    nextProject: detailProjects[(index + 1) % detailProjects.length],
+  };
+};
 
 export const getRelatedProjects = (slug, limit = 4) => {
   const current = getProjectBySlug(slug);
