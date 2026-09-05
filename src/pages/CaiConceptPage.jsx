@@ -93,7 +93,7 @@ export default function CaiConceptPage() {
   }, [isAbout]);
 
   return (
-    <main ref={pageRef} className={`cai-concept${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
+    <main ref={pageRef} className={`cai-concept${isAbout ? " is-about" : ""}${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">

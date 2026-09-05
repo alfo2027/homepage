@@ -233,6 +233,27 @@ describe("Cai-inspired concept page", () => {
     expect(getLastMobileRule(".cai-experience")?.style.paddingRight).toBe("20px");
   });
 
+  test("pairs the mobile profile and character without a full-screen gap", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+
+    expect(getLastMobileRule(".cai-side")?.style.display).toBe("grid");
+    expect(getLastMobileRule(".cai-side")?.style.gridTemplateColumns).toBe("minmax(0,1fr) 104px");
+    expect(getLastMobileRule(".cai-side")?.style.minHeight).toBe("0px");
+    expect(getLastMobileRule(".cai-profile")?.style.gridColumn).toBe("1");
+    expect(getLastMobileRule(".cai-side-bottom")?.style.gridColumn).toBe("2");
+  });
+
+  test("lets mobile About start below the navigation without the home profile", () => {
+    const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
+
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    expect(screen.getByTestId("cai-concept")).toHaveClass("is-about");
+    expect(getLastMobileRule(".cai-concept.is-about .cai-side")?.style.height).toBe("56px");
+    expect(getLastMobileRule(".cai-concept.is-about .cai-profile,.cai-concept.is-about .cai-side-bottom,.cai-concept.is-about .cai-scroll-progress")?.style.display).toBe("none");
+    expect(container.querySelector(".cai-experience")).toBeInTheDocument();
+  });
+
   test("adds deliberate line breaks for the wide profile layout", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const wideBreaks = container.querySelectorAll(".cai-profile-wide-break");
