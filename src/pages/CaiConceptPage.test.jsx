@@ -44,13 +44,9 @@ describe("Cai-inspired concept page", () => {
     expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("data-cursor");
     expect(screen.getByRole("link", { name: "About" })).not.toHaveAttribute("data-cursor");
     expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
-    const emailLink = screen.getByRole("link", { name: "Email" });
-    expect(emailLink).toHaveAttribute("href", "mailto:alfo2027@naver.com");
-    expect(container.querySelector(".cai-profile-copy + .cai-profile-email")).toBe(emailLink);
-    expect(emailLink.querySelector("span")).toHaveAttribute("aria-hidden", "true");
-    expect(getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color).toBe(
-      getComputedStyle(container.querySelector(".cai-profile-copy p")).color,
-    );
+    expect(screen.queryByRole("link", { name: "Email" })).not.toBeInTheDocument();
+    expect(container.querySelector(".cai-profile-email")).not.toBeInTheDocument();
+    expect(getComputedStyle(screen.getByRole("heading", { name: "YOON" })).color).toBe(primaryTextColor);
     expect(container.querySelector(".cai-project-grid")).toHaveClass("is-gallery-index");
     expect(screen.getAllByTestId("cai-project").every((card) => !card.style.transform)).toBe(true);
     expect(screen.getByRole("progressbar", { name: "프로젝트 스크롤 진행률" })).toBeInTheDocument();

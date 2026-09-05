@@ -84,14 +84,11 @@
 .cai-side-menu a:hover,.cai-side-menu button:hover{opacity:.58}
 .cai-side-bottom{display:block;margin-top:auto;margin-bottom:-20px}
 .cai-profile{position:static;margin:56px 0 0;align-self:auto;transform:none}
-.cai-profile h1{color:var(--cai-muted);font-size:17px}
-.cai-profile-email{display:inline-block;margin-top:18px;color:var(--cai-muted);font-size:13px;line-height:1.5;text-decoration:none;transition:color .2s}
-.cai-profile-email span{color:var(--cai-muted);opacity:.48}
-.cai-profile-email:hover{color:var(--cai-fg)}
+.cai-profile h1{font-size:17px}
 .cai-orb{width:min(174px,100%)}
 
 @media(max-width:860px){.cai-side-bottom{margin-bottom:-16px}}
-@media(max-width:640px){.cai-side{display:flex;min-height:100svh;gap:0}.cai-side-top{width:100%}.cai-profile{margin-top:48px}.cai-profile p{font-size:14px}.cai-profile-email{font-size:12px}.cai-side-bottom{width:100%;margin-top:auto}.cai-side-top>.cai-side-menu{gap:18px}}
+@media(max-width:640px){.cai-side{display:flex;min-height:100svh;gap:0}.cai-side-top{width:100%}.cai-profile{margin-top:48px}.cai-profile p{font-size:14px}.cai-side-bottom{width:100%;margin-top:auto}.cai-side-top>.cai-side-menu{gap:18px}}
 
 /* Shared portfolio token aliases */
 .cai-concept{--cai-bg:var(--portfolio-bg);--cai-fg:var(--portfolio-fg);--cai-muted:var(--portfolio-muted);--cai-line:var(--portfolio-line);background:transparent;font-family:var(--portfolio-font)}
