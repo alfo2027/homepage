@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { readFileSync } from "node:fs";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 import CaiConceptPage from "./CaiConceptPage";
@@ -216,7 +217,7 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(firstProject.querySelector(".cai-project-copy p")).fontSize).toBe("var(--portfolio-type-13)");
 
     fireEvent.click(screen.getByRole("link", { name: "About" }));
-    expect(getComputedStyle(screen.getByRole("heading", { name: "About" })).fontFamily).toContain("Pretendard");
+    expect(getComputedStyle(screen.getByTestId("cai-experience")).fontFamily).toContain("Pretendard");
     expect(getComputedStyle(screen.getByText("블루밍비트(Bloomingbit)")).fontFamily).toContain("Pretendard");
   });
 
@@ -281,12 +282,97 @@ describe("Cai-inspired concept page", () => {
     fireEvent.click(screen.getByRole("link", { name: "About" }));
 
     expect(screen.getByTestId("interactive-orb")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
-    expect(screen.getByText("데이터 중심 서비스 & LLM AI 검색 구축 경험")).toBeInTheDocument();
-    expect(screen.getByText("글로벌 서비스 및 다국어 시스템 대응 경험")).toBeInTheDocument();
-    expect(screen.getByText("디자인 시스템 구축 및 AI 기반 생산성 향상")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "About" })).not.toBeInTheDocument();
+    expect(screen.queryByText("PROFILE / EXPERIENCE")).not.toBeInTheDocument();
+    expect(screen.queryByText("데이터 중심 서비스 & LLM AI 검색 구축 경험")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "복잡함을 이해하기 쉬운 경험으로 바꿉니다." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "제품과 협업이 함께 확장되는 체계를 만듭니다." })).toBeInTheDocument();
+    expect(screen.getByText(/LLM 기반 대화형 AI 검색 및 리서치 인터페이스를 구축한 경험/)).toBeInTheDocument();
     expect(screen.getByText("블루밍비트(Bloomingbit)")).toBeInTheDocument();
+    expect(document.querySelector(".cai-experience-header")).not.toBeInTheDocument();
+    expect(document.querySelector(".cai-experience-strengths")).not.toBeInTheDocument();
     expect(screen.queryAllByTestId("cai-project")).toHaveLength(0);
+  });
+
+  test("keeps career project details collapsed until each company is opened", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    const careers = [...document.querySelectorAll(".cai-career-item")];
+    expect(careers).toHaveLength(4);
+    expect(careers.every((career) => career.tagName === "DETAILS" && !career.hasAttribute("open"))).toBe(true);
+    expect(screen.queryByText("*Experience")).not.toBeInTheDocument();
+    expect(careers[0].querySelector("summary")).toHaveTextContent("블루밍비트(Bloomingbit)");
+    expect(careers[0].querySelector("summary")).toHaveTextContent("2025.09 - 2026.05");
+    const firstHeading = careers[0].querySelector(".cai-career-heading");
+    const firstTitleRow = firstHeading.querySelector(".cai-career-title-row");
+    expect(firstTitleRow).toHaveTextContent("블루밍비트(Bloomingbit)2025.09 - 2026.05");
+    expect(firstHeading.querySelector(".cai-career-description")).toBeInTheDocument();
+    expect(firstTitleRow.querySelector(".cai-career-chevron")).toBeInTheDocument();
+    expect(careers[0].querySelector(".cai-career-chevron").tagName).toBe("svg");
+    expect(getComputedStyle(careers[0].querySelector(".cai-career-chevron")).width).toBe("10px");
+    expect(getComputedStyle(careers[0].querySelector(".cai-career-chevron")).opacity).toBe("0.5");
+
+    fireEvent.click(careers[0].querySelector("summary"));
+    expect(careers[0]).toHaveAttribute("open");
+    expect(careers[0]).toHaveTextContent("뉴스 플랫폼 AI 기능 도입 및 퍼널 개선");
+    const projects = careers[0].querySelector(".cai-career-projects");
+    expect(getComputedStyle(projects.querySelector("h4")).fontSize).toBe("14px");
+    expect(getComputedStyle(projects.querySelector("li")).fontSize).toBe("13px");
+    expect(getComputedStyle(projects).borderLeftWidth).toBe("1px");
+    expect(getComputedStyle(projects).paddingLeft).toBe("18px");
+  });
+
+  test("keeps the About contact links plain and left aligned", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    const footer = document.querySelector(".cai-experience-footer");
+    expect(footer).toHaveTextContent("Resume");
+    expect(footer).not.toHaveTextContent("↗");
+    expect(getComputedStyle(footer).justifyContent).toBe("flex-start");
+    expect(getComputedStyle(footer.querySelector("a")).fontSize).toBe("14px");
+  });
+
+  test("uses equal spacing between the About intro, careers, and contact links", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    const intro = document.querySelector(".cai-experience-intro");
+    const footer = document.querySelector(".cai-experience-footer");
+    const lastCareer = document.querySelector(".cai-career-item:last-child");
+    expect(getComputedStyle(intro).marginBottom).toBe("72px");
+    expect(getComputedStyle(footer).paddingTop).toBe("72px");
+    expect(getComputedStyle(lastCareer).marginBottom).toBe("0px");
+  });
+
+  test("uses a restrained type scale for the About introduction and career list", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    expect(getComputedStyle(document.querySelector(".cai-experience-intro-title")).fontSize).toBe("20px");
+    expect(getComputedStyle(document.querySelector(".cai-experience-intro-copy")).fontSize).toBe("15px");
+    expect(getComputedStyle(document.querySelector(".cai-experience-intro-copy")).color).toBe(getComputedStyle(document.querySelector(".cai-experience-intro-title")).color);
+    expect(getComputedStyle(document.querySelector(".cai-career-heading h3")).fontSize).toBe("14px");
+    expect(getComputedStyle(document.querySelector(".cai-career-heading h3")).marginBottom).toBe("0px");
+    expect(getComputedStyle(document.querySelector(".cai-career-period")).fontSize).toBe("14px");
+    expect(getComputedStyle(document.querySelector(".cai-career-description")).fontSize).toBe("13px");
+  });
+
+  test("scales down About typography and career spacing on mobile", () => {
+    const styles = readFileSync("src/concepts/cai.css", "utf8");
+    const mobileRules = styles.match(/@media\(max-width:640px\)\{\.cai-side-menu button[\s\S]*?\}\n/)?.[0] ?? "";
+
+    expect(mobileRules).toContain(".cai-experience-intro{gap:24px;margin-bottom:48px}");
+    expect(mobileRules).toContain(".cai-experience-intro-title{font-size:20px}");
+    expect(mobileRules).toContain(".cai-experience-intro-copy{font-size:14px;line-height:1.65}");
+    expect(mobileRules).toContain(".cai-career-item{margin-bottom:20px}");
+    expect(mobileRules).toContain(".cai-career-heading h3{font-size:14px}");
+    expect(mobileRules).toContain(".cai-career-period{font-size:14px}");
+    expect(mobileRules).toContain(".cai-career-description{font-size:14px}");
+    expect(mobileRules).toContain(".cai-career-projects h4{font-size:14px}");
+    expect(mobileRules).toContain(".cai-career-projects li{font-size:13px}");
+    expect(mobileRules).toContain(".cai-experience-footer{padding-top:48px");
   });
 
   test("opens About directly from a project detail navigation link", () => {
@@ -296,7 +382,8 @@ describe("Cai-inspired concept page", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByRole("heading", { name: "About" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "About" })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "복잡함을 이해하기 쉬운 경험으로 바꿉니다." })).toBeInTheDocument();
     expect(screen.queryAllByTestId("cai-project")).toHaveLength(0);
   });
 

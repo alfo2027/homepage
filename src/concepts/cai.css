@@ -44,29 +44,33 @@
 
 .cai-side-menu button{width:max-content;padding:0;border:0;background:transparent;color:var(--cai-muted);font:inherit;cursor:pointer;transition:color .2s}
 .cai-side-menu button:hover,.cai-side-menu button.is-active{color:var(--cai-fg)}
-.cai-experience{min-height:100%;padding:clamp(32px,5vw,78px) clamp(22px,4vw,64px) 48px;font-family:"Pretendard",sans-serif;animation:cai-view-in .42s cubic-bezier(.22,1,.36,1)}
-.cai-experience-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:clamp(64px,10vw,150px)}
-.cai-experience-header>span{color:var(--cai-muted);font-size:10px;letter-spacing:.12em}
-.cai-experience-header h2{margin:0;font-size:clamp(34px,5vw,76px);font-weight:400;line-height:.9;letter-spacing:-.055em}
-.cai-experience-strengths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-bottom:clamp(100px,15vw,220px)}
-.cai-experience-strength{padding-top:14px;border-top:1px solid var(--cai-line)}
-.cai-experience-strength>span{display:block;margin-bottom:20px;color:var(--cai-muted);font-size:12px}
-.cai-experience-strength h3{margin:0 0 18px;font-size:clamp(18px,1.7vw,26px);font-weight:600;line-height:1.35;letter-spacing:-.035em;word-break:keep-all}
-.cai-experience-strength p{margin:0;color:var(--cai-muted);font-size:14px;line-height:1.7;letter-spacing:-.02em;word-break:keep-all}
-.cai-career{border-top:1px solid var(--cai-line)}
-.cai-career-item{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:clamp(48px,8vw,130px);padding:clamp(54px,7vw,100px) 0;border-bottom:1px solid var(--cai-line)}
-.cai-career-summary h3{margin:8px 0 20px;font-size:clamp(28px,3vw,46px);font-weight:400;line-height:1;letter-spacing:-.045em}
-.cai-career-summary>p:last-child{max-width:34ch;margin:0;color:var(--cai-muted);font-size:13px;line-height:1.7;word-break:keep-all}
-.cai-career-period{margin:0;color:var(--cai-muted);font-size:11px;letter-spacing:.04em}
-.cai-career-projects section+section{margin-top:32px}
-.cai-career-projects h4{margin:0 0 9px;font-size:15px;font-weight:600;line-height:1.45;letter-spacing:-.02em}
+.cai-experience{min-height:100%;padding:clamp(70px,10vh,140px) clamp(22px,5vw,80px) 48px;font-family:"Pretendard",sans-serif;animation:cai-view-in .42s cubic-bezier(.22,1,.36,1)}
+.cai-experience-intro{display:grid;gap:28px;max-width:660px;margin:0 0 72px;word-break:keep-all}
+.cai-experience-intro-title{margin:0 0 10px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
+.cai-experience-intro-copy{max-width:48ch;margin:0;color:var(--cai-fg);font-size:15px;font-weight:400;line-height:1.7;letter-spacing:-.015em}
+.cai-career{max-width:1080px}
+.cai-career-item{margin:0 0 clamp(24px,3vw,40px)}
+.cai-career-item:last-child{margin-bottom:0}
+.cai-career-summary{display:block;width:min(100%,660px);cursor:pointer;list-style:none}
+.cai-career-summary::-webkit-details-marker{display:none}
+.cai-career-title-row{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%}
+.cai-career-heading h3{margin:0;font-size:14px;font-weight:500;line-height:1.45;letter-spacing:-.015em}
+.cai-career-period{margin:0;color:var(--cai-muted);font-size:14px;line-height:1.45;letter-spacing:0}
+.cai-career-description{max-width:48ch;margin:4px 0 0;color:var(--cai-muted);font-size:13px;line-height:1.6;word-break:keep-all}
+.cai-career-chevron{flex:0 0 auto;width:10px;height:6px;color:var(--cai-muted);opacity:.5;transform-origin:center;transition:transform .22s ease}
+.cai-career-chevron path{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.cai-career-item[open] .cai-career-chevron{transform:rotate(180deg)}
+.cai-career-projects{display:grid;gap:20px;max-width:660px;margin-top:22px;padding:2px 0 2px 18px;border-left:1px solid rgba(17,17,17,.14)}
+.cai-career-projects section{grid-column:1}
+.cai-career-projects section+section{margin-top:6px}
+.cai-career-projects h4{margin:0 0 6px;font-size:14px;font-weight:500;line-height:1.5;letter-spacing:-.015em}
 .cai-career-projects ul{margin:0;padding:0;list-style:none}
-.cai-career-projects li{color:var(--cai-muted);font-size:13px;line-height:1.7;word-break:keep-all}
-.cai-experience-footer{display:flex;justify-content:flex-end;gap:24px;padding-top:28px}
-.cai-experience-footer a{color:var(--cai-fg);font-size:12px;text-decoration:none}
+.cai-career-projects li{color:var(--cai-muted);font-size:13px;line-height:1.65;word-break:keep-all}
+.cai-experience-footer{display:flex;justify-content:flex-start;gap:24px;padding-top:72px}
+.cai-experience-footer a{color:var(--cai-fg);font-size:14px;text-decoration:none}
 @keyframes cai-view-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@media(max-width:900px){.cai-experience-strengths{grid-template-columns:1fr}.cai-career-item{grid-template-columns:1fr;gap:48px}}
-@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:48px 16px 36px}.cai-experience-header{margin-bottom:72px}.cai-experience-strengths{margin-bottom:100px}.cai-experience-footer{justify-content:flex-start;flex-wrap:wrap}}
+@media(max-width:900px){.cai-career-description{max-width:52ch}}
+@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:56px 16px 36px}.cai-experience-intro{gap:24px;margin-bottom:48px}.cai-experience-intro-title{font-size:20px}.cai-experience-intro-copy{font-size:14px;line-height:1.65}.cai-career-item{margin-bottom:20px}.cai-career-item:last-child{margin-bottom:0}.cai-career-heading h3{font-size:14px}.cai-career-period{font-size:14px}.cai-career-description{font-size:14px}.cai-career-projects h4{font-size:14px}.cai-career-projects li{font-size:13px}.cai-experience-footer{padding-top:48px;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.cai-experience{animation:none}}
 .cai-project-copy{transition:none}
 .cai-image-wrap>.cai-project-hover{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.55);color:#f4f4f1;text-align:center;opacity:0;pointer-events:none;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:opacity .3s ease}
