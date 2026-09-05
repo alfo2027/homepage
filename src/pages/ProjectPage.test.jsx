@@ -122,6 +122,7 @@ describe("project detail", () => {
     expect(previousLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
     expect(nextLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
     expect(getComputedStyle(previousLink).flexDirection).toBe("column");
+    expect(getComputedStyle(pagination).borderTopWidth).toBe("0px");
     expect(getComputedStyle(pagination).paddingBottom).toBe("40px");
     expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).fontSize).toBe("15px");
     expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).color).toBe("var(--portfolio-fg)");
