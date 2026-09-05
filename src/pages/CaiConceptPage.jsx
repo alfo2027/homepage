@@ -22,7 +22,9 @@ export default function CaiConceptPage() {
   const scrollViewTop = (event, targetPath) => {
     if (location.pathname === targetPath) event.preventDefault();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    scrollRef.current?.scrollTo?.({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    const scrollOptions = { top: 0, behavior: reduceMotion ? "auto" : "smooth" };
+    scrollRef.current?.scrollTo?.(scrollOptions);
+    window.scrollTo?.(scrollOptions);
   };
 
   useLayoutEffect(() => {

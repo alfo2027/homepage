@@ -229,7 +229,7 @@ describe("Cai-inspired concept page", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
 
     expect(getLastMobileRule(".cai-side")?.style.padding).toBe("76px 20px 0px");
-    expect(getLastMobileRule(".cai-project-grid")?.style.padding).toBe("20px");
+    expect(getLastMobileRule(".cai-project-grid")?.style.padding).toBe("40px 20px 20px");
     expect(getLastMobileRule(".cai-experience")?.style.paddingLeft).toBe("20px");
     expect(getLastMobileRule(".cai-experience")?.style.paddingRight).toBe("20px");
   });
@@ -291,10 +291,12 @@ describe("Cai-inspired concept page", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
     const projectList = screen.getByLabelText("프로젝트 세로 목록");
     projectList.scrollTo = vi.fn();
+    const pageScroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
 
     fireEvent.click(screen.getByRole("link", { name: "Home" }));
 
     expect(projectList.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+    expect(pageScroll).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
   });
 
   test("changes only the right area to the About view", () => {
