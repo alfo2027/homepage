@@ -121,7 +121,8 @@ describe("InteractiveOrb", () => {
     expect(speechStyle.top).toBe("auto");
     expect(speechStyle.bottom).toBe("128px");
     expect(speechStyle.left).toBe("calc(50% + 18px)");
-    expect(speechStyle.width).toBe("220px");
+    expect(speechStyle.width).toBe("max-content");
+    expect(speechStyle.maxWidth).toBe("220px");
     expect(speechStyle.textWrap).toBe("balance");
     expect(speechStyle.fontSize).toBe("14px");
     expect(speechStyle.fontWeight).toBe("400");

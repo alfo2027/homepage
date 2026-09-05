@@ -222,6 +222,7 @@ describe("Cai-inspired concept page", () => {
     expect(mobileNavigationRule?.style.background).toBe("var(--cai-bg)");
     expect(mobileNavigationRule?.style.height).toBe("56px");
     expect(mobileNavigationRule?.style.padding).toBe("0px 20px");
+    expect(mobileNavigationRule?.style.borderBottomWidth).toBe("0px");
   });
 
   test("uses consistent 20px horizontal gutters throughout the mobile index", () => {
@@ -241,6 +242,8 @@ describe("Cai-inspired concept page", () => {
     expect(getLastMobileRule(".cai-side")?.style.minHeight).toBe("0px");
     expect(getLastMobileRule(".cai-profile")?.style.gridColumn).toBe("1");
     expect(getLastMobileRule(".cai-side-bottom")?.style.gridColumn).toBe("2");
+    expect(getLastMobileRule(".cai-side-bottom")?.style.marginBottom).toBe("0px");
+    expect(getLastMobileRule(".cai-side-bottom .cai-orb-speech")?.style.width).toBe("max-content");
   });
 
   test("lets mobile About start below the navigation without the home profile", () => {
