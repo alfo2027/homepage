@@ -125,8 +125,11 @@ export default function CaiConceptPage() {
               <>
                 <div className="cai-image-wrap">
                   <img draggable={false} src={project.galleryThumbnail ?? project.thumbnail} alt={project.thumbnailAlt} width={project.thumbnailWidth} height={project.thumbnailHeight} loading={index < 4 ? "eager" : "lazy"} />
-                  {project.upcoming && <span>UPCOMING</span>}
-                  {project.intro?.headline && (
+                  {project.upcoming ? (
+                    <span className="cai-project-hover" aria-hidden="true">
+                      <strong>COMING SOON</strong>
+                    </span>
+                  ) : project.intro?.headline && (
                     <span className="cai-project-hover" aria-hidden="true">
                       <strong>{project.intro.headline}</strong>
                     </span>
@@ -139,7 +142,7 @@ export default function CaiConceptPage() {
               </>
             );
             return project.upcoming ? (
-              <article className="cai-project is-upcoming" data-testid="cai-project" key={project.slug}>{card}</article>
+              <article className="cai-project is-upcoming" data-testid="cai-project" key={project.slug} tabIndex={0}>{card}</article>
             ) : (
               <Link className="cai-project" data-testid="cai-project" key={project.slug} to={`/projects/${project.slug}`} onClick={(event) => startProjectTransition(event, project)}>{card}</Link>
             );

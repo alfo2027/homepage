@@ -99,6 +99,6 @@
 
 /* Shared portfolio token aliases */
 .cai-concept{--cai-bg:var(--portfolio-bg);--cai-fg:var(--portfolio-fg);--cai-muted:var(--portfolio-muted);--cai-line:var(--portfolio-line);background:transparent;font-family:var(--portfolio-font)}
-.cai-project-grid{gap:var(--portfolio-space-8) var(--portfolio-space-1);padding:10px}
+.cai-project-grid{gap:var(--portfolio-space-8) var(--portfolio-space-1);padding:40px}
 .cai-project-copy h2{font-size:var(--portfolio-type-15)}
 .cai-project-copy p{font-size:var(--portfolio-type-13)}

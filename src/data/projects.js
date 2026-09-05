@@ -239,6 +239,16 @@ export const detailProjects = projects.filter(({ upcoming }) => !upcoming);
 export const getProjectBySlug = (slug) =>
   detailProjects.find((project) => project.slug === slug);
 
+export const getAdjacentProjects = (slug) => {
+  const index = detailProjects.findIndex((project) => project.slug === slug);
+  if (index < 0) return { previousProject: null, nextProject: null };
+
+  return {
+    previousProject: detailProjects[(index - 1 + detailProjects.length) % detailProjects.length],
+    nextProject: detailProjects[(index + 1) % detailProjects.length],
+  };
+};
+
 export const getRelatedProjects = (slug, limit = 4) => {
   const current = getProjectBySlug(slug);
   if (!current) return [];

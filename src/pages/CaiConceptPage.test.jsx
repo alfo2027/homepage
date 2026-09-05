@@ -110,7 +110,11 @@ describe("Cai-inspired concept page", () => {
     const cards = screen.getAllByTestId("cai-project");
     const analystOverlay = cards[1].querySelector(".cai-project-hover");
 
-    expect(cards[0].querySelector(".cai-project-hover")).not.toBeInTheDocument();
+    const upcomingOverlay = cards[0].querySelector(".cai-project-hover");
+    expect(upcomingOverlay).toBeInTheDocument();
+    expect(upcomingOverlay).toHaveTextContent("COMING SOON");
+    expect(getComputedStyle(upcomingOverlay).opacity).toBe("0");
+    expect(cards[0]).toHaveAttribute("tabindex", "0");
     expect(analystOverlay).toBeInTheDocument();
     expect(cards[1].querySelector(".cai-image-wrap")).toContainElement(analystOverlay);
     expect(analystOverlay).toHaveTextContent("크립토 시장을 더 빠르게 이해하는 AI 애널리스트");
@@ -221,12 +225,12 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(screen.getByText("블루밍비트(Bloomingbit)")).fontFamily).toContain("Pretendard");
   });
 
-  test("keeps the project gallery spacing uniformly compact", () => {
+  test("keeps project gaps compact while adding breathing room around the gallery", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
     const gridStyle = getComputedStyle(container.querySelector(".cai-project-grid"));
 
     expect(gridStyle.gap).toBe("var(--portfolio-space-8) var(--portfolio-space-1)");
-    expect(gridStyle.padding).toBe("10px");
+    expect(gridStyle.padding).toBe("40px");
   });
 
   test("lets the profile copy use the available sidebar width", () => {

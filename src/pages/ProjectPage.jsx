@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ProjectNavigation from "../components/ProjectNavigation";
 import { useProjectTransition } from "../components/ProjectTransition";
-import { getProjectBySlug, getRelatedProjects } from "../data/projects";
+import { getAdjacentProjects, getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
@@ -18,6 +18,7 @@ export default function ProjectPage() {
   if (!project) return <NotFoundPage />;
 
   const relatedProjects = getRelatedProjects(project.slug);
+  const { previousProject, nextProject } = getAdjacentProjects(project.slug);
 
   return (
     <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}${isTransitioning ? " is-transition-active" : ""}`}>
@@ -49,6 +50,22 @@ export default function ProjectPage() {
           ))}
         </section>
       </div>
+      <nav className="project-pagination" aria-label="이전 및 다음 프로젝트">
+        <Link className="project-pagination-link" to={`/projects/${previousProject.slug}`}>
+          <span className="project-pagination-label">
+            <svg className="project-pagination-chevron" viewBox="0 0 8 12" aria-hidden="true"><path d="M6.5 1 1.5 6l5 5" /></svg>
+            Previous
+          </span>
+          <strong className="project-pagination-title">{previousProject.title}</strong>
+        </Link>
+        <Link className="project-pagination-link is-next" to={`/projects/${nextProject.slug}`}>
+          <span className="project-pagination-label">
+            Next
+            <svg className="project-pagination-chevron" viewBox="0 0 8 12" aria-hidden="true"><path d="m1.5 1 5 5-5 5" /></svg>
+          </span>
+          <strong className="project-pagination-title">{nextProject.title}</strong>
+        </Link>
+      </nav>
       {relatedProjects.length > 0 && (
         <section className="project-related" aria-labelledby="project-related-title">
           <h2 id="project-related-title">Related Works</h2>
