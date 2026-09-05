@@ -232,6 +232,13 @@ describe("Cai-inspired concept page", () => {
     expect(mobileTouchRule?.style.opacity).toBe("1");
   });
 
+  test("uses the same 15px size for both mobile navigation links", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const mobileMenuRule = getLastMobileRule(".cai-side-top>.cai-side-menu");
+
+    expect(mobileMenuRule?.style.fontSize).toBe("15px");
+  });
+
   test("uses consistent 20px horizontal gutters throughout the mobile index", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
 
