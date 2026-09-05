@@ -11,6 +11,15 @@ function TestRouter({ children }) {
   return <MemoryRouter><PortfolioThemeProvider><ProjectTransitionProvider>{children}</ProjectTransitionProvider></PortfolioThemeProvider></MemoryRouter>;
 }
 
+function getLastMobileRule(selector) {
+  return [...document.styleSheets]
+    .flatMap((sheet) => [...sheet.cssRules])
+    .filter((rule) => rule.conditionText?.replaceAll(" ", "").includes("max-width:640px"))
+    .flatMap((rule) => [...rule.cssRules])
+    .filter((rule) => rule.selectorText === selector)
+    .at(-1);
+}
+
 describe("Cai-inspired concept page", () => {
   test("renders the vertical work index with all navigation in the left sidebar", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
@@ -199,14 +208,29 @@ describe("Cai-inspired concept page", () => {
 
   test("keeps the profile introduction readable at 14px on mobile", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
-    const mobileProfileRule = [...document.styleSheets]
-      .flatMap((sheet) => [...sheet.cssRules])
-      .filter((rule) => rule.conditionText?.replaceAll(" ", "").includes("max-width:640px"))
-      .flatMap((rule) => [...rule.cssRules])
-      .filter((rule) => rule.selectorText === ".cai-profile p")
-      .at(-1);
+    const mobileProfileRule = getLastMobileRule(".cai-profile p");
 
     expect(mobileProfileRule?.style.fontSize).toBe("14px");
+  });
+
+  test("keeps the mobile navigation fixed on the page background", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    const mobileNavigationRule = getLastMobileRule(".cai-side-top");
+
+    expect(mobileNavigationRule?.style.position).toBe("fixed");
+    expect(mobileNavigationRule?.style.top).toBe("0px");
+    expect(mobileNavigationRule?.style.background).toBe("var(--cai-bg)");
+    expect(mobileNavigationRule?.style.height).toBe("56px");
+    expect(mobileNavigationRule?.style.padding).toBe("0px 20px");
+  });
+
+  test("uses consistent 20px horizontal gutters throughout the mobile index", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+
+    expect(getLastMobileRule(".cai-side")?.style.padding).toBe("76px 20px 0px");
+    expect(getLastMobileRule(".cai-project-grid")?.style.padding).toBe("20px");
+    expect(getLastMobileRule(".cai-experience")?.style.paddingLeft).toBe("20px");
+    expect(getLastMobileRule(".cai-experience")?.style.paddingRight).toBe("20px");
   });
 
   test("adds deliberate line breaks for the wide profile layout", () => {
