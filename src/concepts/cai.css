@@ -78,7 +78,7 @@
 .cai-project:hover .cai-project-hover,.cai-project:focus-visible .cai-project-hover{opacity:1}
 .cai-project:hover .cai-project-hover strong,.cai-project:focus-visible .cai-project-hover strong{opacity:1;transform:none}
 
-@media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:none}}
+@media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:grid}.cai-project:active img{filter:none;opacity:1;transform:scale(1.03)}.cai-project:active .cai-project-hover{opacity:1}.cai-project:active .cai-project-hover strong{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.cai-project{transform:none!important;transition:none}.cai-image-wrap img{transition:none}.cai-project:hover img,.cai-project:focus-visible img{transform:none}.cai-project-hover,.cai-project-hover strong{transition:none}.cai-project-hover strong{transform:none}}
 @media(prefers-reduced-motion:reduce){.cai-orb.is-speaking .cai-orb-speech.speech-cycle-0,.cai-orb.is-speaking .cai-orb-speech.speech-cycle-1{animation:cai-orb-cloud-fade 4.5s ease both;transform:translate(-50%,0)}.cai-orb.is-reacting .cai-orb-stage canvas,.cai-orb-surprise{animation:none}}
 

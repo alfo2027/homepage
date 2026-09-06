@@ -21,6 +21,14 @@ function getLastMobileRule(selector) {
     .at(-1);
 }
 
+function getCoarsePointerRule(selector) {
+  return [...document.styleSheets]
+    .flatMap((sheet) => [...sheet.cssRules])
+    .filter((rule) => rule.conditionText?.replaceAll(" ", "").includes("(hover:none),(pointer:coarse)"))
+    .flatMap((rule) => [...rule.cssRules])
+    .find((rule) => rule.selectorText === selector);
+}
+
 describe("Cai-inspired concept page", () => {
   test("renders the vertical work index with all navigation in the left sidebar", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
@@ -134,6 +142,16 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(analystOverlay.querySelector("strong")).fontSize).toBe(
       getComputedStyle(cards[1].querySelector(".cai-project-copy h2")).fontSize,
     );
+  });
+
+  test("reveals the desktop hover treatment while a project is pressed on touch screens", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+
+    expect(getCoarsePointerRule(".cai-image-wrap>.cai-project-hover")?.style.display).toBe("grid");
+    expect(getCoarsePointerRule(".cai-project:active .cai-project-hover")?.style.opacity).toBe("1");
+    expect(getCoarsePointerRule(".cai-project:active .cai-project-hover strong")?.style.opacity).toBe("1");
+    expect(getCoarsePointerRule(".cai-project:active .cai-project-hover strong")?.style.transform).toBe("none");
+    expect(getCoarsePointerRule(".cai-project:active img")?.style.transform).toBe("scale(1.03)");
   });
 
   test("uses the supplied artwork for every matching project thumbnail", () => {
