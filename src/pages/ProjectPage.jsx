@@ -12,7 +12,7 @@ export default function ProjectPage() {
   const project = getProjectBySlug(slug);
 
   useEffect(() => {
-    if (project) document.title = `윤미래 Product Designer - ${project.title}`;
+    if (project) document.title = `Portfolio_Yoon - ${project.title}`;
   }, [project]);
 
   if (!project) return <NotFoundPage />;

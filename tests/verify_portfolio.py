@@ -16,7 +16,12 @@ class SpaPortfolioTest(unittest.TestCase):
         self.assertIn('<div id="root"></div>', index)
         self.assertIn('src="/src/main.jsx"', index)
         self.assertIn('base: "/homepage/"', vite)
-        self.assertIn("<title>윤미래 Product Designer</title>", index)
+        self.assertIn("<title>Portfolio_Yoon</title>", index)
+        self.assertIn('<link rel="icon" type="image/svg+xml" href="/homepage/favicon.svg"', index)
+        self.assertIn('<meta property="og:title" content="Portfolio_Yoon"', index)
+        self.assertIn('<meta property="og:type" content="website"', index)
+        self.assertIn('<meta property="og:url" content="https://alfo2027.github.io/homepage/"', index)
+        self.assertTrue((ROOT / "public" / "favicon.svg").is_file())
 
     def test_hash_router_and_required_routes(self):
         app = self.read("src/App.jsx")

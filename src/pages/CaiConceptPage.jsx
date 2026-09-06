@@ -28,7 +28,7 @@ export default function CaiConceptPage() {
   };
 
   useLayoutEffect(() => {
-    document.title = isAbout ? "윤미래 Product Designer - About" : "윤미래 Product Designer";
+    document.title = isAbout ? "Portfolio_Yoon - About" : "Portfolio_Yoon";
     const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 

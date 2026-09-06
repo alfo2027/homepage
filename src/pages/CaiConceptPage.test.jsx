@@ -34,7 +34,7 @@ describe("Cai-inspired concept page", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
 
     expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
-    expect(document.title).toBe("윤미래 Product Designer");
+    expect(document.title).toBe("Portfolio_Yoon");
     expect(screen.getAllByTestId("cai-project")).toHaveLength(12);
     expect(screen.getByRole("heading", { name: "YOON" })).toBeInTheDocument();
     expect(screen.getByText("책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.")).toBeInTheDocument();

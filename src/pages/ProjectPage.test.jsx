@@ -29,7 +29,7 @@ describe("project detail", () => {
 
     expect(images).toHaveLength(9);
     expect(images.every((image) => image.draggable === false)).toBe(true);
-    await waitFor(() => expect(document.title).toBe("윤미래 Product Designer - 크립토 뉴스 분석 AI 애널리스트"));
+    await waitFor(() => expect(document.title).toBe("Portfolio_Yoon - 크립토 뉴스 분석 AI 애널리스트"));
   });
 
   test("keeps full-bleed project images centered on a non-animated viewport", () => {

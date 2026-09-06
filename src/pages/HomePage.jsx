@@ -10,7 +10,7 @@ export default function HomePage() {
   const location = useLocation();
 
   useEffect(() => {
-    document.title = "윤미래 Product Designer";
+    document.title = "Portfolio_Yoon";
     const section = location.state?.section;
     if (section) requestAnimationFrame(() => document.getElementById(section)?.scrollIntoView());
   }, [location.state]);
