@@ -26,37 +26,41 @@ test("renders About at its own route", () => {
   render(<App />);
 
   expect(screen.queryByRole("heading", { name: "About" })).not.toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "복잡함을 이해하기 쉬운 경험으로 바꿉니다." })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "복잡한 경험을 명확하게 만들고, 사용자의 선택과 행동을 돕습니다" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("aria-current", "page");
 });
 
-test("expands the selected thumbnail before revealing its project detail", async () => {
+test("transitions the page without carrying the thumbnail into the project detail", async () => {
   vi.useFakeTimers();
-  const rectSpy = vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function getRect() {
-    if (this.matches?.("[data-project-transition-target]")) {
-      return { top: 420, left: 0, width: 1000, height: 644, right: 1000, bottom: 1064, x: 0, y: 420, toJSON() {} };
-    }
-    return { top: 120, left: 360, width: 420, height: 315, right: 780, bottom: 435, x: 360, y: 120, toJSON() {} };
+  let finishDecoding;
+  const decodePromise = new Promise((resolve) => {
+    finishDecoding = resolve;
   });
+  const OriginalImage = window.Image;
+  window.Image = class {
+    decode() {
+      return decodePromise;
+    }
+  };
   window.location.hash = "#/";
   render(<App />);
 
   fireEvent.click(screen.getByRole("link", { name: /크립토 뉴스 분석 AI 애널리스트/ }));
 
-  expect(screen.getByTestId("project-transition-cover")).toBeInTheDocument();
-  expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
+  expect(screen.queryByTestId("project-transition-cover")).not.toBeInTheDocument();
+  expect(screen.getByTestId("cai-concept")).toHaveClass("is-project-leaving");
 
   await act(async () => vi.advanceTimersByTime(500));
-  expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
-  expect(screen.getByTestId("project-transition-cover")).toHaveStyle({
-    top: "420px",
-    left: "0px",
-    width: "1000px",
-    height: "644px",
-  });
+  expect(screen.getByTestId("cai-concept")).toHaveClass("is-project-leaving");
+  expect(screen.queryByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).not.toBeInTheDocument();
 
-  await act(async () => vi.advanceTimersByTime(900));
-  expect(screen.queryByTestId("project-transition-cover")).not.toBeInTheDocument();
-  rectSpy.mockRestore();
+  await act(async () => {
+    finishDecoding();
+    await decodePromise;
+  });
+  expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
+  expect(document.querySelector(".project-shell")).toHaveClass("is-transition-enter");
+  expect(document.querySelector(".project-images img:first-child")).not.toHaveStyle({ opacity: "0" });
+  window.Image = OriginalImage;
   vi.useRealTimers();
 });

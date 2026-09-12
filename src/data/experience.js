@@ -2,7 +2,7 @@ export const experiences = [
   {
     company: "블루밍비트(Bloomingbit)",
     period: "2025.09 ~ 2026.05",
-    description: "한국경제신문 산하 B2C 크립토 뉴스 플랫폼 및 B2B 기관/프로 트레이더용 데이터 터미널을 운영하는 스타트업입니다.",
+    description: "한국경제신문 산하 크립토 뉴스 플랫폼 및 기관/프로 트레이더용 데이터 터미널 서비스",
     projects: [
       { title: "뉴스 플랫폼 AI 기능 도입 및 퍼널 개선", items: ["뉴스 페이지 내 시점별(초단기/중기/장기) AI 분석 정보 및 정확도 시각화 UI 설계", "배포 후 W1 리텐션 5.4% → 8.17% 반등 및 일평균 가입자 수 2배 증가 성과"] },
       { title: "마이페이지 AI 에이전트", items: ["유저 간 소통과 AI 에이전트가 결합된 커뮤니티 생태계 구축", "AI 에이전트 연동 Claim 플로우 설계"] },
@@ -14,7 +14,7 @@ export const experiences = [
   {
     company: "트레드링스(TRADLINX)",
     period: "2024.04 ~ 2025.08",
-    description: "글로벌 수출입 공급망/물류 B2B SaaS 및 트래킹 솔루션을 제공하는 기업입니다.",
+    description: "글로벌 수출입 공급망/물류 B2B SaaS 및 트래킹 솔루션 제공",
     projects: [
       { title: "다국어 대응 디자인 시스템 구축", items: ["Foundation 영역 베리어블 토큰 정비 및 컴포넌트 규격화/가이드라인 구축", "텍스트 베리어블 기반 언어 변환 시스템을 구축하여 다국어(영문/국문 등) 화면 디자인 대응 효율성 제고"] },
       { title: "SaaS 컨테이너 트래킹 추적 기능", items: ["사용자 시나리오 기반 신규 추적 카테고리 상세 화면 설계", "영문 번역가 협업을 통한 다국어 UX Writing 적용"] },
@@ -28,7 +28,7 @@ export const experiences = [
   {
     company: "디버",
     period: "2021.07 ~ 2024.04",
-    description: "퀵서비스 스마트 물류/배송 '디버'와 '디버 파트너스' 플랫폼을 운영하는 스타트업입니다.",
+    description: "스마트 물류/배송, 고객 주문용 웹과 배송 파트너용 앱 운영",
     projects: [
       { title: "디버 주문용 웹 2.0 리디자인 및 UX 개선", items: ["Google Analytics 통계 기반 주문 화면 및 회원가입 프로세스 개편 UX/UI 설계", "디버 2.0 공통 디자인 시스템 제작 및 QA 진행"] },
       { title: "디버 파트너스 앱(iOS/Android) 2.0 리디자인 및 UX 개선", items: ["유저 리서치(설문) 기반 배송 기사용 앱 메인 화면 개편", "회원가입 프로세스 개편 디자인"] },
@@ -39,7 +39,7 @@ export const experiences = [
   {
     company: "보내다",
     period: "2020.10 ~ 2021.06",
-    description: "퀵서비스 물류·컨시어지 플랫폼 '빠름' 플랫폼을 운영하는 스타트업입니다.",
+    description: "퀵서비스 물류·컨시어지 플랫폼 운영",
     projects: [
       { title: "퀵서비스 '빠름' App 화면 기획/디자인", items: ["'빠름' App 컨시어지 서비스 화면 프로세스 기획/디자인", "'빠름' Web 기획/디자인 및 개발"] },
       { title: "Graphic Design", items: ["빠름 캐릭터 디자인", "Adobe After Effects를 활용한 캐릭터 로딩 애니메이션 제작", "마케팅용 그래픽 이미지 디자인 작업 (SNS 이미지, 포스터, 배너)"] },

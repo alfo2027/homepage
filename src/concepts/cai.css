@@ -45,10 +45,20 @@
 .cai-side-menu button{width:max-content;padding:0;border:0;background:transparent;color:var(--cai-muted);font:inherit;cursor:pointer;transition:color .2s}
 .cai-side-menu button:hover,.cai-side-menu button.is-active{color:var(--cai-fg)}
 .cai-experience{min-height:100%;padding:clamp(70px,10vh,140px) clamp(22px,5vw,80px) 48px;font-family:"Pretendard",sans-serif;animation:cai-view-in .42s cubic-bezier(.22,1,.36,1)}
-.cai-experience-intro{display:grid;gap:28px;max-width:660px;margin:0 0 72px;word-break:keep-all}
-.cai-experience-intro-title{margin:0 0 10px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
+.cai-experience-intro{display:grid;gap:28px;max-width:660px;margin:0 0 80px;word-break:keep-all}
+.cai-experience-intro-title{margin:0 0 10px;font-size:24px;font-weight:700;line-height:1.4;letter-spacing:-.025em}
 .cai-experience-intro-copy{max-width:48ch;margin:0;color:var(--cai-fg);font-size:15px;font-weight:400;line-height:1.7;letter-spacing:-.015em}
-.cai-career{max-width:1080px}
+.cai-experience-links{display:flex;justify-content:flex-start;gap:24px}
+.cai-experience-links a{display:inline-flex;align-items:center;gap:5px;color:var(--cai-muted);font-size:14px;font-weight:400;text-decoration:none;transition:color .2s}
+.cai-experience-links a span{opacity:.55}
+.cai-experience-links a:hover,.cai-experience-links a:focus-visible{color:var(--cai-fg)}
+.cai-experience-strengths{max-width:1080px;margin:0 0 80px;padding-top:80px;border-top:1px solid rgba(17,17,17,.08);word-break:keep-all}
+.cai-experience-strengths>h2{margin:0 0 48px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
+.cai-experience-strength-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:52px 72px}
+.cai-experience-strength h3{margin:0 0 10px;font-size:15px;font-weight:500;line-height:1.5;letter-spacing:-.02em}
+.cai-experience-strength p{max-width:46ch;margin:0;color:var(--cai-muted);font-size:14px;font-weight:400;line-height:1.75;letter-spacing:-.012em}
+.cai-career{max-width:1080px;padding-top:80px;border-top:1px solid rgba(17,17,17,.08)}
+.cai-career>h2{margin:0 0 48px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
 .cai-career-item{margin:0 0 clamp(24px,3vw,40px)}
 .cai-career-item:last-child{margin-bottom:0}
 .cai-career-summary{display:block;width:min(100%,660px);cursor:pointer;list-style:none}
@@ -66,11 +76,9 @@
 .cai-career-projects h4{margin:0 0 6px;font-size:14px;font-weight:500;line-height:1.5;letter-spacing:-.015em}
 .cai-career-projects ul{margin:0;padding:0;list-style:none}
 .cai-career-projects li{color:var(--cai-muted);font-size:13px;line-height:1.65;word-break:keep-all}
-.cai-experience-footer{display:flex;justify-content:flex-start;gap:24px;padding-top:72px}
-.cai-experience-footer a{color:var(--cai-fg);font-size:14px;text-decoration:none}
 @keyframes cai-view-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @media(max-width:900px){.cai-career-description{max-width:52ch}}
-@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:56px 16px 36px}.cai-experience-intro{gap:24px;margin-bottom:48px}.cai-experience-intro-title{font-size:20px}.cai-experience-intro-copy{font-size:14px;line-height:1.65}.cai-career-item{margin-bottom:20px}.cai-career-item:last-child{margin-bottom:0}.cai-career-heading h3{font-size:14px}.cai-career-period{font-size:14px}.cai-career-description{font-size:14px}.cai-career-projects h4{font-size:14px}.cai-career-projects li{font-size:13px}.cai-experience-footer{padding-top:48px;flex-wrap:wrap}}
+@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:56px 16px 36px}.cai-experience-intro{gap:24px;margin-bottom:56px}.cai-experience-intro-title{font-size:24px}.cai-experience-intro-copy{font-size:14px;line-height:1.65}.cai-experience-links{flex-wrap:wrap}.cai-experience-strengths{margin-bottom:56px}.cai-experience-strengths,.cai-career{padding-top:56px}.cai-experience-strengths>h2,.cai-career>h2{margin-bottom:36px;font-size:20px}.cai-experience-strength-grid{grid-template-columns:1fr;gap:36px}.cai-experience-strength p{font-size:14px;line-height:1.7}.cai-career-item{margin-bottom:20px}.cai-career-item:last-child{margin-bottom:0}.cai-career-heading h3{font-size:14px}.cai-career-period{font-size:14px}.cai-career-description{font-size:14px}.cai-career-projects h4{font-size:14px}.cai-career-projects li{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.cai-experience{animation:none}}
 .cai-project-copy{transition:none}
 .cai-image-wrap>.cai-project-hover{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.55);color:#f4f4f1;text-align:center;opacity:0;pointer-events:none;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:opacity .3s ease}

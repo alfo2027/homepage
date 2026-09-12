@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ProjectNavigation from "../components/ProjectNavigation";
-import { useProjectTransition } from "../components/ProjectTransition";
 import { getAdjacentProjects, getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
   const { slug } = useParams();
   const location = useLocation();
-  const { isTransitioning, registerProjectTarget } = useProjectTransition();
   const project = getProjectBySlug(slug);
 
   useEffect(() => {
@@ -21,7 +19,7 @@ export default function ProjectPage() {
   const { previousProject, nextProject } = getAdjacentProjects(project.slug);
 
   return (
-    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}${isTransitioning ? " is-transition-active" : ""}`}>
+    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}`}>
       <ProjectNavigation />
       {project.intro && (
         <header className="project-intro">
@@ -45,7 +43,6 @@ export default function ProjectPage() {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : undefined}
               data-project-transition-target={index === 0 ? "" : undefined}
-              ref={index === 0 ? registerProjectTarget : undefined}
             />
           ))}
         </section>

@@ -1,10 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProjectTransitionContext = createContext(null);
-const NAVIGATION_DELAY = 80;
-const LAND_DURATION = 620;
-const FADE_DURATION = 180;
+const NAVIGATION_DELAY = 280;
+const IMAGE_WAIT_TIMEOUT = 900;
 
 function isPlainLeftClick(event) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -12,75 +11,55 @@ function isPlainLeftClick(event) {
 
 export function ProjectTransitionProvider({ children }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const timersRef = useRef([]);
-  const [overlay, setOverlay] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => () => timersRef.current.forEach(window.clearTimeout), []);
+  useEffect(() => setIsTransitioning(false), [location.pathname]);
 
-  const registerProjectTarget = useCallback((target) => {
-    if (!target || !isTransitioning) return;
-    const targetRect = target.getBoundingClientRect();
+  const wait = useCallback((duration) => new Promise((resolve) => {
+    const timer = window.setTimeout(resolve, duration);
+    timersRef.current.push(timer);
+  }), []);
 
-    setOverlay((current) => current && {
-      ...current,
-      phase: "landing",
-      rect: {
-        top: targetRect.top,
-        left: targetRect.left,
-        width: targetRect.width,
-        height: targetRect.height,
-      },
-    });
+  const preloadImage = useCallback((src) => {
+    if (!src) return Promise.resolve();
 
-    timersRef.current.push(window.setTimeout(() => {
-      setIsTransitioning(false);
-      setOverlay((current) => current && { ...current, phase: "fading" });
-      timersRef.current.push(window.setTimeout(() => setOverlay(null), FADE_DURATION));
-    }, LAND_DURATION));
-  }, [isTransitioning]);
+    const image = new Image();
+    image.src = src;
 
-  const startProjectTransition = useCallback((event, project) => {
+    const decoded = typeof image.decode === "function"
+      ? image.decode().catch(() => undefined)
+      : new Promise((resolve) => {
+        image.onload = resolve;
+        image.onerror = resolve;
+      });
+
+    return Promise.race([decoded, wait(IMAGE_WAIT_TIMEOUT)]);
+  }, [wait]);
+
+  const startProjectTransition = useCallback(async (event, project) => {
     if (event.defaultPrevented || !isPlainLeftClick(event) || isTransitioning) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const frame = event.currentTarget.querySelector(".cai-image-wrap");
-    const rect = frame?.getBoundingClientRect();
-    if (!frame || !rect) return;
-
     event.preventDefault();
     setIsTransitioning(true);
-    setOverlay({
-      src: project.thumbnail,
-      alt: "",
-      phase: "start",
-      rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-    });
-
-    timersRef.current.push(window.setTimeout(() => {
-      navigate(`/projects/${project.slug}`, { state: { projectTransition: true } });
-    }, NAVIGATION_DELAY));
-  }, [isTransitioning, navigate]);
+    await Promise.all([
+      wait(NAVIGATION_DELAY),
+      preloadImage(project.images?.[0]?.src),
+    ]);
+    navigate(`/projects/${project.slug}`, { state: { projectTransition: true } });
+  }, [isTransitioning, navigate, preloadImage, wait]);
 
   const value = useMemo(
-    () => ({ isTransitioning, registerProjectTarget, startProjectTransition }),
-    [isTransitioning, registerProjectTarget, startProjectTransition],
+    () => ({ isTransitioning, startProjectTransition }),
+    [isTransitioning, startProjectTransition],
   );
-  const overlayStyle = overlay?.rect;
 
   return (
     <ProjectTransitionContext.Provider value={value}>
       {children}
-      {overlay && (
-        <img
-          className={`project-transition-cover is-${overlay.phase}`}
-          data-testid="project-transition-cover"
-          src={overlay.src}
-          alt={overlay.alt}
-          draggable={false}
-          style={overlayStyle}
-        />
-      )}
     </ProjectTransitionContext.Provider>
   );
 }
