@@ -30,6 +30,8 @@ export default function CaiExperiencePanel() {
         <section className="cai-experience-intro-block">
           <h2 className="cai-experience-intro-title">복잡한 경험을 명확하게 만들고, 사용자의 선택과 행동을 돕습니다</h2>
           <p className="cai-experience-intro-copy">
+            뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드, 물류 플랫폼에서 제품을 설계해왔습니다.
+            <br className="cai-experience-intro-break" />{" "}
             서비스마다 다른 사용자의 목적과 상황을 살피며, 제품을 쉽게 이해하고 자연스럽게 이용할 수 있는 흐름을 고민합니다.
           </p>
         </section>
