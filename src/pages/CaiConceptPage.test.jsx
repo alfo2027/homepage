@@ -451,7 +451,7 @@ describe("Cai-inspired concept page", () => {
     expect(document.querySelector(".cai-experience-footer")).not.toBeInTheDocument();
     expect(getComputedStyle(links).justifyContent).toBe("flex-start");
     expect(getComputedStyle(links.querySelector("a")).fontSize).toBe("14px");
-    expect(getComputedStyle(links.querySelector("a")).color).toBe("rgb(119, 119, 119)");
+    expect(getComputedStyle(links.querySelector("a")).color).toBe("var(--cai-muted)");
   });
 
   test("keeps the About introduction separated from the careers", () => {
@@ -467,7 +467,7 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(strengths).paddingTop).toBe("80px");
     expect(getComputedStyle(document.querySelector(".cai-career")).borderTopWidth).toBe("1px");
     expect(getComputedStyle(document.querySelector(".cai-career")).paddingTop).toBe("80px");
-    expect(getComputedStyle(document.querySelector(".cai-experience-strength-grid")).gridTemplateColumns).toBe("repeat(2, minmax(0, 1fr))");
+    expect(getComputedStyle(document.querySelector(".cai-experience-strength-grid")).gridTemplateColumns).toBe("repeat(2,minmax(0,1fr))");
     expect(getComputedStyle(document.querySelector(".cai-experience-strengths>h2")).fontSize).toBe("20px");
     expect(getComputedStyle(document.querySelector(".cai-career>h2")).fontSize).toBe("20px");
     expect(getComputedStyle(lastCareer).marginBottom).toBe("0px");
@@ -486,6 +486,15 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(document.querySelector(".cai-career-period")).fontSize).toBe("14px");
     expect(getComputedStyle(document.querySelector(".cai-career-description")).fontSize).toBe("13px");
   });
+
+  test("keeps the About introduction copy on two intentional desktop lines", () => {
+    render(<CaiConceptPage />, { wrapper: TestRouter });
+    fireEvent.click(screen.getByRole("link", { name: "About" }));
+
+    const copy = document.querySelector(".cai-experience-intro-copy");
+    expect(copy.querySelector(".cai-experience-intro-break")).toBeInTheDocument();
+    expect(copy).toHaveTextContent("뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드, 물류 플랫폼에서 웹과 앱 제품을 설계해왔습니다. 사용자가 자연스럽게 경험할 수 있는 환경을 고민합니다.");
+  }, 20000);
 
   test("scales down About typography and career spacing on mobile", () => {
     const styles = readFileSync("src/concepts/cai.css", "utf8");
@@ -514,7 +523,7 @@ describe("Cai-inspired concept page", () => {
     );
 
     expect(screen.queryByRole("heading", { name: "About" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "복잡함을 이해하기 쉬운 경험으로 바꿉니다." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "복잡한 경험을 명확하게 만들고, 사용자의 선택과 행동을 돕습니다" })).toBeInTheDocument();
     expect(screen.queryAllByTestId("cai-project")).toHaveLength(0);
   });
 
