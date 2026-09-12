@@ -384,7 +384,7 @@ describe("Cai-inspired concept page", () => {
     expect(screen.queryByText("데이터 중심 서비스 & LLM AI 검색 구축 경험")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "복잡한 경험을 명확하게 만들고, 사용자의 선택과 행동을 돕습니다" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "제품과 협업이 함께 확장되는 체계를 만듭니다" })).not.toBeInTheDocument();
-    expect(screen.getByText("뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드, 물류 플랫폼에서 웹과 앱 제품을 설계해왔습니다. 사용자가 자연스럽게 경험할 수 있는 환경을 고민합니다.")).toBeInTheDocument();
+    expect(screen.getByText("서비스마다 다른 사용자의 목적과 상황을 살피며, 제품을 쉽게 이해하고 자연스럽게 이용할 수 있는 흐름을 고민합니다.")).toBeInTheDocument();
     expect(screen.queryByText(/여러 제품과 언어 환경에 유연하게 대응할 수 있는/)).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "이런 강점과 경험이 있습니다" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "복잡한 정보에서 중요한 흐름을 찾습니다" })).toBeInTheDocument();
@@ -487,13 +487,13 @@ describe("Cai-inspired concept page", () => {
     expect(getComputedStyle(document.querySelector(".cai-career-description")).fontSize).toBe("13px");
   });
 
-  test("keeps the About introduction copy on two intentional desktop lines", () => {
+  test("shows the approved About introduction copy", () => {
     render(<CaiConceptPage />, { wrapper: TestRouter });
     fireEvent.click(screen.getByRole("link", { name: "About" }));
 
     const copy = document.querySelector(".cai-experience-intro-copy");
-    expect(copy.querySelector(".cai-experience-intro-break")).toBeInTheDocument();
-    expect(copy).toHaveTextContent("뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드, 물류 플랫폼에서 웹과 앱 제품을 설계해왔습니다. 사용자가 자연스럽게 경험할 수 있는 환경을 고민합니다.");
+    expect(copy.querySelector(".cai-experience-intro-break")).not.toBeInTheDocument();
+    expect(copy).toHaveTextContent("서비스마다 다른 사용자의 목적과 상황을 살피며, 제품을 쉽게 이해하고 자연스럽게 이용할 수 있는 흐름을 고민합니다.");
   }, 20000);
 
   test("scales down About typography and career spacing on mobile", () => {
