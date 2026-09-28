@@ -20,6 +20,7 @@ export const projects = [
   {
     slug: "ai-agent",
     company: "bloomingbit",
+    period: "2026",
     title: "AI 에이전트",
     type: "AI Agent, 커뮤니티",
     thumbnail: asset("assets/project-12/project-12-thumb.avif"),
@@ -31,6 +32,7 @@ export const projects = [
   {
     slug: "analyst",
     company: "bloomingbit",
+    period: "2026",
     title: "크립토 뉴스 분석 AI 애널리스트",
     type: "Crypto, AI, 콘텐츠 UX 개편",
     thumbnail: asset("assets/project-01/project-01-thumb.avif"),
@@ -52,6 +54,7 @@ export const projects = [
   {
     slug: "bloomingbit-alpha",
     company: "bloomingbit",
+    period: "2026",
     title: "블루밍비트 알파",
     type: "LLM Search, B2B Crypto Terminal",
     thumbnail: asset("assets/project-02/project-02-thumb.avif"),
@@ -73,6 +76,7 @@ export const projects = [
   {
     slug: "plan-purchase",
     company: "tradlinx",
+    period: "2025",
     title: "플랜 구매 경험 개선",
     type: "B2B SaaS, 결제 프로세스",
     thumbnail: asset("assets/project-03/project-03-thumb.avif"),
@@ -91,6 +95,7 @@ export const projects = [
   {
     slug: "shipment-report",
     company: "tradlinx",
+    period: "2025",
     title: "정기 선적 리포트",
     type: "B2B2B 솔루션, 이메일 자동화, 리포트 시스템",
     thumbnail: asset("assets/project-04/project-04-thumb.avif"),
@@ -109,6 +114,7 @@ export const projects = [
   {
     slug: "design-system",
     company: "tradlinx",
+    period: "2024 - 2025",
     title: "디자인 시스템 공통화",
     type: "디자인 시스템, 컴포넌트 라이브러리",
     thumbnail: asset("assets/project-05/project-05-thumb.avif"),
@@ -127,6 +133,7 @@ export const projects = [
   {
     slug: "schedule-demo",
     company: "tradlinx",
+    period: "2024",
     title: "스케줄 데모 이용률 증대",
     type: "그로스 디자인, 프로모션 UX",
     thumbnail: asset("assets/project-06/project-06-thumb.avif"),
@@ -145,6 +152,7 @@ export const projects = [
   {
     slug: "dever-partners",
     company: "dever",
+    period: "2023 - 2024",
     title: "디버 파트너스 앱 리디자인",
     type: "Logistics, 앱 디자인, UX 개편",
     thumbnail: asset("assets/project-07/project-07-thumb.avif"),
@@ -166,6 +174,7 @@ export const projects = [
   {
     slug: "dever-order-web",
     company: "dever",
+    period: "2022 - 2023",
     title: "디버 주문 웹 UX 개선",
     type: "주문·결제 프로세스, 반응형 웹",
     thumbnail: asset("assets/project-08/project-08-thumb.avif"),
@@ -184,6 +193,7 @@ export const projects = [
   {
     slug: "dever-alimtalk",
     company: "dever",
+    period: "2022",
     title: "디버 배송 알림톡 UX 개선",
     type: "알림톡 프로세스, 웹뷰",
     thumbnail: asset("assets/project-09/project-09-thumb.avif"),
@@ -202,6 +212,7 @@ export const projects = [
   {
     slug: "dever-signup",
     company: "dever",
+    period: "2021 - 2022",
     title: "디버 회원가입 프로세스 개선",
     type: "회원가입·온보딩 프로세스",
     thumbnail: asset("assets/project-10/project-10-thumb.avif"),
@@ -220,6 +231,7 @@ export const projects = [
   {
     slug: "graphic-visual",
     company: "independent",
+    period: "2020 - 2021",
     title: "그래픽 디자인 & 3D 비주얼",
     type: "광고 배너, 마케팅 그래픽, 3D 비주얼",
     thumbnail: asset("assets/project-11/project-11-thumb.avif"),

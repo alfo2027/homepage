@@ -36,6 +36,20 @@ describe("Cai-inspired concept page", () => {
     expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
     expect(document.title).toBe("Portfolio_Yoon");
     expect(screen.getAllByTestId("cai-project")).toHaveLength(12);
+    expect(screen.getAllByTestId("cai-project").map((card) => card.querySelector("time")?.textContent)).toEqual([
+      "2026",
+      "2026",
+      "2026",
+      "2025",
+      "2025",
+      "2024 - 2025",
+      "2024",
+      "2023 - 2024",
+      "2022 - 2023",
+      "2022",
+      "2021 - 2022",
+      "2020 - 2021",
+    ]);
     expect(screen.getByRole("heading", { name: "YOON" })).toBeInTheDocument();
     expect(screen.getByText("책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다.")).toBeInTheDocument();
     expect(screen.getByText("작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.")).toBeInTheDocument();

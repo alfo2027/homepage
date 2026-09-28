@@ -139,6 +139,7 @@ export default function CaiConceptPage() {
                 <div className="cai-project-copy">
                   <h2>{project.title}</h2>
                   <p>{project.type}</p>
+                  <time className="cai-project-period">{project.period}</time>
                 </div>
               </>
             );
