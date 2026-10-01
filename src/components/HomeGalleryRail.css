@@ -1,0 +1,16 @@
+.home-rail{width:100%;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;padding:6px 0 24px}
+.home-rail::-webkit-scrollbar{display:none}
+.home-rail-track,.home-rail-group{display:flex;width:max-content}
+.home-rail-group{gap:16px;padding-right:16px;flex-shrink:0}
+.home-rail-card{position:relative;display:flex;flex-direction:column;flex:none;width:clamp(280px,29vw,460px);aspect-ratio:4/3;box-sizing:border-box;overflow:hidden;border-radius:0;color:var(--h-ink)}
+.home-rail-project img{width:100%;height:100%;object-fit:contain}
+.home-rail-project-title{position:absolute;inset:auto 0 0;padding:30px 20px 18px;background:linear-gradient(transparent,rgba(0,0,0,.65));color:white;font-size:14px;opacity:0;transition:opacity .2s}
+.home-rail-project-title small{display:block;margin-top:6px}
+.home-rail-project:hover .home-rail-project-title,.home-rail-project:focus-visible .home-rail-project-title{opacity:1}
+.home-rail-note{background:var(--h-card);padding:28px;justify-content:space-between;transition:background .2s}
+.home-rail-note-label,.home-rail-note-bottom{font-size:12px;color:var(--h-muted)}
+.home-rail-note h2{font-size:clamp(24px,2.2vw,34px);font-weight:500;line-height:1.3;letter-spacing:-.035em;word-break:keep-all;margin:20px 0}
+.home-rail-note-bottom{display:flex;justify-content:space-between}
+.home-rail-note:hover{background:var(--h-line)}
+@media(max-width:600px){.home-rail-card{width:78vw}.home-rail-note{padding:22px}.home-rail-group{gap:12px;padding-right:12px}}
+@media(prefers-reduced-motion:reduce){.home-rail-project-title,.home-rail-note{transition:none}}

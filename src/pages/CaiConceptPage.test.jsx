@@ -29,6 +29,7 @@ describe("Cai-inspired concept page", () => {
     expect([...sideMenu.children].map((item) => item.getAttribute("aria-label") ?? item.textContent)).toEqual([
       "Home",
       "About",
+      "Blog",
     ]);
     expect(screen.queryByRole("link", { name: "Work" })).not.toBeInTheDocument();
     expect(container.querySelector(".cai-side-top > .cai-side-menu")).toBeInTheDocument();
@@ -117,7 +118,7 @@ describe("Cai-inspired concept page", () => {
     expect(cards[0]).toHaveAttribute("tabindex", "0");
     expect(analystOverlay).toBeInTheDocument();
     expect(cards[1].querySelector(".cai-image-wrap")).toContainElement(analystOverlay);
-    expect(analystOverlay).toHaveTextContent("크립토 시장을 더 빠르게 이해하는 AI 애널리스트");
+    expect(analystOverlay).toHaveTextContent("쏟아지는 뉴스를 투자 판단으로 잇는 AI 분석");
     expect(analystOverlay).toHaveAttribute("aria-hidden", "true");
     expect(getComputedStyle(analystOverlay).display).toBe("grid");
     expect(getComputedStyle(analystOverlay).placeItems).toBe("center");

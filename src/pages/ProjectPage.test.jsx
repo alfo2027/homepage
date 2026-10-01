@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, test } from "vitest";
 import NotFoundPage from "./NotFoundPage";
@@ -42,6 +42,58 @@ describe("project detail", () => {
     expect(images.querySelector("img")).toHaveAttribute("data-project-transition-target");
   });
 
+  test("expands the framed first image to full width as the page scrolls", async () => {
+    const { container } = renderRoute("/projects/analyst");
+    const shell = container.querySelector(".project-shell");
+    const viewport = container.querySelector(".project-images-viewport");
+    const frame = container.querySelector(".project-feature-frame");
+    const firstImage = container.querySelector(".project-images img");
+
+    Object.defineProperty(shell, "clientWidth", { configurable: true, value: 1280 });
+    Object.defineProperty(viewport, "clientWidth", { configurable: true, value: 1440 });
+    Object.defineProperty(window, "innerHeight", { configurable: true, value: 1000 });
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
+    fireEvent.scroll(window);
+
+    await waitFor(() => expect(frame.style.getPropertyValue("--project-feature-scale")).toBe("0.8889"));
+    expect(frame).toContainElement(firstImage);
+    expect(frame.style.getPropertyValue("--project-feature-radius")).toBe("16px");
+    expect(frame.style.getPropertyValue("--project-feature-border-alpha")).toBe("0.05");
+    expect(frame.style.getPropertyValue("--project-feature-shadow-alpha")).toBe("0.1");
+
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 420 });
+    fireEvent.scroll(window);
+
+    await waitFor(() => expect(frame.style.getPropertyValue("--project-feature-scale")).toBe("1.0000"));
+    expect(frame.style.getPropertyValue("--project-feature-radius")).toBe("0px");
+    expect(frame.style.getPropertyValue("--project-feature-border-alpha")).toBe("0");
+    expect(frame.style.getPropertyValue("--project-feature-shadow-alpha")).toBe("0");
+  });
+
+  test("uses a white background throughout the project detail page", () => {
+    const { container, unmount } = renderRoute("/projects/analyst");
+
+    expect(document.body).toHaveClass("is-project-detail");
+    expect(getComputedStyle(container.querySelector(".project-shell")).backgroundColor).toBe("rgb(255, 255, 255)");
+
+    unmount();
+    expect(document.body).not.toHaveClass("is-project-detail");
+  });
+
+  test("disables the framed first-image effect on mobile", async () => {
+    const { container } = renderRoute("/projects/analyst");
+    const frame = container.querySelector(".project-feature-frame");
+
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 390 });
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
+    fireEvent.resize(window);
+
+    await waitFor(() => expect(frame.style.getPropertyValue("--project-feature-scale")).toBe("1.0000"));
+    expect(frame.style.getPropertyValue("--project-feature-radius")).toBe("0px");
+    expect(frame.style.getPropertyValue("--project-feature-border-alpha")).toBe("0");
+    expect(frame.style.getPropertyValue("--project-feature-shadow-alpha")).toBe("0");
+  });
+
   test("introduces the analyst project with only a title and one narrative", () => {
     const { container } = renderRoute("/projects/analyst");
     const introduction = container.querySelector(".project-intro");
@@ -49,7 +101,7 @@ describe("project detail", () => {
 
     expect(introduction).toBeInTheDocument();
     expect(introduction.compareDocumentPosition(images) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-    expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "쏟아지는 뉴스를 투자 판단으로 잇는 AI 분석" })).toBeInTheDocument();
     expect(introduction.querySelectorAll("p")).toHaveLength(1);
     expect(introduction.querySelector("p")).toHaveTextContent(/한국경제신문이 운영하는 크립토 뉴스·데이터 플랫폼/);
     expect(introduction.querySelector("p")).toHaveTextContent(/초단기·중기·장기 관점을 구조화하고/);
@@ -74,12 +126,12 @@ describe("project detail", () => {
     expect(getComputedStyle(introduction).columnGap).toBe("var(--portfolio-space-8)");
     expect(getComputedStyle(introduction).minHeight).toBe("0px");
     expect(getComputedStyle(introduction).paddingBottom).toBe("72px");
-    expect(getComputedStyle(container.querySelector(".project-shell")).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(container.querySelector(".project-shell")).backgroundColor).toBe("rgb(255, 255, 255)");
     expect(getComputedStyle(container.querySelector(".project-shell")).fontFamily).toBe("var(--portfolio-font)");
     expect(getComputedStyle(title).fontSize).toBe("var(--portfolio-type-17)");
     expect([...title.querySelectorAll("span")].map((line) => line.textContent)).toEqual([
-      "크립토 시장을 더 빠르게",
-      "이해하는 AI 애널리스트",
+      "쏟아지는 뉴스를 투자 판단으로",
+      "잇는 AI 분석",
     ]);
     expect(getComputedStyle(title).textAlign).toBe("left");
     expect(getComputedStyle(narrative).fontSize).toBe("var(--portfolio-type-13)");

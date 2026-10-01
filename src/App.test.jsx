@@ -5,12 +5,12 @@ import App from "./App";
 vi.mock("./components/InteractiveOrb", () => ({ default: () => <div data-testid="interactive-orb" /> }));
 vi.mock("./components/RiveThemeToggle", () => ({ default: () => <button type="button">Theme</button> }));
 
-test("renders the Westie portfolio at the default route", () => {
+test("renders the Hanssen-inspired portfolio at the default route", () => {
   window.location.hash = "#/";
   render(<App />);
 
-  expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "YOON" })).toBeInTheDocument();
+  expect(screen.getByTestId("hanssen-portfolio")).toBeInTheDocument();
+  expect(screen.getByRole("region", { name: "프로젝트와 노트" })).toBeInTheDocument();
 });
 
 test("keeps the previous homepage available at the original route", () => {
@@ -30,8 +30,9 @@ test("renders About at its own route", () => {
   expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("aria-current", "page");
 });
 
-test("expands the selected thumbnail before revealing its project detail", async () => {
+test("reveals project detail without a fullscreen thumbnail overlay", async () => {
   vi.useFakeTimers();
+  const motionSpy = vi.spyOn(window, "matchMedia").mockReturnValue({ matches: false });
   const rectSpy = vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function getRect() {
     if (this.matches?.("[data-project-transition-target]")) {
       return { top: 420, left: 0, width: 1000, height: 644, right: 1000, bottom: 1064, x: 0, y: 420, toJSON() {} };
@@ -41,22 +42,16 @@ test("expands the selected thumbnail before revealing its project detail", async
   window.location.hash = "#/";
   render(<App />);
 
-  fireEvent.click(screen.getByRole("link", { name: /크립토 뉴스 분석 AI 애널리스트/ }));
+  fireEvent.click(screen.getByRole("link", { name: /쏟아지는 뉴스를 투자 판단으로 잇는 AI 분석/ }));
 
-  expect(screen.getByTestId("project-transition-cover")).toBeInTheDocument();
-  expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
+  expect(screen.queryByTestId("project-transition-cover")).not.toBeInTheDocument();
+  expect(screen.getByTestId("hanssen-portfolio")).toBeInTheDocument();
 
   await act(async () => vi.advanceTimersByTime(500));
-  expect(screen.getByRole("heading", { name: "크립토 시장을 더 빠르게 이해하는 AI 애널리스트" })).toBeInTheDocument();
-  expect(screen.getByTestId("project-transition-cover")).toHaveStyle({
-    top: "420px",
-    left: "0px",
-    width: "1000px",
-    height: "644px",
-  });
-
-  await act(async () => vi.advanceTimersByTime(900));
+  expect(screen.getByRole("heading", { name: "쏟아지는 뉴스를 투자 판단으로 잇는 AI 분석" })).toBeInTheDocument();
+  expect(document.querySelector(".project-shell")).toHaveClass("is-transition-enter");
   expect(screen.queryByTestId("project-transition-cover")).not.toBeInTheDocument();
   rectSpy.mockRestore();
+  motionSpy.mockRestore();
   vi.useRealTimers();
 });

@@ -31,7 +31,7 @@ describe("project data", () => {
 
   test("provides a tailored title and narrative for every published detail", () => {
     for (const project of detailProjects) {
-      expect(project.intro?.headline, project.slug).toBeTruthy();
+      expect(project.intro?.headline, project.slug).toBe(project.cardTitle);
       expect(project.intro?.headlineLines, project.slug).toHaveLength(2);
       expect(project.intro?.headlineLines.join(" "), project.slug).toBe(project.intro.headline);
       expect(project.intro?.description.length, project.slug).toBeGreaterThan(80);

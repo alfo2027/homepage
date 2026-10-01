@@ -1,9 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../data/projects";
 import InteractiveOrb from "../components/InteractiveOrb";
+import BlogPanel from "../components/BlogPanel";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import { useProjectTransition } from "../components/ProjectTransition";
 import "../concepts/cai.css";
@@ -13,6 +14,8 @@ gsap.registerPlugin(ScrollTrigger);
 export default function CaiConceptPage() {
   const location = useLocation();
   const { isTransitioning, startProjectTransition } = useProjectTransition();
+  const { slug } = useParams();
+  const isBlog = location.pathname === "/blog" || location.pathname.startsWith("/blog/");
   const isAbout = location.pathname === "/about";
   const pageRef = useRef(null);
   const scrollRef = useRef(null);
@@ -26,7 +29,7 @@ export default function CaiConceptPage() {
   };
 
   useLayoutEffect(() => {
-    document.title = isAbout ? "윤미래 Product Designer - About" : "윤미래 Product Designer";
+    if (!isBlog) document.title = isAbout ? "윤미래 Product Designer - About" : "윤미래 Product Designer";
     const isMobileLayout = window.matchMedia("(max-width: 640px)").matches;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -55,6 +58,10 @@ export default function CaiConceptPage() {
     };
 
     const scroller = scrollRef.current;
+    if (scroller) scroller.scrollTop = 0;
+    if (isBlog) {
+      scroller?.querySelector("[data-blog-heading]")?.focus({ preventScroll: true });
+    }
     scroller?.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
 
@@ -90,15 +97,16 @@ export default function CaiConceptPage() {
       scroller?.removeEventListener("scroll", updateProgress);
       context.revert();
     };
-  }, [isAbout]);
+  }, [isAbout, isBlog, location.pathname]);
 
   return (
-    <main ref={pageRef} className={`cai-concept${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
+    <main ref={pageRef} className={`cai-concept${isBlog ? " is-blog" : ""}${isTransitioning ? " is-project-leaving" : ""}`} data-testid="cai-concept">
       <aside className="cai-side cai-side-left">
         <div className="cai-side-top">
           <nav className="cai-side-menu" aria-label="두 번째 콘셉트 메뉴">
-            <Link to="/" className="cai-home" aria-current={!isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/")}>Home</Link>
+            <Link to="/" className="cai-home" aria-current={!isAbout && !isBlog ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/")}>Home</Link>
             <Link to="/about" aria-current={isAbout ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/about")}>About</Link>
+            <Link to="/blog" aria-current={isBlog ? "page" : undefined} onClick={(event) => scrollViewTop(event, "/blog")}>Blog</Link>
           </nav>
         </div>
         <div className="cai-profile">
@@ -113,13 +121,13 @@ export default function CaiConceptPage() {
         <div className="cai-side-bottom">
           <InteractiveOrb progressRef={scrollProgressRef} />
         </div>
-        <div className="cai-scroll-progress" role="progressbar" aria-label="프로젝트 스크롤 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div className="cai-scroll-progress" role="progressbar" aria-label={isBlog ? "글 스크롤 진행률" : "프로젝트 스크롤 진행률"} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span ref={progressFillRef} className="cai-scroll-progress-fill" style={{ transform: "scaleY(0)" }} />
         </div>
       </aside>
 
-      <section ref={scrollRef} className="cai-grid-scroll" id="cai-grid" aria-label="프로젝트 세로 목록">
-        {isAbout ? <CaiExperiencePanel /> : <div className="cai-project-grid is-gallery-index">
+      <section ref={scrollRef} className="cai-grid-scroll" id="cai-grid" aria-label={isBlog ? "블로그" : isAbout ? "소개 및 경력" : "프로젝트 세로 목록"}>
+        {isBlog ? <BlogPanel key={location.pathname} slug={slug} /> : isAbout ? <CaiExperiencePanel /> : <div className="cai-project-grid is-gallery-index">
           {projects.map((project, index) => {
             const card = (
               <>
