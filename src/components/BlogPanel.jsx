@@ -6,7 +6,7 @@ import "../concepts/blog.css";
 function Cover({ post }) {
   return (
     <div className={`blog-cover blog-cover--${post.coverStyle || "type"}`}>
-      {post.cover ? <img src={postAsset(post.cover)} alt={post.coverAlt || ""} loading="lazy" /> : (
+      {post.cover ? <img src={postAsset(post.cover)} alt={post.coverAlt || ""} loading="lazy" draggable={false} /> : (
         <div className="blog-cover-type" aria-hidden="true">
           <span className="blog-cover-label">YOON — JOURNAL</span>
           <strong>{post.coverLabel || post.title}</strong>
@@ -26,7 +26,7 @@ function Block({ block }) {
     case "heading": return <h2>{block.text}</h2>;
     case "quote": return <blockquote>{block.text}</blockquote>;
     case "list": return <ul>{block.items.map((item, index) => <li key={index}>{item}</li>)}</ul>;
-    case "image": return <figure><img src={postAsset(block.src)} alt={block.alt || ""} loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
+    case "image": return <figure><img src={postAsset(block.src)} alt={block.alt || ""} loading="lazy" draggable={false} />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
     default: return <p>{block.text}</p>;
   }
 }

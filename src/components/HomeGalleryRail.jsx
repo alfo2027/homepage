@@ -43,7 +43,7 @@ export default function HomeGalleryRail() {
       <span className="home-rail-note-label">Notes{post.isExample ? " · 예시 글" : ""}</span>
       <h2>{post.title}</h2><span className="home-rail-note-bottom">글 읽기 <span aria-hidden="true">↗</span></span>
     </Link>;
-    const contents = <><div data-project-frame style={{ width: "100%", height: "100%" }}><img src={project.galleryThumbnail ?? project.thumbnail} alt="" width="1200" height="900" draggable="false" /></div><span className="home-rail-project-title">{project.cardTitle ?? project.title}{project.upcoming && <small>Coming soon</small>}</span></>;
+    const contents = <><div data-project-frame style={{ width: "100%", height: "100%" }}><img src={project.galleryThumbnail ?? project.thumbnail} alt="" width="1200" height="900" draggable={false} /></div><span className="home-rail-project-title">{project.cardTitle ?? project.title}{project.upcoming && <small>Coming soon</small>}</span></>;
     return project.upcoming ? <article className="home-rail-card home-rail-project" key={project.slug}>{contents}</article> : <Link className="home-rail-card home-rail-project" to={`/projects/${project.slug}`} aria-label={project.cardTitle ?? project.title} key={project.slug} tabIndex={duplicate ? -1 : undefined} onClick={event => startProjectTransition(event, project)}>{contents}</Link>;
   };
   return <section className="home-rail" aria-label="프로젝트와 노트" ref={viewport} onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }} onTouchStart={() => { paused.current = true; }} onTouchEnd={() => { paused.current = false; }}>
