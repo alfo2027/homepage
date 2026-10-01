@@ -34,7 +34,7 @@ describe("Cai-inspired concept page", () => {
     const { container } = render(<CaiConceptPage />, { wrapper: TestRouter });
 
     expect(screen.getByTestId("cai-concept")).toBeInTheDocument();
-    expect(document.title).toBe("Portfolio_Yoon");
+    expect(document.title).toBe("윤미래 Product Designer");
     expect(screen.getAllByTestId("cai-project")).toHaveLength(12);
     expect(screen.getAllByTestId("cai-project").map((card) => card.querySelector("time")?.textContent)).toEqual([
       "2026",
@@ -60,7 +60,6 @@ describe("Cai-inspired concept page", () => {
     expect([...sideMenu.children].map((item) => item.getAttribute("aria-label") ?? item.textContent)).toEqual([
       "Home",
       "About",
-      "Blog",
     ]);
     expect(screen.queryByRole("link", { name: "Work" })).not.toBeInTheDocument();
     expect(container.querySelector(".cai-side-top > .cai-side-menu")).toBeInTheDocument();

@@ -26,7 +26,7 @@ test("renders About at its own route", () => {
   render(<App />);
 
   expect(screen.queryByRole("heading", { name: "About" })).not.toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "복잡함을 이해하기 쉬운 경험으로 바꿉니다." })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "복잡한 경험을 명확하게 만들고, 사용자의 선택과 행동을 돕습니다" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("aria-current", "page");
 });
 
