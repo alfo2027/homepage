@@ -17,6 +17,7 @@ export default function ProjectNavigation() {
       <div className="project-menu">
         <Link to="/" state={{ view: "work" }}>Home</Link>
         <Link to="/about">About</Link>
+        <Link to="/blog">Notes</Link>
       </div>
     </nav>
   );

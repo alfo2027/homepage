@@ -1,17 +1,70 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ProjectNavigation from "../components/ProjectNavigation";
+import { useProjectTransition } from "../components/ProjectTransition";
 import { getAdjacentProjects, getProjectBySlug, getRelatedProjects } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
   const { slug } = useParams();
   const location = useLocation();
+  const { isTransitioning, registerProjectTarget } = useProjectTransition();
   const project = getProjectBySlug(slug);
+  const featureFrameRef = useRef(null);
 
   useEffect(() => {
-    if (project) document.title = `Portfolio_Yoon - ${project.title}`;
+    if (project) document.title = `윤미래 Product Designer - ${project.title}`;
   }, [project]);
+
+  useEffect(() => {
+    if (!project) return undefined;
+    document.body.classList.add("is-project-detail");
+    return () => document.body.classList.remove("is-project-detail");
+  }, [project]);
+
+  useEffect(() => {
+    const frame = featureFrameRef.current;
+    const viewport = frame?.closest(".project-images-viewport");
+    const shell = frame?.closest(".project-shell");
+    if (!frame || !viewport || !shell) return undefined;
+
+    let animationFrame = 0;
+
+    const updateFrame = () => {
+      animationFrame = 0;
+      const viewportWidth = viewport.clientWidth || window.innerWidth;
+      const shellWidth = shell.clientWidth || viewportWidth;
+      const startScale = viewportWidth > 0 ? Math.min(1, shellWidth / viewportWidth) : 1;
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      const disableFeatureFrame = reduceMotion || window.innerWidth <= 720;
+      const expansionDistance = Math.min(420, Math.max(280, window.innerHeight * 0.42));
+      const progress = disableFeatureFrame ? 1 : Math.min(1, Math.max(0, window.scrollY / expansionDistance));
+      const scale = startScale + (1 - startScale) * progress;
+      const radius = 16 * (1 - progress);
+      const borderAlpha = 0.05 * (1 - progress);
+      const shadowAlpha = 0.1 * (1 - progress);
+
+      frame.style.setProperty("--project-feature-scale", scale.toFixed(4));
+      frame.style.setProperty("--project-feature-radius", `${Number(radius.toFixed(2))}px`);
+      frame.style.setProperty("--project-feature-border-alpha", `${Number(borderAlpha.toFixed(3))}`);
+      frame.style.setProperty("--project-feature-shadow-alpha", `${Number(shadowAlpha.toFixed(3))}`);
+    };
+
+    const scheduleUpdate = () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(updateFrame);
+    };
+
+    updateFrame();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+    };
+  }, [project?.slug]);
 
   if (!project) return <NotFoundPage />;
 
@@ -19,7 +72,7 @@ export default function ProjectPage() {
   const { previousProject, nextProject } = getAdjacentProjects(project.slug);
 
   return (
-    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}`}>
+    <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}${isTransitioning ? " is-transition-active" : ""}`}>
       <ProjectNavigation />
       {project.intro && (
         <header className="project-intro">
@@ -31,8 +84,8 @@ export default function ProjectPage() {
       )}
       <div className="project-images-viewport">
         <section className="project-images" aria-label={project.detailLabel}>
-          {project.images.map((image, index) => (
-            <img
+          {project.images.map((image, index) => {
+            const projectImage = <img
               key={image.src}
               draggable={false}
               src={image.src}
@@ -43,8 +96,15 @@ export default function ProjectPage() {
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : undefined}
               data-project-transition-target={index === 0 ? "" : undefined}
-            />
-          ))}
+              ref={index === 0 ? registerProjectTarget : undefined}
+            />;
+
+            return index === 0 ? (
+              <div className="project-feature-frame" ref={featureFrameRef} key={image.src}>
+                {projectImage}
+              </div>
+            ) : projectImage;
+          })}
         </section>
       </div>
       <nav className="project-pagination" aria-label="이전 및 다음 프로젝트">

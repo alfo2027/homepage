@@ -1,0 +1,19 @@
+{
+  "slug": "collected-inspiration",
+  "status": "published",
+  "isExample": true,
+  "title": "오래 들여다보고 싶은 것들",
+  "excerpt": "책과 전시, 공간에서 발견한 장면을 나만의 언어로 남기는 방법.",
+  "category": "Inspiration",
+  "date": "2026-09-26",
+  "coverLabel": "Small things,\nlasting ideas.",
+  "coverStyle": "outline",
+  "blocks": [
+    { "type": "paragraph", "text": "마음에 남는 장면을 사진 한 장과 짧은 문장으로 모아보세요. 이 글은 책, 전시, 공간에 관한 감상을 담기 위한 예시입니다." },
+    { "type": "heading", "text": "좋았던 이유를 한 문장으로" },
+    { "type": "paragraph", "text": "단순히 좋았다고 적는 대신 시선이 머문 부분을 구체적으로 짚어보세요. 여백의 크기, 빛의 방향, 물건의 배치처럼 작은 요소가 기록의 시작이 될 수 있습니다." },
+    { "type": "quote", "text": "수집한 장면에 자신의 관찰을 더하면 하나의 기록이 됩니다." },
+    { "type": "heading", "text": "사진과 글 사이" },
+    { "type": "paragraph", "text": "사진에는 직접 찍은 장면을, 캡션에는 장소와 촬영 맥락을 담아보세요. 책이나 전시를 소개할 때는 이름과 출처를 함께 남겨두면 좋습니다." }
+  ]
+}

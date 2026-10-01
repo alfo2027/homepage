@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProjectTransitionContext = createContext(null);
-const NAVIGATION_DELAY = 280;
-const IMAGE_WAIT_TIMEOUT = 900;
+const NAVIGATION_DELAY = 140;
+const DETAIL_ENTER_DURATION = 560;
 
 function isPlainLeftClick(event) {
   return event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -11,52 +11,31 @@ function isPlainLeftClick(event) {
 
 export function ProjectTransitionProvider({ children }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const timersRef = useRef([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => () => timersRef.current.forEach(window.clearTimeout), []);
-  useEffect(() => setIsTransitioning(false), [location.pathname]);
 
-  const wait = useCallback((duration) => new Promise((resolve) => {
-    const timer = window.setTimeout(resolve, duration);
-    timersRef.current.push(timer);
-  }), []);
+  const registerProjectTarget = useCallback(() => {}, []);
 
-  const preloadImage = useCallback((src) => {
-    if (!src) return Promise.resolve();
-
-    const image = new Image();
-    image.src = src;
-
-    const decoded = typeof image.decode === "function"
-      ? image.decode().catch(() => undefined)
-      : new Promise((resolve) => {
-        image.onload = resolve;
-        image.onerror = resolve;
-      });
-
-    return Promise.race([decoded, wait(IMAGE_WAIT_TIMEOUT)]);
-  }, [wait]);
-
-  const startProjectTransition = useCallback(async (event, project) => {
+  const startProjectTransition = useCallback((event, project) => {
     if (event.defaultPrevented || !isPlainLeftClick(event) || isTransitioning) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     event.preventDefault();
+    event.currentTarget.classList.add("is-project-opening");
     setIsTransitioning(true);
-    await Promise.all([
-      wait(NAVIGATION_DELAY),
-      preloadImage(project.images?.[0]?.src),
-    ]);
-    navigate(`/projects/${project.slug}`, { state: { projectTransition: true } });
-  }, [isTransitioning, navigate, preloadImage, wait]);
+
+    timersRef.current.push(window.setTimeout(() => {
+      navigate(`/projects/${project.slug}`, { state: { projectTransition: true } });
+      timersRef.current.push(window.setTimeout(() => setIsTransitioning(false), DETAIL_ENTER_DURATION));
+    }, NAVIGATION_DELAY));
+  }, [isTransitioning, navigate]);
 
   const value = useMemo(
-    () => ({ isTransitioning, startProjectTransition }),
-    [isTransitioning, startProjectTransition],
+    () => ({ isTransitioning, registerProjectTarget, startProjectTransition }),
+    [isTransitioning, registerProjectTarget, startProjectTransition],
   );
-
   return (
     <ProjectTransitionContext.Provider value={value}>
       {children}
