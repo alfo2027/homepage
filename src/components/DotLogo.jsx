@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "./DotLogo.css";
 
 // A compact diamond opens into an eight-dot orbit on interaction.
@@ -7,8 +8,20 @@ const scattered = Array.from({ length: 13 }, (_, index) => {
 });
 const gathered = [[0,-14],[-7,-7],[0,-7],[7,-7],[-14,0],[-7,0],[0,0],[7,0],[14,0],[-7,7],[0,7],[7,7],[0,14]];
 
-export default function DotLogo() {
-  return <svg className="dot-logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+export default function DotLogo({ playOnEnter = false }) {
+  const [introPlaying, setIntroPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!playOnEnter || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const start = window.setTimeout(() => setIntroPlaying(true), 300);
+    const finish = window.setTimeout(() => setIntroPlaying(false), 4020);
+    return () => {
+      window.clearTimeout(start);
+      window.clearTimeout(finish);
+    };
+  }, [playOnEnter]);
+
+  return <svg className={`dot-logo${introPlaying ? " is-intro-playing" : ""}`} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
     <g className="dot-logo-orbit">{scattered.map(([x, y], index) => {
       const [endX, endY] = gathered[index];
       const size = endX === 0 && endY === 0 ? 3.2 : Math.abs(endX) + Math.abs(endY) === 14 ? 1.7 : 2.4;

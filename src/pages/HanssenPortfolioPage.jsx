@@ -1,37 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import InteractiveOrb from "../components/InteractiveOrb";
-import DotLogo from "../components/DotLogo";
-import HomeGalleryRail from "../components/HomeGalleryRail";
+import PortfolioNavigation from "../components/PortfolioNavigation";
 import FeaturedWork from "../components/FeaturedWork";
+import NoteList from "../components/NoteList";
 import BlogPanel from "../components/BlogPanel";
 import CaiExperiencePanel from "../components/CaiExperiencePanel";
 import { posts } from "../data/posts";
 import { projects } from "../data/projects";
 import { useProjectTransition } from "../components/ProjectTransition";
-import { usePortfolioTheme } from "../components/PortfolioTheme";
 import "../concepts/cai.css";
 import "../concepts/hanssen.css";
 
-const companyNames = { bloomingbit: "Bloomingbit", tradlinx: "TRADLINX", dever: "Dever", independent: "Independent" };
+import { companyNames } from "../data/companyNames";
 
 function Arrow() { return <span aria-hidden="true">↗</span>; }
 
 export default function HanssenPortfolioPage() {
   const { pathname } = useLocation();
   const { slug } = useParams();
-  const { dark, toggleTheme } = usePortfolioTheme();
   const { startProjectTransition } = useProjectTransition();
   const [navCompact, setNavCompact] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuButton = useRef(null);
-  const closeButton = useRef(null);
-  const previousMenuOpen = useRef(false);
+  const [projectsExpanded, setProjectsExpanded] = useState(false);
   const scroller = useRef(null);
   const isHome = pathname === "/";
-  const dogProgress = useRef(0);
   const isAbout = pathname === "/about";
   const isBlog = pathname.startsWith("/blog");
+  const isNotesIndex = pathname === "/blog";
   const isWork = pathname === "/work";
   const isGallery = isHome || isWork;
   const orderedProjects = [...projects.filter((project) => !project.upcoming), ...projects.filter((project) => project.upcoming)];
@@ -39,19 +34,11 @@ export default function HanssenPortfolioPage() {
   useEffect(() => {
     setMenuOpen(false);
     setNavCompact(false);
+    setProjectsExpanded(false);
     if (scroller.current) scroller.current.scrollTop = 0;
+    if (isNotesIndex) document.title = "Notes — 윤미래";
     if (!isBlog) document.title = `${isAbout ? "About — " : isWork ? "Work — " : ""}윤미래 Product Designer`;
-  }, [pathname, isAbout, isBlog, isWork]);
-
-  useEffect(() => {
-    if (menuOpen) closeButton.current?.focus();
-    else if (previousMenuOpen.current) menuButton.current?.focus();
-    previousMenuOpen.current = menuOpen;
-    if (!menuOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = previousOverflow; };
-  }, [menuOpen]);
+  }, [pathname, isAbout, isBlog, isWork, isNotesIndex]);
 
   useEffect(() => {
     const handleScroll = () => setNavCompact(window.scrollY > 32 || (scroller.current?.scrollTop ?? 0) > 32);
@@ -63,81 +50,74 @@ export default function HanssenPortfolioPage() {
     if (!isWork) setNavCompact(event.currentTarget.scrollTop > 32);
   };
 
-  const closeMenu = () => setMenuOpen(false);
-  const links = <>
-    <Link to="/work" aria-current={isWork || pathname === "/" ? "page" : undefined}>Work</Link>
-    <Link to="/about" aria-current={isAbout ? "page" : undefined}>About</Link>
-    <Link to="/blog" aria-current={isBlog ? "page" : undefined}>Notes</Link>
-  </>;
-
-  return <main className={`h-shell${isGallery ? " h-home" : ""}${isHome ? " h-home-columns h-home-slider" : ""}`} data-testid="hanssen-portfolio">
-    <header className="h-navigation" data-compact={navCompact} inert={menuOpen || undefined}>
-      <div className="h-nav-inner">
-        <div className="h-nav-backdrop" aria-hidden="true" />
-        <Link to="/" className="h-brand" aria-label="윤미래 홈"><DotLogo /></Link>
-        <nav className="h-desktop-nav" aria-label="주 메뉴">{links}</nav>
-        <div className="h-nav-actions">
-          <span className="h-nav-balance" aria-hidden="true" />
-          <button type="button" className="h-theme-toggle" aria-label={dark ? "라이트 모드" : "다크 모드"} aria-pressed={dark} onClick={toggleTheme}>
-            <span className="h-theme-dot" aria-hidden="true" />
-          </button>
-          <button ref={menuButton} type="button" className="h-menu-trigger" aria-label="메뉴 열기" aria-expanded={menuOpen} aria-controls="h-site-menu" onClick={() => setMenuOpen(true)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3 4h18M3 12h18M3 20h18" /></svg></button>
-        </div>
-      </div>
-    </header>
-    <div id="h-site-menu" className="h-menu-overlay" data-open={menuOpen} inert={!menuOpen || undefined} aria-hidden={!menuOpen || undefined} role={menuOpen ? "dialog" : undefined} aria-modal={menuOpen ? true : undefined} aria-label="사이트 메뉴" onKeyDown={(event) => {
-      if (event.key === "Escape") { event.preventDefault(); closeMenu(); }
-      if (event.key === "Tab") {
-        const focusable = [...event.currentTarget.querySelectorAll("a,button")];
-        const first = focusable[0]; const last = focusable.at(-1);
-        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-        if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-      }
-    }}>
-      <div className="h-menu-top"><Link to="/" className="h-brand" onClick={closeMenu} aria-label="윤미래 홈"><DotLogo /></Link><button type="button" ref={closeButton} onClick={closeMenu} aria-label="메뉴 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m5 5 14 14M5 19 19 5" /></svg></button></div>
-      <nav aria-label="모바일 메뉴" onClick={(event) => { if (event.target.closest("a")) closeMenu(); }}><Link to="/">Home</Link>{links}</nav>
-      <p>윤미래 · Product Designer<br /><a href="mailto:alfo2027@naver.com">alfo2027@naver.com</a></p>
-    </div>
+  return <main className={`h-shell${isGallery ? " h-home" : ""}${isWork ? " h-work-page" : ""}${isHome ? " h-home-columns h-home-fixed-intro" : ""}${isAbout ? " h-about-centered" : ""}${isNotesIndex ? " h-notes-index" : ""}${isBlog && !isNotesIndex ? " h-note-detail" : ""}`} data-testid="hanssen-portfolio">
+    <PortfolioNavigation navCompact={navCompact} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
     <div className="h-layout" inert={menuOpen || undefined}>
-      {isHome && <>
-        <header className="h-slider-intro">
-          <h1>복잡한 경험을 명확하게 만들고,<br />사용자의 선택과 행동을 돕습니다</h1>
-          <p>윤미래 · Product Designer</p>
-        </header>
-        <HomeGalleryRail />
-      </>}
-      {!isGallery && <aside className="h-showcase"><FeaturedWork /></aside>}
-      {!isHome && <section className="h-content" tabIndex={isHome ? 0 : undefined} ref={scroller} onScroll={handlePanelScroll} aria-label={isAbout ? "소개 및 경력" : isBlog ? "블로그" : "프로젝트와 소개"}>
+      {isHome && <aside className="h-fixed-introduction" aria-label="윤미래 소개">
+        <div className="h-restored-info">
+          <h1 className="h-intro-name">ria.yoon</h1>
+          <p className="h-intro-role">product designer</p>
+          <h2 className="h-intro-tagline">복잡함을 명확하게</h2>
+          <p>뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드와 물류 플랫폼에서 제품을 설계해왔습니다.</p>
+          <p>사용자의 목적과 상황을 살피며, 제품을 쉽게 이해하고 자연스럽게 이용할 수 있는 흐름을 고민합니다.</p>
+          <Link className="h-feed-more h-intro-more" to="/about" aria-label="소개 더 보기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.25" aria-hidden="true"><path d="M8 2v12M2 8h12" /></svg></Link>
+        </div>
+        <nav className="h-sidebar-links" aria-label="이력서와 연락처">
+          <a href="https://my.surfit.io/w/948478686" target="_blank" rel="noopener noreferrer">Resume</a>
+          <a href="mailto:alfo2027@naver.com">Contact</a>
+        </nav>
+      </aside>}
+      {!isGallery && !isAbout && !isBlog && <aside className="h-showcase"><FeaturedWork /></aside>}
+      <section className="h-content" tabIndex={isHome ? 0 : undefined} ref={scroller} onScroll={handlePanelScroll} aria-label={isAbout ? "소개 및 경력" : isBlog ? "블로그" : "프로젝트와 소개"}>
 
-        {!isHome && !isWork && !isBlog && <div className="h-intro-grid">
-          <Link to="/about" className="h-profile h-panel" aria-label="윤미래 소개">
-            <div className="h-profile-heading"><span className="h-avatar" aria-hidden="true">y.</span><div><h1>윤미래</h1><p>Product Designer</p></div><Arrow /></div>
-            <p className="h-profile-copy">복잡한 정보를 이해하기 쉽게, 낯선 기능을 자연스럽게 사용자의 다음 행동을 생각하며 명확하고 편안한 경험을 만듭니다</p>
-          </Link>
-          <div className="h-quick-links">
-            <Link to="/work"><span>프로젝트</span><span className="h-link-detail">{projects.length} <Arrow /></span></Link>
-            <Link to="/about"><span>소개와 경력</span><Arrow /></Link>
-            <Link to="/blog"><span>생각과 기록</span><Arrow /></Link>
-            <a href="https://my.surfit.io/w/948478686" target="_blank" rel="noopener noreferrer"><span>이력서</span><Arrow /></a>
-            <a className="h-contact-link" href="mailto:alfo2027@naver.com"><span>Contact Me</span><span aria-hidden="true">↗</span></a>
-          </div>
-        </div>}
-        {isBlog ? <div className="h-blog h-panel"><BlogPanel key={pathname} slug={slug} /></div> : isAbout ? <div className="h-about h-panel">
-          <div className="h-about-dog"><InteractiveOrb dark={dark} progressRef={dogProgress} /></div>
-          <header><h2>About me</h2><p>충분히 들여다본 뒤,<br />꼭 필요한 것을 담습니다.</p><span>책과 전시, 감도 높은 공간과 물건들에서 새로운 영감을 얻습니다. 작고 감각적인 것들을 발견해 채우는 즐거움만큼, 깨끗하게 비워진 공간도 좋아합니다.</span></header>
-          <CaiExperiencePanel />
+        {isNotesIndex ? <section className="h-notes-page" aria-labelledby="notes-page-title">
+          <h1 id="notes-page-title">Notes</h1>
+          <NoteList posts={posts} headingTag="h2" />
+        </section> : isBlog ? <div className="h-blog h-panel"><BlogPanel key={pathname} slug={slug} /></div> : isAbout ? <div className="h-about h-panel">
+          <section className="h-about-profile" aria-label="디자이너 소개">
+            <div className="h-about-photo-column">
+              <img draggable={false} decoding="async" className="h-about-photo" src={`${import.meta.env.BASE_URL}assets/about/ria-photo.avif`} alt="강가 풍경을 바라보는 리아" width="660" height="880" />
+              <nav className="h-about-actions" aria-label="이력서와 메일">
+                <a href="https://my.surfit.io/w/948478686" target="_blank" rel="noopener noreferrer">Resume</a>
+                <a href="mailto:alfo2027@naver.com">alfo2027@naver.com</a>
+              </nav>
+            </div>
+            <div className="h-about-statement-copy">
+              <p>뉴스·커뮤니티, AI 기반 서비스, SaaS 대시보드와 물류 플랫폼에서 웹과 모바일 앱을 설계했습니다.<br />콘텐츠를 탐색하는 서비스부터 전문적인 데이터와 복잡한 업무 흐름을 다루는 제품까지 경험하며, 낯선 도메인의 핵심을 파악하고 사용자가 이해하기 쉬운 구조로 풀어내는 데 강점을 갖췄습니다. 제품의 목표와 사용자의 니즈를 함께 고려해 명확한 경험을 전달하는 디자인을 합니다.</p>
+            </div>
+          </section>
+          <section className="h-about-statement">
+            <p>책과 전시, 감도 높은 공간과 물건들에서<br />
+              새로운 영감을 얻습니다.<br />
+              작고 감각적인 것들을 발견해 채우는 즐거움만큼,<br />
+              깨끗하게 비워진 공간도 좋아합니다.<br />
+              디자인도 그렇습니다. 충분히 들여다본 뒤<br />
+              꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.</p>
+          </section>
+          <CaiExperiencePanel showIntro={false} showStrengths={false} />
         </div> : <>
-          {isHome && <header className="h-apple-work-heading"><h2>사용자의 문제를 더 나은 경험으로</h2><Link to="/work">모든 작업 보기 ↗</Link></header>}
-          <div className="h-project-list"><div className="h-project-grid">{orderedProjects.map((project, index) => {
+          {isHome && <header className="h-feed-heading">
+            <h2>Work</h2>
+            <Link className="h-feed-more" to="/work" aria-label="모든 작업 보기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.25" aria-hidden="true"><path d="M8 2v12M2 8h12" /></svg></Link>
+          </header>}
+          <div className="h-project-list" data-expanded={isHome ? projectsExpanded : undefined}><div className="h-project-grid" id="portfolio-projects">{orderedProjects.map((project, index) => {
             const contents = <><div className="h-work-image" data-project-frame><img src={project.galleryThumbnail ?? project.thumbnail} alt="" width={1200} height={900} loading={isHome && index < 2 ? "eager" : "lazy"} draggable={false} />{project.upcoming ? <span className="h-upcoming">Coming soon<span className="h-work-overlay-footer"><span>{project.type}</span></span></span> : <div className="h-work-overlay">
               <span className="h-work-hover-title">{project.title}</span>
               <span className="h-work-meta">{project.type}</span>
             </div>}</div><span className="h-work-caption-meta"><span className="h-work-company">{companyNames[project.company] ?? project.company}</span>{project.year && <span className="h-work-date">{project.year}</span>}</span><span className="h-work-label">{project.cardTitle ?? project.title}</span></>;
             return project.upcoming ? <article className="h-project-card is-upcoming" key={project.slug}>{contents}</article> : <Link className="h-project-card" key={project.slug} to={`/projects/${project.slug}`} aria-label={project.cardTitle ?? project.title} onClick={(event) => startProjectTransition(event, project)}>{contents}</Link>;
-          })}</div></div>
+          })}</div>
+          {isHome && !projectsExpanded && orderedProjects.length > 4 && <button type="button" className="h-projects-expand" aria-expanded={projectsExpanded} aria-controls="portfolio-projects" onClick={() => setProjectsExpanded(true)}>
+            More
+          </button>}
+          </div>
         </>}
-        {!isGallery && <footer className="h-footer h-panel"><div><strong>함께 이야기해요</strong><a href="mailto:alfo2027@naver.com">alfo2027@naver.com <Arrow /></a></div><span>© {new Date().getFullYear()} Yoon Mirae</span><Link to="/about">About me <Arrow /></Link></footer>}
-      </section>}
+        {isHome && <section className="h-home-notes" aria-labelledby="home-notes-title">
+          <div className="h-feed-heading"><h2 id="home-notes-title">Notes</h2><Link className="h-feed-more" to="/blog" aria-label="모든 글 보기"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.25" aria-hidden="true"><path d="M8 2v12M2 8h12" /></svg></Link></div>
+          <NoteList posts={posts.slice(0, 3)} />
+        </section>}
+        {!isGallery && !isAbout && !isBlog && <footer className="h-footer h-panel"><div><strong>함께 이야기해요</strong><a href="mailto:alfo2027@naver.com">alfo2027@naver.com <Arrow /></a></div><span>© {new Date().getFullYear()} Yoon Mirae</span><Link to="/about">About me <Arrow /></Link></footer>}
+      </section>
 
 
     </div>

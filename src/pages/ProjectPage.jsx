@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import ProjectNavigation from "../components/ProjectNavigation";
+import PortfolioNavigation from "../components/PortfolioNavigation";
 import { useProjectTransition } from "../components/ProjectTransition";
 import { getAdjacentProjects, getProjectBySlug, getRelatedProjects } from "../data/projects";
+import { companyNames } from "../data/companyNames";
+import EntryPagination from "../components/EntryPagination";
 import NotFoundPage from "./NotFoundPage";
 
 export default function ProjectPage() {
@@ -11,6 +13,15 @@ export default function ProjectPage() {
   const { isTransitioning, registerProjectTarget } = useProjectTransition();
   const project = getProjectBySlug(slug);
   const featureFrameRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [navCompact, setNavCompact] = useState(false);
+
+  useEffect(() => {
+    setNavCompact(false);
+    const update = () => setNavCompact(window.scrollY > 32);
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [slug]);
 
   useEffect(() => {
     if (project) document.title = `윤미래 Product Designer - ${project.title}`;
@@ -73,7 +84,8 @@ export default function ProjectPage() {
 
   return (
     <main className={`project-shell${location.state?.projectTransition ? " is-transition-enter" : ""}${isTransitioning ? " is-transition-active" : ""}`}>
-      <ProjectNavigation />
+      <PortfolioNavigation navCompact={navCompact} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <div className="project-content" inert={menuOpen || undefined}>
       {project.intro && (
         <header className="project-intro">
           <h1 aria-label={project.intro.headline}>
@@ -107,22 +119,7 @@ export default function ProjectPage() {
           })}
         </section>
       </div>
-      <nav className="project-pagination" aria-label="이전 및 다음 프로젝트">
-        <Link className="project-pagination-link" to={`/projects/${previousProject.slug}`}>
-          <span className="project-pagination-label">
-            <svg className="project-pagination-chevron" viewBox="0 0 8 12" aria-hidden="true"><path d="M6.5 1 1.5 6l5 5" /></svg>
-            Previous
-          </span>
-          <strong className="project-pagination-title">{previousProject.title}</strong>
-        </Link>
-        <Link className="project-pagination-link is-next" to={`/projects/${nextProject.slug}`}>
-          <span className="project-pagination-label">
-            Next
-            <svg className="project-pagination-chevron" viewBox="0 0 8 12" aria-hidden="true"><path d="m1.5 1 5 5-5 5" /></svg>
-          </span>
-          <strong className="project-pagination-title">{nextProject.title}</strong>
-        </Link>
-      </nav>
+      <EntryPagination previous={previousProject} next={nextProject} basePath="/projects" label="이전 및 다음 프로젝트" />
       {relatedProjects.length > 0 && (
         <section className="project-related" aria-labelledby="project-related-title">
           <h2 id="project-related-title">Related Works</h2>
@@ -138,14 +135,16 @@ export default function ProjectPage() {
                     height={relatedProject.thumbnailHeight}
                     loading="lazy"
                   />
+                  <span className="project-related-overlay"><span>{relatedProject.title}</span><small>{relatedProject.type}</small></span>
                 </span>
-                <strong>{relatedProject.title}</strong>
-                <span>{relatedProject.type}</span>
+                <span className="project-related-meta"><span>{companyNames[relatedProject.company] ?? relatedProject.company}</span><span>{relatedProject.year}</span></span>
+                <strong>{relatedProject.cardTitle ?? relatedProject.title}</strong>
               </Link>
             ))}
           </nav>
         </section>
       )}
+      </div>
     </main>
   );
 }

@@ -4,3 +4,5 @@
 assets/project-01/*.png
 node_modules/
 dist/
+
+public/assets/about/ria-photo.webp

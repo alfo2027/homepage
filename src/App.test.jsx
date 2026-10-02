@@ -10,7 +10,7 @@ test("renders the Hanssen-inspired portfolio at the default route", () => {
   render(<App />);
 
   expect(screen.getByTestId("hanssen-portfolio")).toBeInTheDocument();
-  expect(screen.getByRole("region", { name: "프로젝트와 노트" })).toBeInTheDocument();
+  expect(screen.getByRole("complementary", { name: "윤미래 소개" })).toBeInTheDocument();
 });
 
 test("keeps the previous homepage available at the original route", () => {

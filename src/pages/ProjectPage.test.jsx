@@ -120,7 +120,7 @@ describe("project detail", () => {
 
     expect(getComputedStyle(introduction).display).toBe("grid");
     expect(getComputedStyle(introduction).gridTemplateColumns).toBe("repeat(2,minmax(0,1fr))");
-    expect(appStyle.getPropertyValue("--portfolio-bg")).toBe("#f7f7f5");
+    expect(appStyle.getPropertyValue("--portfolio-bg")).toBe("#f5f5f5");
     expect(appStyle.getPropertyValue("--portfolio-type-13")).toBe("13px");
     expect(appStyle.getPropertyValue("--portfolio-type-17")).toBe("17px");
     expect(getComputedStyle(introduction).columnGap).toBe("var(--portfolio-space-8)");
@@ -128,7 +128,7 @@ describe("project detail", () => {
     expect(getComputedStyle(introduction).paddingBottom).toBe("72px");
     expect(getComputedStyle(container.querySelector(".project-shell")).backgroundColor).toBe("rgb(255, 255, 255)");
     expect(getComputedStyle(container.querySelector(".project-shell")).fontFamily).toBe("var(--portfolio-font)");
-    expect(getComputedStyle(title).fontSize).toBe("var(--portfolio-type-17)");
+    expect(getComputedStyle(title).fontSize).toBe("24px");
     expect([...title.querySelectorAll("span")].map((line) => line.textContent)).toEqual([
       "쏟아지는 뉴스를 투자 판단으로",
       "잇는 AI 분석",
@@ -146,13 +146,13 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related-card")).toHaveAttribute("href", "/projects/bloomingbit-alpha");
     expect(container.querySelectorAll(".project-related-card")).toHaveLength(1);
     expect(container.querySelector(".project-related-card img")).toHaveAttribute("src", "/assets/project-02/project-02-thumb.avif");
-    expect(getComputedStyle(container.querySelector(".project-related h2")).fontSize).toBe("var(--portfolio-type-15)");
-    expect(getComputedStyle(container.querySelector(".project-related h2")).fontWeight).toBe("400");
+    expect(getComputedStyle(container.querySelector(".project-related h2")).fontSize).toBe("18px");
+    expect(getComputedStyle(container.querySelector(".project-related h2")).fontWeight).toBe("600");
     expect(getComputedStyle(container.querySelector(".project-related h2")).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(container.querySelector(".project-related-grid")).gridTemplateColumns).toBe("repeat(4,minmax(0,1fr))");
-    expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("4/3");
-    expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("var(--portfolio-type-15)");
-    expect(getComputedStyle(container.querySelector(".project-related-card > span:last-child")).fontSize).toBe("var(--portfolio-type-13)");
+    expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("auto");
+    expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("16px");
+    expect(getComputedStyle(container.querySelector(".project-related-meta")).fontSize).toBe("13px");
   });
 
   test("shows previous and next project links before Related Works", () => {
@@ -165,11 +165,11 @@ describe("project detail", () => {
     const nextLink = pagination.querySelector(".project-pagination-link.is-next");
     expect(previousLink).toHaveTextContent("Previous");
     expect(previousLink).not.toHaveTextContent("이전 프로젝트");
-    expect(previousLink).toHaveTextContent("그래픽 디자인 & 3D 비주얼");
+    expect(previousLink).toHaveTextContent("기능과 분위기를 한눈에 전하는 비주얼 만들기");
     expect(previousLink).toHaveAttribute("href", "/projects/graphic-visual");
     expect(nextLink).toHaveTextContent("Next");
     expect(nextLink).not.toHaveTextContent("다음 프로젝트");
-    expect(nextLink).toHaveTextContent("블루밍비트 알파");
+    expect(nextLink).toHaveTextContent("흩어진 크립토 시장 정보를 한 번에 탐색하는 법");
     expect(nextLink).toHaveAttribute("href", "/projects/bloomingbit-alpha");
     expect(previousLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
     expect(nextLink.querySelector(".project-pagination-chevron")).toBeInTheDocument();
@@ -177,11 +177,10 @@ describe("project detail", () => {
     expect(getComputedStyle(pagination).borderTopWidth).toBe("0px");
     expect(getComputedStyle(pagination).paddingBottom).toBe("40px");
     expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).fontSize).toBe("15px");
-    expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).fontSize).toBe("13px");
-    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).color).toBe("var(--portfolio-muted)");
-    expect(getComputedStyle(related).borderTopWidth).toBe("1px");
-    expect(getComputedStyle(related).borderTopColor).toBe("rgba(18, 18, 18, 0.12)");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-label")).color).toBe("var(--portfolio-muted)");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).fontSize).toBe("16px");
+    expect(getComputedStyle(previousLink.querySelector(".project-pagination-title")).color).toBe("var(--portfolio-fg)");
+    expect(getComputedStyle(related).borderTopWidth).toBe("0px");
     expect(getComputedStyle(related).paddingTop).toBe("32px");
   });
 
@@ -192,37 +191,22 @@ describe("project detail", () => {
     expect(container.querySelector(".project-related")).not.toBeInTheDocument();
   });
 
-  test("matches the home menu typography and destinations without a detail theme control", () => {
-    renderRoute("/projects/analyst");
-    const navigation = screen.getByRole("navigation", { name: "상세 페이지 메뉴" });
-    const projects = screen.getByRole("link", { name: "Projects" });
-    const home = screen.getByRole("link", { name: "Home" });
-    const about = screen.getByRole("link", { name: "About" });
-
-    expect(navigation.querySelector(".project-back")).toBe(projects);
-    expect(navigation.querySelector(".project-menu")).toContainElement(home);
-    expect(navigation.querySelector(".project-menu")).toContainElement(about);
-    expect(projects).toHaveAttribute("href", "/");
-    expect(home).toHaveAttribute("href", "/");
-    expect(about).toHaveAttribute("href", "/about");
-    expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /모드로 전환/ })).not.toBeInTheDocument();
-    expect(getComputedStyle(navigation).top).toBe("24px");
-    expect(getComputedStyle(navigation).left).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
-    expect(getComputedStyle(navigation).right).toBe("max(var(--page-gutter),calc((100vw - var(--max))/2))");
-    expect(getComputedStyle(navigation.querySelector(".project-menu")).gap).toBe("16px");
-    expect(getComputedStyle(projects).fontSize).toBe("15px");
-    expect(getComputedStyle(projects).fontWeight).toBe("400");
-    expect(getComputedStyle(home).fontSize).toBe("15px");
-    expect(getComputedStyle(home).fontWeight).toBe("400");
-    expect(getComputedStyle(about).fontSize).toBe("15px");
-    expect(getComputedStyle(about).fontWeight).toBe("400");
-    expect(getComputedStyle(projects).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(home).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(about).color).toBe("var(--portfolio-fg)");
-    expect(getComputedStyle(navigation).position).toBe("fixed");
-    expect(getComputedStyle(navigation).backgroundColor).toBe("rgba(0, 0, 0, 0)");
-    expect(getComputedStyle(navigation).borderTopWidth).toBe("0px");
+  test("shares home navigation and compacts on document scroll", () => {
+    const { container } = renderRoute("/projects/analyst");
+    const nav = screen.getByRole("navigation", { name: "주 메뉴" });
+    expect(nav.querySelector('a[href="/work"]')).toHaveTextContent("Work");
+    expect(nav.querySelector('a[href="/about"]')).toHaveTextContent("About");
+    expect(nav.querySelector('a[href="/blog"]')).toHaveTextContent("Notes");
+    expect(screen.getByRole("button", { name: "다크 모드" })).toBeInTheDocument();
+    expect(container.querySelector(".h-navigation")).toHaveAttribute("data-compact", "false");
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 100 });
+    fireEvent.scroll(window);
+    expect(container.querySelector(".h-navigation")).toHaveAttribute("data-compact", "true");
+    fireEvent.click(container.querySelector(".h-menu-trigger"));
+    expect(screen.getByRole("dialog", { name: "사이트 메뉴" })).toBeInTheDocument();
+    expect(container.querySelector(".project-content")).toHaveAttribute("inert");
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(container.querySelector(".project-content")).not.toHaveAttribute("inert");
   });
 
   test("renders a useful fallback for an unknown project", () => {

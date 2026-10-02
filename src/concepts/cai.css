@@ -102,3 +102,13 @@
 .cai-project-grid{gap:var(--portfolio-space-8) var(--portfolio-space-1);padding:40px}
 .cai-project-copy h2{font-size:var(--portfolio-type-15)}
 .cai-project-copy p{font-size:var(--portfolio-type-13)}
+
+.cai-career-toggle{display:block;flex:0 0 auto;width:24px;height:24px;padding:4px;color:inherit;transition:transform .2s}
+.cai-career-item:not([open]) .cai-career-summary:hover .cai-career-toggle{transform:rotate(90deg)}
+.cai-career-item[open] .cai-career-toggle{transform:none;transition:none}
+.cai-career-toggle-vertical{transition:opacity .2s}
+.cai-career-item[open] .cai-career-toggle-vertical{opacity:0}
+@media(prefers-reduced-motion:reduce){.cai-career-toggle,.cai-career-toggle-vertical{transition:none}}
+
+.cai-career-project-group + .cai-career-project-group{margin-top:12px}
+.cai-career-project-group h5{margin:0 0 4px;font-size:13px;font-weight:500;line-height:1.65;color:var(--cai-muted)}

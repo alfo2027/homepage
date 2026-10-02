@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { expect, test, vi } from "vitest";
+import FeaturedWork from "../components/FeaturedWork";
 import HanssenPortfolioPage from "./HanssenPortfolioPage";
 import { ProjectTransitionProvider } from "../components/ProjectTransition";
 import { PortfolioThemeProvider } from "../components/PortfolioTheme";
@@ -13,8 +14,12 @@ function setup(path = "/") {
   return render(<MemoryRouter initialEntries={[path]}><PortfolioThemeProvider><ProjectTransitionProvider><HanssenPortfolioPage /></ProjectTransitionProvider></PortfolioThemeProvider></MemoryRouter>);
 }
 
+function setupFeatured() {
+  return render(<MemoryRouter><PortfolioThemeProvider><ProjectTransitionProvider><FeaturedWork /></ProjectTransitionProvider></PortfolioThemeProvider></MemoryRouter>);
+}
+
 test("featured slides update the visible project link and wrap in both directions", () => {
-  setup("/about");
+  setupFeatured();
   expect(screen.getByRole("link", { name: "선택한 프로젝트 보기" })).toHaveAttribute("href", "/projects/graphic-visual");
   fireEvent.click(screen.getByRole("button", { name: "다음 대표 작업" }));
   expect(screen.getByRole("link", { name: "선택한 프로젝트 보기" })).toHaveAttribute("href", "/projects/analyst");
@@ -49,7 +54,7 @@ test("theme control updates its state and portfolio theme", () => {
 });
 
 test("swiping the hero changes the slide without opening its project", () => {
-  const { container } = setup("/about");
+  const { container } = setupFeatured();
   const hero = screen.getByRole("link", { name: "선택한 프로젝트 보기" });
   fireEvent(hero, new MouseEvent("pointerdown", { bubbles: true, clientX: 220, clientY: 200 }));
   fireEvent(hero, new MouseEvent("pointerup", { bubbles: true, clientX: 80, clientY: 205 }));
@@ -71,14 +76,14 @@ test("mobile menu traps keyboard focus and restores the body scroll setting", ()
   expect(document.body.style.overflow).toBe("");
 });
 
-test("home shows projects and notes in a shared moving gallery", () => {
+test("home keeps introduction beside the projects and notes panel", () => {
   const { container } = setup();
-  expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("복잡한 경험을 명확하게 만들고");
-  const group = container.querySelector(".home-rail-group");
-  expect(group.querySelectorAll(".home-rail-project")).toHaveLength(projects.length);
-  expect(group.querySelectorAll(".home-rail-note")).toHaveLength(Math.min(posts.length, 4));
-  expect(container.querySelector(".h-home-notes")).not.toBeInTheDocument();
-  expect(container.querySelectorAll(".home-rail-group")[1]).toHaveAttribute("aria-hidden", "true");
+  expect(screen.getByRole("complementary", { name: "윤미래 소개" })).toBeInTheDocument();
+  const panel = container.querySelector(".h-content");
+  expect(panel.querySelectorAll(".h-project-card")).toHaveLength(projects.length);
+  expect(panel.querySelectorAll(".h-note-card")).toHaveLength(Math.min(posts.length, 3));
+  expect(container.querySelector(".home-rail")).not.toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Work" })).toBeInTheDocument();
 });
 
 test("home GNB follows actual document scrolling", () => {
@@ -105,9 +110,16 @@ test("work uses document scrolling to compact the GNB", () => {
 });
 
 
-test("About contains the interactive dog moved from the home hero", () => {
-  setup("/about");
-  expect(screen.getByTestId("interactive-orb")).toBeInTheDocument();
+test("About centers the introduction and careers without the project sidebar", () => {
+  const { container } = setup("/about");
+  expect(screen.queryByTestId("interactive-orb")).not.toBeInTheDocument();
+  expect(container.querySelector(".h-about-statement")).toHaveTextContent("꼭 필요한 것만 담아 편안한 경험을 만들려 합니다.");
+  expect(container.querySelector(".h-about-statement").querySelectorAll("br")).toHaveLength(5);
+  expect(container.querySelector(".h-about-centered")).toBeInTheDocument();
+  expect(container.querySelector(".h-showcase")).not.toBeInTheDocument();
+  expect(container.querySelectorAll(".cai-career-item")).toHaveLength(4);
+  fireEvent.click(container.querySelector(".cai-career-summary"));
+  expect(container.querySelector(".cai-career-item")).toHaveAttribute("open");
 });
 
  test("work lists every project without an introduction, notes or footer", () => {
@@ -119,4 +131,16 @@ test("About contains the interactive dog moved from the home hero", () => {
   expect(container.querySelector(".h-home-notes")).not.toBeInTheDocument();
   expect(container.querySelector(".h-footer")).not.toBeInTheDocument();
   expect(container.querySelector(".h-showcase")).not.toBeInTheDocument();
+});
+
+test("notes index shows the main text list without the old gallery and filters", () => {
+  const { container } = setup("/blog");
+  expect(screen.getByRole("heading", { name: "Notes", level: 1 })).toBeInTheDocument();
+  expect(container.querySelector(".h-showcase")).not.toBeInTheDocument();
+  expect(container.querySelector(".blog-filters")).not.toBeInTheDocument();
+  expect(container.querySelector(".h-footer")).not.toBeInTheDocument();
+  for (const post of posts) {
+    expect(screen.getByRole("heading", { name: post.title, level: 2 })).toBeInTheDocument();
+    expect(container.querySelector(`a[href="/blog/${post.slug}"]`)).toBeInTheDocument();
+  }
 });
