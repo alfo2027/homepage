@@ -4,26 +4,23 @@ import App from "../App";
 
 vi.mock("../components/InteractiveOrb", () => ({ default: () => null }));
 
-test("Notes navigation opens the list and categories narrow the articles", async () => {
+test("Notes navigation opens the simple text list", async () => {
   window.location.hash = "#/";
-  render(<App />);
+  const { container } = render(<App />);
   fireEvent.click(screen.getByRole("link", { name: "Notes" }));
-  expect(await screen.findByRole("heading", { name: "Blog" })).toBeInTheDocument();
-  expect(screen.getAllByRole("link", { name: /글 읽기:/ })).toHaveLength(3);
-  fireEvent.click(screen.getByRole("button", { name: "Design" }));
-  expect(screen.getAllByRole("link", { name: /글 읽기:/ })).toHaveLength(1);
-  fireEvent.click(screen.getByRole("button", { name: "All" }));
-  expect(screen.getAllByRole("link", { name: /글 읽기:/ })).toHaveLength(3);
+  expect(await screen.findByRole("heading", { name: "Notes", level: 1 })).toBeInTheDocument();
+  expect(container.querySelectorAll(".h-notes-page .h-note-card")).toHaveLength(3);
+  expect(container.querySelector(".blog-filters")).not.toBeInTheDocument();
 });
 
 test("direct article links show content and return to the blog", async () => {
   window.location.hash = "#/blog/design-notes";
   render(<App />);
-  expect(await screen.findByRole("heading", { name: "디자인의 과정을 기록하는 법" })).toBeInTheDocument();
-  expect(screen.getByText(/레이아웃을 확인하기 위한 예시 글/)).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "피그마만 쓰던 디자이너가 Storybook을 배포하기까지" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "직접 살펴보기 · Storybook" })).toHaveAttribute("href", "https://alfo2027.github.io/design-system/?path=/story/overview--guide");
   expect(screen.getByRole("link", { name: "Notes" })).toHaveAttribute("aria-current", "page");
   fireEvent.click(screen.getAllByRole("link", { name: "List" })[0]);
-  expect(await screen.findByRole("heading", { name: "Blog" })).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "Notes", level: 1 })).toBeInTheDocument();
 });
 
 test("an unknown article has a useful way back", async () => {

@@ -16,7 +16,12 @@ class SpaPortfolioTest(unittest.TestCase):
         self.assertIn('<div id="root"></div>', index)
         self.assertIn('src="/src/main.jsx"', index)
         self.assertIn('base: "/homepage/"', vite)
-        self.assertIn("<title>윤미래 Product Designer</title>", index)
+        self.assertIn("<title>Portfolio_Yoon</title>", index)
+        self.assertIn('<link rel="icon" type="image/svg+xml" href="/homepage/favicon.svg"', index)
+        self.assertIn('<meta property="og:title" content="Portfolio_Yoon"', index)
+        self.assertIn('<meta property="og:type" content="website"', index)
+        self.assertIn('<meta property="og:url" content="https://alfo2027.github.io/homepage/"', index)
+        self.assertTrue((ROOT / "public" / "favicon.svg").is_file())
 
     def test_hash_router_and_required_routes(self):
         app = self.read("src/App.jsx")
@@ -52,7 +57,7 @@ class SpaPortfolioTest(unittest.TestCase):
     def test_design_tokens_and_responsive_gutters_are_preserved(self):
         css = re.sub(r"\s+", "", self.read("src/styles.css"))
         for token in (
-            "--portfolio-bg:#f7f7f5",
+            "--portfolio-bg:#f5f5f5",
             "--portfolio-surface:#eeeeeb",
             "--portfolio-fg:#121212",
             "--portfolio-muted:#777",

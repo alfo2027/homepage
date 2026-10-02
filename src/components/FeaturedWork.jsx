@@ -14,7 +14,7 @@ export default function FeaturedWork() {
   const move = (delta) => setIndex((current) => (current + delta + featured.length) % featured.length);
 
   return <section className={`h-feature h-feature--${project.slug}`} aria-label="대표 작업 슬라이드">
-    <Link className="h-feature-link" to={`/projects/${project.slug}`} aria-label="선택한 프로젝트 보기" draggable={false}
+    <Link className="h-feature-link" to={`/projects/${project.slug}`} aria-label="선택한 프로젝트 보기" draggable="false"
       onDragStart={(event) => event.preventDefault()}
       onPointerDown={(event) => { swiped.current = false; gesture.current = { x: event.clientX, y: event.clientY }; }}
       onPointerUp={(event) => {

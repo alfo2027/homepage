@@ -12,7 +12,7 @@ const strengths = [
 
 export default function ColabsConceptPage() {
   useEffect(() => {
-    document.title = "윤미래 Product Designer — Concept 01";
+    document.title = "Portfolio_Yoon — Concept 01";
   }, []);
 
   return (

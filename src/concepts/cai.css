@@ -12,7 +12,7 @@
 
 /* Concept interactions */
 .cai-orb{position:relative;width:min(174px,calc(100% - 46px));outline:none;cursor:pointer;user-select:none}
-.cai-orb-speech{position:absolute;z-index:20;top:auto;bottom:128px;left:calc(50% + 18px);width:min(220px,calc(100vw - 32px));padding:16px 18px;border:.5px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(38,38,35,.9);box-shadow:0 12px 32px rgba(20,20,20,.14);color:#f7f6f2;font-family:"Pretendard",sans-serif;font-size:14px;font-weight:400;line-height:1.55;letter-spacing:-.015em;text-align:center;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;opacity:0;pointer-events:none;transform:translate(-50%,12px) scale(.96);transform-origin:center bottom;backdrop-filter:blur(12px)}
+.cai-orb-speech{position:absolute;z-index:20;top:auto;bottom:128px;left:calc(50% + 18px);width:max-content;max-width:min(220px,calc(100vw - 32px));padding:16px 18px;border:.5px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(38,38,35,.9);box-shadow:0 12px 32px rgba(20,20,20,.14);color:#f7f6f2;font-family:"Pretendard",sans-serif;font-size:14px;font-weight:400;line-height:1.55;letter-spacing:-.015em;text-align:center;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;opacity:0;pointer-events:none;transform:translate(-50%,12px) scale(.96);transform-origin:center bottom;backdrop-filter:blur(12px)}
 .cai-orb-speech::before{content:"";position:absolute;top:100%;right:auto;bottom:auto;left:calc(50% - 18px);width:12px;height:7px;background:rgba(38,38,35,.9);clip-path:polygon(0 0,100% 0,50% 100%);transform:translateX(-50%)}
 .cai-orb.is-speaking .cai-orb-speech.speech-cycle-0{pointer-events:auto;animation:cai-orb-cloud 4.5s ease-in-out both}
 .cai-orb.is-speaking .cai-orb-speech.speech-cycle-1{pointer-events:auto;animation:cai-orb-cloud-alt 4.5s ease-in-out both}
@@ -45,10 +45,20 @@
 .cai-side-menu button{width:max-content;padding:0;border:0;background:transparent;color:var(--cai-muted);font:inherit;cursor:pointer;transition:color .2s}
 .cai-side-menu button:hover,.cai-side-menu button.is-active{color:var(--cai-fg)}
 .cai-experience{min-height:100%;padding:clamp(70px,10vh,140px) clamp(22px,5vw,80px) 48px;font-family:"Pretendard",sans-serif;animation:cai-view-in .42s cubic-bezier(.22,1,.36,1)}
-.cai-experience-intro{display:grid;gap:28px;max-width:660px;margin:0 0 72px;word-break:keep-all}
-.cai-experience-intro-title{margin:0 0 10px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
-.cai-experience-intro-copy{max-width:48ch;margin:0;color:var(--cai-fg);font-size:15px;font-weight:400;line-height:1.7;letter-spacing:-.015em}
-.cai-career{max-width:1080px}
+.cai-experience-intro{display:grid;gap:28px;max-width:920px;margin:0 0 80px;word-break:keep-all}
+.cai-experience-intro-title{margin:0 0 10px;font-size:24px;font-weight:700;line-height:1.4;letter-spacing:-.025em}
+.cai-experience-intro-copy{max-width:none;margin:0;color:var(--cai-fg);font-size:15px;font-weight:400;line-height:1.7;letter-spacing:-.015em}
+.cai-experience-links{display:flex;justify-content:flex-start;gap:24px}
+.cai-experience-links a{display:inline-flex;align-items:center;gap:5px;color:var(--cai-muted);font-size:14px;font-weight:400;text-decoration:none;transition:color .2s}
+.cai-experience-links a span{opacity:.55}
+.cai-experience-links a:hover,.cai-experience-links a:focus-visible{color:var(--cai-fg)}
+.cai-experience-strengths{max-width:1080px;margin:0 0 80px;padding-top:80px;border-top:1px solid rgba(17,17,17,.08);word-break:keep-all}
+.cai-experience-strengths>h2{margin:0 0 48px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
+.cai-experience-strength-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:52px 72px}
+.cai-experience-strength h3{margin:0 0 10px;font-size:15px;font-weight:500;line-height:1.5;letter-spacing:-.02em}
+.cai-experience-strength p{max-width:46ch;margin:0;color:var(--cai-muted);font-size:14px;font-weight:400;line-height:1.75;letter-spacing:-.012em}
+.cai-career{max-width:1080px;padding-top:80px;border-top:1px solid rgba(17,17,17,.08)}
+.cai-career>h2{margin:0 0 48px;font-size:20px;font-weight:500;line-height:1.4;letter-spacing:-.025em}
 .cai-career-item{margin:0 0 clamp(24px,3vw,40px)}
 .cai-career-item:last-child{margin-bottom:0}
 .cai-career-summary{display:block;width:min(100%,660px);cursor:pointer;list-style:none}
@@ -66,19 +76,18 @@
 .cai-career-projects h4{margin:0 0 6px;font-size:14px;font-weight:500;line-height:1.5;letter-spacing:-.015em}
 .cai-career-projects ul{margin:0;padding:0;list-style:none}
 .cai-career-projects li{color:var(--cai-muted);font-size:13px;line-height:1.65;word-break:keep-all}
-.cai-experience-footer{display:flex;justify-content:flex-start;gap:24px;padding-top:72px}
-.cai-experience-footer a{color:var(--cai-fg);font-size:14px;text-decoration:none}
 @keyframes cai-view-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @media(max-width:900px){.cai-career-description{max-width:52ch}}
-@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:56px 16px 36px}.cai-experience-intro{gap:24px;margin-bottom:48px}.cai-experience-intro-title{font-size:20px}.cai-experience-intro-copy{font-size:14px;line-height:1.65}.cai-career-item{margin-bottom:20px}.cai-career-item:last-child{margin-bottom:0}.cai-career-heading h3{font-size:14px}.cai-career-period{font-size:14px}.cai-career-description{font-size:14px}.cai-career-projects h4{font-size:14px}.cai-career-projects li{font-size:13px}.cai-experience-footer{padding-top:48px;flex-wrap:wrap}}
+@media(max-width:640px){.cai-side-menu button{font-size:13px}.cai-experience{padding:56px 16px 36px}.cai-experience-intro{gap:24px;margin-bottom:56px}.cai-experience-intro-title{font-size:24px}.cai-experience-intro-copy{font-size:14px;line-height:1.65}.cai-experience-links{flex-wrap:wrap}.cai-experience-strengths{margin-bottom:56px}.cai-experience-strengths,.cai-career{padding-top:56px}.cai-experience-strengths>h2,.cai-career>h2{margin-bottom:36px;font-size:20px}.cai-experience-strength-grid{grid-template-columns:1fr;gap:36px}.cai-experience-strength p{font-size:14px;line-height:1.7}.cai-career-item{margin-bottom:20px}.cai-career-item:last-child{margin-bottom:0}.cai-career-heading h3{font-size:14px}.cai-career-period{font-size:14px}.cai-career-description{font-size:14px}.cai-career-projects h4{font-size:14px}.cai-career-projects li{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.cai-experience{animation:none}}
+@media(max-width:640px){.cai-experience-intro-break{display:none}}
 .cai-project-copy{transition:none}
 .cai-image-wrap>.cai-project-hover{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.55);color:#f4f4f1;text-align:center;opacity:0;pointer-events:none;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:opacity .3s ease}
 .cai-project-hover strong{max-width:22ch;font-size:var(--portfolio-type-15);font-weight:500;line-height:1.3;letter-spacing:-.025em;word-break:keep-all;opacity:0;transform:translateY(8px);transition:opacity .25s ease,transform .25s cubic-bezier(.22,1,.36,1)}
 .cai-project:hover .cai-project-hover,.cai-project:focus-visible .cai-project-hover{opacity:1}
 .cai-project:hover .cai-project-hover strong,.cai-project:focus-visible .cai-project-hover strong{opacity:1;transform:none}
 
-@media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:none}}
+@media(hover:none),(pointer:coarse){.cai-image-wrap>.cai-project-hover{display:grid}.cai-project:active img{filter:none;opacity:1;transform:scale(1.03)}.cai-project:active .cai-project-hover{opacity:1}.cai-project:active .cai-project-hover strong{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.cai-project{transform:none!important;transition:none}.cai-image-wrap img{transition:none}.cai-project:hover img,.cai-project:focus-visible img{transform:none}.cai-project-hover,.cai-project-hover strong{transition:none}.cai-project-hover strong{transform:none}}
 @media(prefers-reduced-motion:reduce){.cai-orb.is-speaking .cai-orb-speech.speech-cycle-0,.cai-orb.is-speaking .cai-orb-speech.speech-cycle-1{animation:cai-orb-cloud-fade 4.5s ease both;transform:translate(-50%,0)}.cai-orb.is-reacting .cai-orb-stage canvas,.cai-orb-surprise{animation:none}}
 
@@ -89,19 +98,21 @@
 .cai-side-bottom{display:block;margin-top:auto;margin-bottom:-20px}
 .cai-profile{position:static;margin:56px 0 0;align-self:auto;transform:none}
 .cai-profile h1{font-size:17px}
-.cai-profile-email{display:inline-block;margin-top:18px;color:var(--cai-muted);font-size:13px;line-height:1.5;text-decoration:none;transition:color .2s}
-.cai-profile-email span{color:var(--cai-muted);opacity:.48}
-.cai-profile-email:hover{color:var(--cai-fg)}
 .cai-orb{width:min(174px,100%)}
 
 @media(max-width:860px){.cai-side-bottom{margin-bottom:-16px}}
-@media(max-width:640px){.cai-side{display:flex;min-height:100svh;gap:0}.cai-side-top{width:100%}.cai-profile{margin-top:48px}.cai-profile-email{font-size:12px}.cai-side-bottom{width:100%;margin-top:auto}.cai-side-top>.cai-side-menu{gap:18px}}
+@media(max-width:640px){.cai-side{display:flex;min-height:100svh;gap:0}.cai-side-top{width:100%}.cai-profile{margin-top:48px}.cai-profile p{font-size:14px}.cai-side-bottom{width:100%;margin-top:auto}.cai-side-top>.cai-side-menu{gap:18px}}
 
 /* Shared portfolio token aliases */
 .cai-concept{--cai-bg:var(--portfolio-bg);--cai-fg:var(--portfolio-fg);--cai-muted:var(--portfolio-muted);--cai-line:var(--portfolio-line);background:transparent;font-family:var(--portfolio-font)}
 .cai-project-grid{gap:var(--portfolio-space-8) var(--portfolio-space-1);padding:40px}
 .cai-project-copy h2{font-size:var(--portfolio-type-15)}
 .cai-project-copy p{font-size:var(--portfolio-type-13)}
+.cai-project-period{display:block;margin-top:5px;color:var(--cai-muted);font-size:var(--portfolio-type-13);line-height:1.4;letter-spacing:-.01em}
+
+/* Mobile navigation and gutters */
+@media(max-width:640px){.cai-side{display:grid;min-height:0;grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:auto;align-items:end;gap:16px;padding:76px 20px 0}.cai-side-top{position:fixed;z-index:30;top:0;right:0;left:0;width:100%;height:56px;padding:0 20px;border-bottom:0;background:var(--cai-bg);box-sizing:border-box}.cai-profile{grid-column:1;margin:28px 0 32px;align-self:start}.cai-side-bottom{grid-column:2;align-self:end;margin-bottom:0}.cai-side-bottom .cai-orb-speech{left:calc(50% - 50px);width:max-content;max-width:min(220px,calc(100vw - 40px))}.cai-side-bottom .cai-orb-speech::before{left:calc(50% + 50px)}.cai-concept.is-about .cai-side{display:block;height:56px;min-height:56px;padding:0 20px;border-bottom:0}.cai-concept.is-about .cai-profile,.cai-concept.is-about .cai-side-bottom,.cai-concept.is-about .cai-scroll-progress{display:none}.cai-project-grid{padding:40px 20px 20px}.cai-experience{padding-right:20px;padding-left:20px}}
+@media(max-width:640px){.cai-side-top>.cai-side-menu{font-size:15px}.cai-side-menu a:hover,.cai-side-menu a:active,.cai-side-menu button:hover,.cai-side-menu button:active{opacity:1}}
 
 .cai-career-toggle{display:block;flex:0 0 auto;width:24px;height:24px;padding:4px;color:inherit;transition:transform .2s}
 .cai-career-item:not([open]) .cai-career-summary:hover .cai-career-toggle{transform:rotate(90deg)}
