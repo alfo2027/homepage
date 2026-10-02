@@ -249,11 +249,11 @@
 .h-work-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.46);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);color:#fff;opacity:0;transition:opacity .25s ease;pointer-events:none}
 .h-work-hover-title{font-size:22px;font-weight:600;line-height:1.45;letter-spacing:-.035em;text-align:center;word-break:keep-all;max-width:100%;padding-bottom:12px}
 .h-work-overlay-footer{position:absolute;left:18px;right:18px;bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
-.h-shell .h-work-overlay .h-work-meta{display:block;position:static;padding:0;background:none;opacity:1;font-size:11px;line-height:1.5;word-break:keep-all;min-width:0}
+.h-shell .h-work-overlay .h-work-meta{display:block;position:static;padding:0;background:none;opacity:1;font-size:14px;line-height:1.5;word-break:keep-all;min-width:0}
 .h-work-date{flex-shrink:0;font-size:11px;line-height:1.5;font-variant-numeric:tabular-nums}
 @media(hover:hover){.h-project-card:hover .h-work-overlay{opacity:1}}
 .h-project-card:focus-visible .h-work-overlay{opacity:1}
-@media(max-width:600px){.h-work-overlay{padding:14px}.h-work-hover-title{font-size:16px;padding-bottom:28px}.h-work-overlay-footer{left:10px;right:10px;bottom:10px;gap:8px}.h-shell .h-work-overlay .h-work-meta,.h-work-date{font-size:10px}}
+@media(max-width:600px){.h-work-overlay{padding:14px}.h-work-hover-title{font-size:16px;padding-bottom:28px}.h-work-overlay-footer{left:10px;right:10px;bottom:10px;gap:8px}.h-shell .h-work-overlay .h-work-meta{font-size:14px}.h-work-date{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.h-work-overlay{transition:none}}
 
 /* A soft shadow lifts the compact navigation pill. */
@@ -412,10 +412,11 @@
 
 /* Company precedes the stronger project title. */
 .h-shell .h-project-card .h-work-company{margin-top:12px}
-.h-shell .h-project-card .h-work-label{font-size:16px;font-weight:500;padding:6px 0 0}
+.h-shell .h-project-card .h-work-label{font-size:15px;font-weight:500;padding:6px 0 0}
 
 /* Center hover details; keep company and year below the thumbnail. */
 .h-work-overlay{flex-direction:column;gap:8px;text-align:center}
+.h-work-overlay--upcoming{opacity:1}
 .h-shell .h-work-overlay .h-work-hover-title{font-size:16px;padding:0}
 .h-work-caption-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:12px;color:var(--h-muted)}
 .h-shell .h-project-card .h-work-caption-meta .h-work-company{margin:0}
@@ -682,7 +683,7 @@
 .h-home .h-project-grid{gap:32px 12px}
 .h-home-fixed-intro .h-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .h-home-fixed-intro .h-project-card .h-work-caption-meta{display:flex}
-.h-home-fixed-intro .h-project-card .h-work-label{display:block;font-size:16px;font-weight:500;padding:6px 0 0}
+.h-home-fixed-intro .h-project-card .h-work-label{display:block;font-size:15px;font-weight:500;padding:6px 0 0}
 .h-home-fixed-intro .h-apple-work-heading h2,.h-home-fixed-intro .h-notes-heading h2{font-size:28px;font-weight:600;line-height:1.4;letter-spacing:-.03em;margin:0}
 .h-home-fixed-intro .h-content>.h-home-notes{display:block;margin-top:176px;width:100%;padding:0}
 .h-home-fixed-intro .h-notes-heading{margin-bottom:24px;display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;gap:16px}
@@ -851,21 +852,26 @@
 
 .h-about-centered .cai-career-description,.h-about-centered .cai-career-period{font-size:14px}
 .h-about-centered .cai-career{--career-date-width:160px;--career-column-gap:24px}
-.h-about-centered .cai-career-heading{display:grid;grid-template-columns:var(--career-date-width) minmax(0,max-content) 24px minmax(0,1fr);align-items:center}
+.h-about-centered .cai-career-heading{display:grid;grid-template-columns:var(--career-date-width) minmax(0,max-content) 24px minmax(0,1fr);align-items:first baseline}
 .h-about-centered .cai-career-title-row{display:contents}
-.h-about-centered .cai-career-period{grid-column:1;grid-row:1;margin:0;padding-right:var(--career-column-gap);align-self:center}
-.h-about-centered .cai-career-heading h3{grid-column:2;grid-row:1;font-weight:600}
-.h-about-centered .cai-career-toggle{grid-column:3;grid-row:1;margin-left:2px}
+.h-about-centered .cai-career-period{grid-column:1;grid-row:1;margin:0;padding-right:var(--career-column-gap);align-self:first baseline;line-height:24px}
+.h-about-centered .cai-career-heading h3{grid-column:2;grid-row:1;font-size:15px;font-weight:600;line-height:24px}
+.h-about-centered .cai-career-toggle{grid-column:3;grid-row:1;margin-left:2px;align-self:start}
 .h-about-centered .cai-career-description{grid-column:2/-1;margin-top:12px;max-width:none}
 .h-about-centered .cai-career-projects{margin-left:var(--career-date-width)}
 @media(max-width:600px){
- .h-about-centered .cai-career{--career-date-width:112px;--career-column-gap:16px}
- .h-about-centered .cai-career-period{align-self:start;line-height:1.6}
+ .h-about-centered .cai-career{--career-date-width:0px;--career-column-gap:0px}
+ .h-about-centered .cai-career-heading{grid-template-columns:minmax(0,max-content) 24px minmax(0,1fr)}
+ .h-about-centered .cai-career-period{grid-column:3;grid-row:1;margin:0;padding:0 0 0 12px;line-height:24px;text-align:right;justify-self:end}
+ .h-about-centered .cai-career-heading h3{grid-column:1;grid-row:1}
+ .h-about-centered .cai-career-toggle{grid-column:2;grid-row:1}
+ .h-about-centered .cai-career-description{grid-column:1/-1;grid-row:2}
+ .h-about-centered .cai-career-projects{margin-left:0}
 }
 
 @media(max-width:760px){.h-about-centered .h-about-profile{margin-bottom:110px}}
 
-.h-work-page .h-layout{padding-bottom:96px}
+.h-work-page .h-layout{width:100%;max-width:1920px;margin-inline:auto;box-sizing:border-box;padding-bottom:96px}
 @media(max-width:760px){.h-work-page .h-layout{padding-bottom:64px}}
 
 .h-home-fixed-intro .h-note-card h3{margin-bottom:8px}

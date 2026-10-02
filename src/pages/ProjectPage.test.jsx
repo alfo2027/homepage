@@ -151,7 +151,7 @@ describe("project detail", () => {
     expect(getComputedStyle(container.querySelector(".project-related h2")).color).toBe("var(--portfolio-fg)");
     expect(getComputedStyle(container.querySelector(".project-related-grid")).gridTemplateColumns).toBe("repeat(4,minmax(0,1fr))");
     expect(getComputedStyle(container.querySelector(".project-related-image")).aspectRatio).toBe("auto");
-    expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("16px");
+    expect(getComputedStyle(container.querySelector(".project-related-card strong")).fontSize).toBe("15px");
     expect(getComputedStyle(container.querySelector(".project-related-meta")).fontSize).toBe("13px");
   });
 
