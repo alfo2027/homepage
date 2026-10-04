@@ -29,8 +29,8 @@ function Block({ block }) {
     case "link": return <p><a href={block.href} target="_blank" rel="noopener noreferrer">{block.text}</a></p>;
     case "quote": return <blockquote>{block.text}</blockquote>;
     case "list": return <ul>{block.items.map((item, index) => <li key={index}>{item}</li>)}</ul>;
-    case "image": return <figure><img draggable={false} src={postAsset(block.src)} alt={block.alt || ""} loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
-    default: return <p>{block.text}</p>;
+    case "image": return <figure><img draggable={false} src={postAsset(block.src)} alt={block.alt || ""} width={block.width} height={block.height} decoding="async" loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
+    default: return <p className={block.variant === "closing" ? "blog-closing" : undefined}>{block.text}{block.link && <> <a href={block.link.href} target="_blank" rel="noopener noreferrer">{block.link.text}</a></>}</p>;
   }
 }
 
