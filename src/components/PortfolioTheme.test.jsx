@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { PortfolioThemeProvider, usePortfolioTheme } from "./PortfolioTheme";
 
 function ThemeConsumer() {
@@ -8,6 +8,29 @@ function ThemeConsumer() {
 }
 
 describe("PortfolioTheme", () => {
+  beforeEach(() => {
+    const storage = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (key) => storage.get(key) ?? null,
+      setItem: (key, value) => storage.set(key, String(value)),
+    });
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  test("remembers dark and light choices after remounting", () => {
+    const mount = () => render(<PortfolioThemeProvider><ThemeConsumer /></PortfolioThemeProvider>);
+    let view = mount();
+    fireEvent.click(screen.getByRole("button", { name: "light" }));
+    view.unmount();
+    view = mount();
+    expect(screen.getByRole("button", { name: "dark" })).toBeInTheDocument();
+    expect(document.body).toHaveClass("is-portfolio-dark");
+    fireEvent.click(screen.getByRole("button", { name: "dark" }));
+    view.unmount();
+    view = mount();
+    expect(screen.getByRole("button", { name: "light" })).toBeInTheDocument();
+    expect(document.body).not.toHaveClass("is-portfolio-dark");
+  });
   test("shares one session theme through the application root", () => {
     const { container } = render(
       <PortfolioThemeProvider>
