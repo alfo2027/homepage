@@ -9,7 +9,7 @@ test("Notes navigation opens the simple text list", async () => {
   const { container } = render(<App />);
   fireEvent.click(screen.getByRole("link", { name: "Notes" }));
   expect(await screen.findByRole("heading", { name: "Notes", level: 1 })).toBeInTheDocument();
-  expect(container.querySelectorAll(".h-notes-page .h-note-card")).toHaveLength(3);
+  expect(container.querySelectorAll(".h-notes-page .h-note-card")).toHaveLength(4);
   expect(container.querySelector(".blog-filters")).not.toBeInTheDocument();
 });
 
