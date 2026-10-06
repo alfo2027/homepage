@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import PortfolioNavigation from "../components/PortfolioNavigation";
 import { useProjectTransition } from "../components/ProjectTransition";
@@ -14,11 +14,11 @@ export default function ProjectPage() {
   const project = getProjectBySlug(slug);
   const featureFrameRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [navCompact, setNavCompact] = useState(false);
+  const [navCompact, setNavCompact] = useState(() => window.scrollY > 32);
 
-  useEffect(() => {
-    setNavCompact(false);
+  useLayoutEffect(() => {
     const update = () => setNavCompact(window.scrollY > 32);
+    update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, [slug]);

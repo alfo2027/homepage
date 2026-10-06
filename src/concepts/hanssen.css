@@ -953,3 +953,7 @@
 .h-note-detail .blog-back{font-family:inherit;font-size:14px;font-weight:400;line-height:1.45;letter-spacing:normal;color:var(--h-ink)}
 
 .h-note-detail .blog-prose .blog-closing{margin-top:64px}
+
+/* Avoid animating from the top-of-page shape during native scroll restoration. */
+.h-navigation[data-ready=false]{opacity:0;pointer-events:none;transition:none!important}
+.h-navigation[data-ready=false] *{transition:none!important}

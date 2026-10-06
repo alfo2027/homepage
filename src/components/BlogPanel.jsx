@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { categories, formatPostDate, postAsset, posts } from "../data/posts";
 import "../concepts/blog.css";
 import EntryPagination from "./EntryPagination";
+import NoteImage from "./NoteImage";
 
 function Cover({ post }) {
   return (
@@ -22,6 +23,12 @@ function Meta({ post }) {
   return <div className="blog-meta"><span>{post.category}</span><time dateTime={post.date}>{formatPostDate(post.date)}</time>{post.isExample && <span>예시 글</span>}</div>;
 }
 
+function ParagraphText({ block }) {
+  const start = block.emphasis ? block.text.indexOf(block.emphasis) : -1;
+  if (start < 0) return block.text;
+  return <>{block.text.slice(0, start)}<strong>{block.emphasis}</strong>{block.text.slice(start + block.emphasis.length)}</>;
+}
+
 function Block({ block }) {
   switch (block.type) {
     case "heading": return <h2>{block.text}</h2>;
@@ -29,8 +36,12 @@ function Block({ block }) {
     case "link": return <p><a href={block.href} target="_blank" rel="noopener noreferrer">{block.text}</a></p>;
     case "quote": return <blockquote>{block.text}</blockquote>;
     case "list": return <ul>{block.items.map((item, index) => <li key={index}>{item}</li>)}</ul>;
-    case "image": return <figure><img draggable={false} src={postAsset(block.src)} alt={block.alt || ""} width={block.width} height={block.height} decoding="async" loading="lazy" />{block.caption && <figcaption>{block.caption}</figcaption>}</figure>;
-    default: return <p className={block.variant === "closing" ? "blog-closing" : undefined}>{block.text}{block.link && <> <a href={block.link.href} target="_blank" rel="noopener noreferrer">{block.link.text}</a></>}</p>;
+    case "table": return <table className="blog-comparison-table">
+      <thead><tr>{block.headers.map((header) => <th scope="col" key={header}>{header}</th>)}</tr></thead>
+      <tbody>{block.rows.map((row, index) => <tr key={index}>{row.map((cell, column) => <td key={column}>{typeof cell === "string" ? cell : <a href={cell.href} target="_blank" rel="noopener noreferrer">{cell.text}</a>}</td>)}</tr>)}</tbody>
+    </table>;
+    case "image": return <NoteImage key={block.src} block={block} />;
+    default: return <p className={block.variant === "closing" ? "blog-closing" : undefined}><ParagraphText block={block} />{block.link && <> <a href={block.link.href} target="_blank" rel="noopener noreferrer">{block.link.text}</a></>}</p>;
   }
 }
 

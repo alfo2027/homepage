@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import NotFoundPage from "./NotFoundPage";
 import ProjectPage from "./ProjectPage";
 import { ProjectTransitionProvider } from "../components/ProjectTransition";
@@ -23,6 +23,15 @@ function renderRoute(path) {
 }
 
 describe("project detail", () => {
+  test("starts compact at a restored scroll position", () => {
+    vi.stubGlobal("scrollY", 500);
+    try {
+      const { container } = renderRoute("/projects/analyst");
+      expect(container.querySelector(".h-navigation")).toHaveAttribute("data-compact", "true");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   test("renders every analyst image without draggable behavior", async () => {
     const { container } = renderRoute("/projects/analyst");
     const images = [...container.querySelectorAll(".project-images img")];

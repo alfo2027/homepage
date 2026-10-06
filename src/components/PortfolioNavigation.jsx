@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import DotLogo from "./DotLogo";
 import { usePortfolioTheme } from "./PortfolioTheme";
@@ -6,6 +6,24 @@ import "../concepts/hanssen.css";
 
 export default function PortfolioNavigation({ navCompact, menuOpen, setMenuOpen }) {
   const { pathname } = useLocation();
+  const [ready, setReady] = useState(false);
+  useLayoutEffect(() => {
+    let firstFrame = 0;
+    let secondFrame = 0;
+    const reveal = () => {
+      firstFrame = requestAnimationFrame(() => {
+        // Allow native scroll restoration and its scroll event to settle first.
+        secondFrame = requestAnimationFrame(() => setReady(true));
+      });
+    };
+    if (document.readyState === "complete") reveal();
+    else window.addEventListener("load", reveal, { once: true });
+    return () => {
+      window.removeEventListener("load", reveal);
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, []);
   const { dark, toggleTheme } = usePortfolioTheme();
   const menuButton = useRef(null);
   const closeButton = useRef(null);
@@ -37,7 +55,7 @@ export default function PortfolioNavigation({ navCompact, menuOpen, setMenuOpen 
   </>;
 
   return <>
-    <header className="h-navigation" data-compact={navCompact} inert={menuOpen || undefined}>
+    <header className="h-navigation" data-compact={navCompact} data-ready={ready} inert={menuOpen || undefined}>
       <div className="h-nav-inner">
         <div className="h-nav-backdrop" aria-hidden="true" />
         <Link to="/" className="h-brand" onClick={returnHome} aria-label="윤미래 홈"><DotLogo key={pathname} playOnEnter /></Link>

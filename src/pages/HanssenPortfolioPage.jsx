@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import PortfolioNavigation from "../components/PortfolioNavigation";
 import FeaturedWork from "../components/FeaturedWork";
@@ -19,7 +19,7 @@ export default function HanssenPortfolioPage() {
   const { pathname } = useLocation();
   const { slug } = useParams();
   const { startProjectTransition } = useProjectTransition();
-  const [navCompact, setNavCompact] = useState(false);
+  const [navCompact, setNavCompact] = useState(() => window.scrollY > 32);
   const [menuOpen, setMenuOpen] = useState(false);
   const [projectsExpanded, setProjectsExpanded] = useState(false);
   const scroller = useRef(null);
@@ -33,15 +33,15 @@ export default function HanssenPortfolioPage() {
 
   useEffect(() => {
     setMenuOpen(false);
-    setNavCompact(false);
     setProjectsExpanded(false);
     if (scroller.current) scroller.current.scrollTop = 0;
     if (isNotesIndex) document.title = "Notes — 윤미래";
     if (!isBlog) document.title = `${isAbout ? "About — " : isWork ? "Work — " : ""}윤미래 Product Designer`;
   }, [pathname, isAbout, isBlog, isWork, isNotesIndex]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleScroll = () => setNavCompact(window.scrollY > 32 || (scroller.current?.scrollTop ?? 0) > 32);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
