@@ -103,8 +103,8 @@ describe("project detail", () => {
     expect(introduction.compareDocumentPosition(images) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("heading", { name: "쏟아지는 뉴스를 투자 판단으로 잇는 AI 분석" })).toBeInTheDocument();
     expect(introduction.querySelectorAll("p")).toHaveLength(1);
-    expect(introduction.querySelector("p")).toHaveTextContent(/한국경제신문이 운영하는 크립토 뉴스·데이터 플랫폼/);
-    expect(introduction.querySelector("p")).toHaveTextContent(/초단기·중기·장기 관점을 구조화하고/);
+    expect(introduction.querySelector("p")).toHaveTextContent(/뉴스의 핵심 내용과 시장에 미치는 영향을 파악할 수 있는 AI 분석 기능/);
+    expect(introduction.querySelector("p")).toHaveTextContent(/분석 결과를 미리 보여주고, 이용에 필요한 단계를 줄였습니다/);
     expect(screen.queryByText("회사 소개")).not.toBeInTheDocument();
     expect(screen.queryByText("프로젝트 소개")).not.toBeInTheDocument();
     expect(screen.queryByText("ROLE")).not.toBeInTheDocument();
