@@ -36,6 +36,10 @@ function Block({ block }) {
     case "link": return <p><a href={block.href} target="_blank" rel="noopener noreferrer">{block.text}</a></p>;
     case "quote": return <blockquote>{block.text}</blockquote>;
     case "list": return <ul>{block.items.map((item, index) => <li key={index}>{item}</li>)}</ul>;
+    case "bookmark": return <a className="blog-bookmark" href={block.href} target="_blank" rel="noopener noreferrer" aria-label={`${block.title} — 새 탭에서 열기`}>
+      <img src={postAsset(block.image)} alt={block.imageAlt || ""} width="960" height="600" loading="lazy" decoding="async" draggable={false} />
+      <span className="blog-bookmark-copy"><strong>{block.title}</strong><span className="blog-bookmark-description">{block.description}</span><span className="blog-bookmark-url">{block.displayUrl}<span aria-hidden="true">↗</span></span></span>
+    </a>;
     case "table": return <table className="blog-comparison-table">
       <thead><tr>{block.headers.map((header) => <th scope="col" key={header}>{header}</th>)}</tr></thead>
       <tbody>{block.rows.map((row, index) => <tr key={index}>{row.map((cell, column) => <td key={column}>{typeof cell === "string" ? cell : <a href={cell.href} target="_blank" rel="noopener noreferrer">{cell.text}</a>}</td>)}</tr>)}</tbody>
